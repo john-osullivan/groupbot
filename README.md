@@ -1,6 +1,11 @@
 # Welcome
 This is Groupify, a cloud-based group management platform.  In a sentence, it lets people make *groups* which have *members* who perform *roles* which have and distributed *responsibilities*.  Those responsibilities can optionally be worth points.  Groups can also connect to other groups in a hierarchy (i.e. a fraternity is a child of its national organization) or in partnership (i.e. a fraternity works with its school's IntraFraternity Council).  Documentation will be updated as the project continues!
 
+## Current/Next Work
+I need to figure out what front-end pages are required to make this thing work.  For the basest functionality, you need to be able to make an account, create a group, join/leave a group.  Create roles, assign them to members, take them away, change who it's assigned to.  Create responsibilities in a template fashion, give roles the ability to give them out, have them be doable and reward members with points.  Speaking of points, I need to make a points logger -- it just needs to sit on the database class and record every transaction based on the group.  Actually, based on everything.  We should be able to pick apart that points log however we want, to allow for many different views from different privacy levels.
+
+If I have all of that in there, though, I think I could make a sample group.  The concept of responsibilities as a template is important.  It makes a responsibility a standard type of thing you have to get done.
+
 ## Database Schema
 The system recognizes five underlying objects which correspond to database tables:
 - Users
@@ -56,6 +61,7 @@ Lastly, a responsibility is the basic unit of getting things done.  It has a nam
 ## Future Features
 There are two glaringly huge features I want to implement, which are by-laws and a reddit-style discussion system for motions.  They get their own sections.  Random things I want in here go in no particular order starting now:
 - There should be mulitple ways to "deliver" a deliverable, ranging from writing some text, signing your virtual name, uploading a photo or file, etc.
+- Once we have by-laws and motion discussion, we need to have Votes in the system.  You should get votes like people get notifications, telling you there's something to be decided on.
 
 ### By-Laws by Wiki
 
