@@ -61,6 +61,7 @@ class Group(Base):
     description = db.Column(db.String(1024))
 
     members = relationship('Member', backref='groups')
+    responsibilities = relationship('Responsibility', backref='groups')
 
     # Relations to establish non-hierarchical partnerships between groups.
     partnerships = relationship('GroupPartnership', backref='partners',\
@@ -98,7 +99,8 @@ class Member(Base):
     points = db.Column(Integer)
 
     roles = relationship('Role', backref='members')
-    responsibilities = relationship('Responsibility', backref='members')
+    given_responsibilities = relationship('Responsibility', backref='members')
+    giving_responsibilities = relationship('Responsibility', backref='members')
 
     def __init__(self, preferred_name=None, points=None, roles=None, responsibilities=None):
         self.preferred_name = preferred_name
@@ -142,6 +144,13 @@ class Role(Base):
     def __repr__(self):
         return "Role #(%s) of Group #(%s) held by Member #(%s)"%(self.role_id, self.group_id, self.member_id)
 
+member_responsibilities = Table(
+    'member_responsibilities', Base.metadata,
+    db.Column('giving_member_id', Integer, ForeignKey('members.member_id')),
+    db.Column('given_member_id', Integer, ForeignKey('members.member_id')),
+    db.Column('responsibility_id', Integer, ForeignKey('responsibilities.responsibility_id'))
+    )
+
 class Responsibility(Base):
     __tablename__ = 'responsibilities'
 
@@ -153,11 +162,11 @@ class Responsibility(Base):
     comments = db.Column(db.String(256))
 
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), backref='responsibilities', nullable=False)
-    given_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='responsibilities', nullable=False)
-    giver_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='responsibilities', nullable=False)
+    given_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='giving_responsibilities', nullable=False)
+    giver_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='given_responsibilities', nullable=False)
 
-    given = relationship('Member', foreign_keys=[given_id])
-    giver = relationship('Member', foreign_keys=[giver_id])
+    given = relationship('Member', foreign_keys=[given_member_id], secondary=member_responsibilities)
+    giver = relationship('Member', foreign_keys=[giving_member_id], secondary=member_responsibilities)
 
     def __init__(self, name=None, description=None, points=None, \
                         comments=None, given_id, giver_id, group_id):
