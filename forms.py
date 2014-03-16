@@ -24,3 +24,11 @@ class LoginForm(Form):
 
 class ForgotForm(Form):
     email       = TextField('Email', validators = [DataRequired(), Length(min=6, max=40)])
+
+class GroupForm(Form):
+
+class MemberForm(Form):
+
+class RoleForm(Form):
+
+class TaskForm(Form):

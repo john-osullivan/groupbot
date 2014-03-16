@@ -16,20 +16,38 @@ Base.query = db_session.query_property()
 class User(Base):
     __tablename__ = 'users'
 
+    '''
+    Stores all users, gives a unique ID.  Allows for a name, email, password,
+    phone number, 160 character biography, and a photo.  There is also a 
+    one-to-many relationship with the Membership table, allowing each user
+    to be a part of many groups.
+
+    username = String(30), in-service name, unique and not nullable
+    password = String(30), not nullable
+    name = String(120), meant for real-world name, not unique
+    email = String(120), unique
+    phone = Integer, unique
+    bio = String(160), super short self-description
+    photo = LargeBinary, essentially a thumbnail to represent themselves
+    memberships = -> Members, one-to-many, portal to all actual group management
+    '''
+
     user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=True)
+    username = db.Column(db.String(30), unique=True, nullable=False)
+    password = db.Column(db.String(30), nullable=False)
+    name = db.Column(db.String(120))
     email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(30))
-    phone = db.Column(db.Integer)
+    phone = db.Column(db.Integer, unique=True)
     bio = db.Column(db.String(160))
     photo = db.Column(db.LargeBinary)
 
-    memberships = relationship("Membership", backref= 'users')
+    memberships = relationship("Member", backref= 'users')
 
 
-    def __init__(self, name=None, password=None, email=None, phone=None, \
+    def __init__(self, name=None, username, password, email=None, phone=None, \
                             bio=None, photo=None, memberships=None):
         self.name = name
+        self.username = username
         self.password = password
         self.email = email
         self.phone = phone
@@ -43,6 +61,15 @@ class User(Base):
 class GroupPartnership(Base):
     __tablename__ = 'group_partnerships'
 
+    '''
+    GroupPartnership Table stores all the horizontal connections between groups.
+    It has its own tables because groups are horizontally connected in a
+    many-to-many relationship.  It takes two inputs to create a connection.  The
+    partnerships field describes groups which contain this group (i.e. TDC has a
+    representative at IFC).  The partners field describes groups which are contained
+    by this group (i.e. IFC has a number of partners, one of which is TDC).
+    '''
+
     gp_id = db.Column(db.Integer, primary_key = True)
 
     partnerships = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
@@ -52,8 +79,34 @@ def __init__(self, partnerships=None, partners=None):
     self.partners = partners
     self.partnerships = partnerships
 
+def __repr__(self):
+    return "Group Partnership #{0}".format(self.gp_id)
+
 class Group(Base):
     __tablename__ = 'groups'
+
+    '''
+    Groups are the fundamental building block of the system.  Each one has a
+    name, byline (160 character description), and full description.  Groups also
+    contain members.  Every task assigned in a group is tied to that group via 
+    a one-to-many relation.  Groups can be connected vertically or horizontally.
+    A vertical connection implies a hierarchy -- TDC at MIT is a child of 
+    TDC National.  A horizontal connection implies a partnership -- TDC at MIT
+    cooperates with MIT IFC to help make Greek life better for everyone.
+
+    name = String(80)
+    byline = String(160)
+    description = String(1024)
+    members = --> Member, one-to-many
+    tasks = --> Task, one-to-many
+    partnerships = --> Group, many-to-many, describes non-hierarchical groups
+                                this group is a member of
+    partners = --> Group, many-to-many, describes non-hierarchical groups that
+                            are a part of this group
+    parent_id = ForeignKey(Group), each group has at most one parent group
+    children = --> Group, one-to-many, each group can have as many children
+                            groups as it wants
+    '''
 
     group_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
@@ -91,6 +144,20 @@ class Group(Base):
 class Member(Base):
     __tablename__ = 'members'
 
+    '''
+    Members populate Groups.  All activites in the group correspond with the Member object, freeing
+    the User from any specific Group interaction.  Each Member object has foreign keys to the group
+    it's a part of and the user it is for.
+
+    group_id = ForeignKey Integer to Group, many-to-one
+    user_id = ForeignKey Integer to User, many-to-one
+    preferred_name = String(80) - If the User wants to be known different in this context
+    points = Integer - If a points sytem is in use, this is their running total.
+    roles = --> Role, many-to-many, established by member_roles table
+    doing_tasks = --> Task, one-to-many, describes tasks assigned TO the member
+    giving_tasks = --> Task, one-to-many, describes tasks assigned BY the member
+    '''
+
     member_id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), default=None, index=True)
@@ -112,6 +179,11 @@ class Member(Base):
         return "Member # of Group #: %s --- %s"%(self.member_id, self.group_id)
 
 member_roles = Table(
+    '''
+    Handles the many-to-many relationship between members and roles, allowing for
+    a role to have performed by multiple members or have one member perform 
+    multiple roles.
+    '''
     'member_roles', Base.metadata,
     db.Column('member_id', Integer, ForeignKey('members.member_id')),
     db.Column('role_id', Integer, ForeignKey('roles.role_id'))
