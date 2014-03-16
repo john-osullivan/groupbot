@@ -7,6 +7,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
 from forms import *
+from views import *
 
 #----------------------------------------------------------------------------#
 # App Config.
