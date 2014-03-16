@@ -114,7 +114,7 @@ class Group(Base):
     description = db.Column(db.String(1024))
 
     members = relationship('Member', backref='groups')
-    responsibilities = relationship('Responsibility', backref='groups')
+    tasks = relationship('Task', backref='groups')
 
     # Relations to establish non-hierarchical partnerships between groups.
     partnerships = relationship('GroupPartnership', backref='partners',\
@@ -166,14 +166,13 @@ class Member(Base):
     points = db.Column(Integer)
 
     roles = relationship('Role', backref='members')
-    given_responsibilities = relationship('Responsibility', backref='members')
-    giving_responsibilities = relationship('Responsibility', backref='members')
+    doing_tasks = relationship('Task', backref='members')
+    giving_tasks = relationship('Task', backref='members')
 
-    def __init__(self, preferred_name=None, points=None, roles=None, responsibilities=None):
+    def __init__(self, preferred_name=None, points=None, roles=None):
         self.preferred_name = preferred_name
         self.points = points
         self.roles = roles
-        self.responsibilities = responsibilities
 
     def __repr__(self):
         return "Member # of Group #: %s --- %s"%(self.member_id, self.group_id)
@@ -192,6 +191,18 @@ member_roles = Table(
 class Role(Base):
     __tablename__ = 'roles'
 
+    '''
+    Roles are the medium by which members can give or take on tasks.  Essentially, it represents
+    any position in a group where you are given specific duties.  It has a name and
+    description, and two many-to-many relationships with Tasks.  One relationship is for the Tasks
+    assigned to the Role, the other is for Tasks assigned by the role.
+
+    group_id = ForeignKey Group, many-to-one
+    member_id = --> Member, many-to-many, so that one role can be performed by multiple people
+    name = String(80), not nullable
+    description = String(2048), to give people room to write out a decent description
+    '''
+
     # Bookkeping ids
     role_id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True, nullable=False)
@@ -202,10 +213,10 @@ class Role(Base):
     description = db.Column(db.String(2048))
     
     # Responsiblity organization of both those given to you and those you give out.
-    given_resp_id = db.Column(db.Integer, db.ForeignKey('responsibilities.responsibility_id'))
-    giving_resp_id = db.Column(db.Integer, db.ForeignKey('responsibilities.responsibility_id'))
-    given_responsibilities = relationship('Responsibility', foreign_keys=[given_resp_id], backref='roles')
-    giving_responsibilities = relationship('Responsibility', foreign_keys=[giving_resp_id], backref='roles')
+    given_resp_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    giving_resp_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    doing_tasks = relationship('Task', foreign_keys=[doing_task_id], backref='roles')
+    giving_tasks = relationship('Task', foreign_keys=[giving_task_id], backref='roles')
 
     def __init__(self, group_id, member_id=None, name, description=None):
         self.group_id = group_id
@@ -216,42 +227,78 @@ class Role(Base):
     def __repr__(self):
         return "Role #(%s) of Group #(%s) held by Member #(%s)"%(self.role_id, self.group_id, self.member_id)
 
-member_responsibilities = Table(
-    'member_responsibilities', Base.metadata,
+member_tasks = Table(
+    '''
+    Table which handles the relationship between members and tasks.  Our goal is to have
+    two members associated with each task, one who is giving it and one who is doing it.  The
+    table has three columns, one for the giving_member_id, one for the doing_member_id, and
+    one for the task_id.
+    '''
+    'member_tasks', Base.metadata,
     db.Column('giving_member_id', Integer, ForeignKey('members.member_id')),
     db.Column('given_member_id', Integer, ForeignKey('members.member_id')),
-    db.Column('responsibility_id', Integer, ForeignKey('responsibilities.responsibility_id'))
+    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
     )
 
-class Responsibility(Base):
-    __tablename__ = 'responsibilities'
+class Task(Base):
+    __tablename__ = 'tasks'
 
-    responsibility_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    '''
+    Tasks are the unit of gettings things done in the system.  They are meant to
+    map to precisely two members: the member who assigned it and the member
+    who is doing it.  Tasks are hierarchical, so a task can have subtasks.  
+    All subtasks of a task should have their points values sum to no
+    greater than the parent task, but that constraint is not yet enforced in the
+    system.  A task given to every member in a role should actually 
+    create a large number of sub-tasks for each member to individually complete.
+
+    name = String(80) - Should just be a title
+    description = String(512) - Fuller description of what should typically be done
+    delivered = Boolean - Whether the doer says they've finished the task
+    approved = Boolean - Whether the giver says the task was fully satisfied
+    points = Integer - Number of  points the task is worth
+    comments = String(256) - Field for comments as needed
+    parent_id = ForeignKey Task, points to the parent of this task_id
+    children = --> Task, one-to-many to sub-tasks
+    group_id = ForeignKey Group, points to the group this task was assigned as
+                        a part of
+    doing_id = ForeignKey Member, points to the member who is responsible for
+                        completing the task
+    giving_id = ForeignKey Member, points to the member who assigned the task
+                        and is responsible for checking it
+    '''
+
+    task_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
     description = db.Column(db.String(512))
     delivered = db.Column(db.Boolean, default=False)
+    approved = db.Column(db.Boolean, default=False)
     points = db.Column(db.Integer)
     comments = db.Column(db.String(256))
 
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), backref='responsibilities', nullable=False)
-    given_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='giving_responsibilities', nullable=False)
-    giver_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='given_responsibilities', nullable=False)
+    # Relations to establish one-to-many parent-child relationships.
+    parent_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    children = relationship('Task', backref='parent')
 
-    given = relationship('Member', foreign_keys=[given_member_id], secondary=member_responsibilities)
-    giver = relationship('Member', foreign_keys=[giving_member_id], secondary=member_responsibilities)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), backref='tasks', nullable=False)
+    doing_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='giving_tasks', nullable=False)
+    giving_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), backref='given_tasks', nullable=False)
+
+    doer = relationship('Member', foreign_keys=[doing_member_id], secondary=member_tasks)
+    giver = relationship('Member', foreign_keys=[giving_member_id], secondary=member_tasks)
 
     def __init__(self, name=None, description=None, points=None, \
-                        comments=None, given_id, giver_id, group_id):
+                        comments=None, doer_id, giver_id, group_id):
         self.name = name
         self.description = description
         self.points = points
         self.comments = comments
-        self.given_id = given_id
-        self.giver_id = giver_id
+        self.doing_id = doer_id
+        self.giving_id = giver_id
         self.group_id = group_id
 
     def __repr__(self):
-        return "Responsibility #(%s) of Group #(%s) held by Member #(%s)"%(self.responsibility_id, self.gr)
+        return "Task #(%s) of Group #(%s) held by Member #(%s)"%(self.task_id, self.group_id, self.doing_id)
 
 # Create tables.
 Base.metadata.create_all(bind=engine)
