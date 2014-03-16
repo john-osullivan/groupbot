@@ -35,8 +35,8 @@ class User(Base):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(30), nullable=False)
-    name = db.Column(db.String(120))
-    email = db.Column(db.String(120), unique=True)
+    name = db.Column(db.String(40))
+    email = db.Column(db.String(40), unique=True)
     phone = db.Column(db.Integer, unique=True)
     bio = db.Column(db.String(160))
     photo = db.Column(db.LargeBinary)
@@ -111,7 +111,7 @@ class Group(Base):
     group_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     byline = db.Column(db.String(160))
-    description = db.Column(db.String(1024))
+    description = db.Column(db.String(2048))
 
     members = relationship('Member', backref='groups')
     tasks = relationship('Task', backref='groups')
@@ -127,13 +127,11 @@ class Group(Base):
     children = relationship('Group', backref='parent')
 
     def __init__(self, name, byline=None, description=None, members=None,\
-                        partnerships=None, partners=None, parent_id=None, children=None):
+                        parent_id=None, children=None):
         self.name = name
         self.byline = byline
         self.description = description
         self.members = members
-        self.partnerships = partnerships
-        self.partners = partners
         self.parent_id = parent_id
         self.children = children
 
@@ -213,8 +211,8 @@ class Role(Base):
     description = db.Column(db.String(2048))
     
     # Responsiblity organization of both those given to you and those you give out.
-    given_resp_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
-    giving_resp_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    doing_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    giving_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
     doing_tasks = relationship('Task', foreign_keys=[doing_task_id], backref='roles')
     giving_tasks = relationship('Task', foreign_keys=[giving_task_id], backref='roles')
 
@@ -269,7 +267,7 @@ class Task(Base):
     '''
 
     task_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
+    name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(512))
     delivered = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, default=False)
@@ -287,7 +285,7 @@ class Task(Base):
     doer = relationship('Member', foreign_keys=[doing_member_id], secondary=member_tasks)
     giver = relationship('Member', foreign_keys=[giving_member_id], secondary=member_tasks)
 
-    def __init__(self, name=None, description=None, points=None, \
+    def __init__(self, name, description=None, points=None, \
                         comments=None, doer_id, giver_id, group_id):
         self.name = name
         self.description = description
