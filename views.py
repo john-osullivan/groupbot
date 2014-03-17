@@ -19,8 +19,45 @@ def login_required(test):
 #----------------------------------------------------------------------------#
 # Data Manipulators.
 #----------------------------------------------------------------------------#
+@app.route('/createUser')
+def create_user():
+    return None
 
+@app.route('/deleteUser')
+def delete_user():
+    return None
 
+@app.route('/createGroup')
+def create_group():
+    return None
+
+@app.route('/createMember')
+def create_member():
+    return None
+
+@app.route('/createRole')
+def create_role():
+    return None
+
+@app.route('/createTask')
+def create_task():
+    return None
+
+@app.route('/deleteGroup')
+def delete_group():
+    return None
+
+@app.route('/deleteMember')
+def delete_member():
+    return None
+
+@app.route('/deleteRole')
+def delete_role():
+    return None
+
+@app.route('/deleteTask')
+def delete_task():
+    return None
 
 #----------------------------------------------------------------------------#
 # Controllers.
