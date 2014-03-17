@@ -16,8 +16,14 @@ def login_required(test):
             return redirect(url_for('login'))
     return wrap
 
+##############################################
 #----------------------------------------------------------------------------#
 # Data Manipulators.
+#----------------------------------------------------------------------------#
+##############################################
+
+#----------------------------------------------------------------------------#
+# Users.
 #----------------------------------------------------------------------------#
 @app.route('/createUser')
 def create_user():
@@ -27,32 +33,48 @@ def create_user():
 def delete_user():
     return None
 
+#----------------------------------------------------------------------------#
+# Groups.
+#----------------------------------------------------------------------------#
+
 @app.route('/createGroup')
 def create_group():
-    return None
-
-@app.route('/createMember')
-def create_member():
-    return None
-
-@app.route('/createRole')
-def create_role():
-    return None
-
-@app.route('/createTask')
-def create_task():
     return None
 
 @app.route('/deleteGroup')
 def delete_group():
     return None
 
+#----------------------------------------------------------------------------#
+# Members.
+#----------------------------------------------------------------------------#
+
+@app.route('/createMember')
+def create_member():
+    return None
+
 @app.route('/deleteMember')
 def delete_member():
     return None
 
+#----------------------------------------------------------------------------#
+# Roles.
+#----------------------------------------------------------------------------#
+
+@app.route('/createRole')
+def create_role():
+    return None
+
 @app.route('/deleteRole')
 def delete_role():
+    return None
+
+#----------------------------------------------------------------------------#
+# Tasks.
+#----------------------------------------------------------------------------#
+
+@app.route('/createTask')
+def create_task():
     return None
 
 @app.route('/deleteTask')
