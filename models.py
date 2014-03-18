@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from app import db
 
 engine = create_engine('sqlite:///database.db', echo=True)
@@ -252,6 +252,7 @@ class Task(Base):
 
     name = String(80) - Should just be a title
     description = String(512) - Fuller description of what should typically be done
+    due_at = DateTime - The date/time at which this task is due.  To be used for reminders...
     delivered = Boolean - Whether the doer says they've finished the task
     approved = Boolean - Whether the giver says the task was fully satisfied
     points = Integer - Number of  points the task is worth
@@ -269,6 +270,7 @@ class Task(Base):
     task_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(512))
+    due_at = db.Column(db.DateTime)
     delivered = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, default=False)
     points = db.Column(db.Integer)

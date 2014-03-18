@@ -49,12 +49,12 @@ def delete_group():
 # Members.
 #----------------------------------------------------------------------------#
 
-@app.route('/createMember')
-def create_member():
+@app.route('/addMember')
+def add_member():
     return None
 
-@app.route('/deleteMember')
-def delete_member():
+@app.route('/removeMember')
+def remove_member():
     return None
 
 #----------------------------------------------------------------------------#
@@ -69,6 +69,11 @@ def create_role():
 def delete_role():
     return None
 
+# Gives or removes a Role from a specific Member
+@app.route('/assignRole')
+def assign_role():
+    return None
+
 #----------------------------------------------------------------------------#
 # Tasks.
 #----------------------------------------------------------------------------#
@@ -79,6 +84,11 @@ def create_task():
 
 @app.route('/deleteTask')
 def delete_task():
+    return None
+
+# Used to deliver & approve tasks.
+@app.route('/returnTask')
+def return_task():
     return None
 
 #----------------------------------------------------------------------------#
