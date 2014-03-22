@@ -27,7 +27,7 @@ def login_required(test):
 #----------------------------------------------------------------------------#
 @app.route('/createUser')
 def create_user():
-        '''
+    '''
     INPUT
     User Form with the mandatory arguments username, password, and email.
     Optional arguments real/display name, phone number, and 160 character
@@ -72,26 +72,56 @@ def edit_user():
 
 @app.route('/createGroup')
 def create_group():
+    '''
+    INPUT
+    Takes a GroupForm with the mandatory arguments of DIsplay Name
+    and Code Name, optional argumets of By-Line and Description.
+
+    OUTPUT
+    Creates a new Group with the specified information.  The User who
+    created the Group is both its first Member and the administrator (which
+    is the default first role in every group).
+    '''
     return None
 
 @app.route('/deleteGroup')
 def delete_group():
+    '''
+    INPUT
+    Takes the ID of the group and the User_ID of the person who submitted
+    the request for deletion.
+
+    OUTPUT
+    Deletes the Group from the database, including all of its Members, Roles,
+    and Tasks.  If the User_ID does not match up with that of
+    the administrator, the request does not succeed.
+    '''
     return None
 
-@app.route('/addPartner')
-def add_subgroup():
+@app.route('/createPartnership')
+def create_partnership():
+    '''
+    INPUT
+    Takes the IDs of the partnership and the new partner.
+
+    OUTPUT
+    Add the partner to the Partnership Group's Partners relation.  Conversely, 
+    it also adds    the partnership to the partner's Partnerships relation.  If the
+    groups are already partnered, nothing happens.  If the groups are already
+    part of a parent or child relationship with each other, nothing happens.
+    '''
     return None
 
-@app.route('/joinPartnership')
-def join_partnership():
-    return None
+@app.route('/createSubgrouping')
+def create_subgrouping():
+    '''
+    INPUT
+    Takes the IDs of the parent and child groups.
 
-@app.route('/joinParentGroup')
-def join_parent_group():
-    return None
-
-@app.route('/addChildGroup')
-def add_child_group():
+    OUTPUT
+    Sets the child's parent_id attribute to the ID of the parent group.  Adds the
+    child's ID to the parent's children ForeignKey relation.
+    '''
     return None
 
 #----------------------------------------------------------------------------#
@@ -100,10 +130,30 @@ def add_child_group():
 
 @app.route('/addMember')
 def add_member():
+    '''
+    INPUT
+    A group ID, a user ID, and a Member Form which only has one (optional)
+    argument of a Preferred Name.  Letting people decide who they are based
+    on where they are is generally a nice thing.
+
+    OUTPUT
+    Create a new Member row associated with the User and Group, possibly
+    holding a value for Preferred Name.  The Role and Task relations are 
+    empty by default. 
+    '''
     return None
 
 @app.route('/removeMember')
 def remove_member():
+    '''
+    INPUT
+    A group ID and Member ID for the member to be removed.
+
+    OUTPUT
+    Removes the specified Member's row from the database, removing them 
+    from all Roles they were assigned to.  If a Task was only assigned to them,
+    it is removed as well.
+    '''
     return None
 
 #----------------------------------------------------------------------------#
@@ -112,19 +162,57 @@ def remove_member():
 
 @app.route('/createRole')
 def create_role():
+    '''
+    INPUT
+    Takes a Group_ID, optional Member_ID, and RoleForm -- which has the 
+    mandatory argument of a role name and an optional argument of role
+    description.
+
+    OUTPUT
+    Creates a Role within the specified Group that has the specified descrption.
+    If a Member_ID is supplied, that Member automatically becomes the first 
+    person to hold the Role.
+    '''
     return None
 
 @app.route('/deleteRole')
 def delete_role():
+    '''
+    INPUT
+    Takes a Group_ID and Role_ID to be deleted.
+
+    OUTPUT
+    Removes the Role's row from the database.  It is therefore no longer associated
+    with any members.  If there are any Tasks only approved by that Role, then the
+    approval responsibilities move to the people who were last holding said Role.
+    '''
     return None
 
 # Gives a Role to a specific Member
 @app.route('/assignRole')
 def assign_role():
+    '''
+    INPUT
+    Takes a Group_ID, Role_ID, and Member_ID.
+
+    OUTPUT
+    Adds the Member to the Member_ID propety of the specified Role in the
+    specified Group.  If the Member is already assigned to the Role, throws an
+    Exception saying that Role was already assigned to that Member.
+    '''
     return None
 
 @app.route('/removeRole')
 def remove_role():
+    '''
+    INPUT
+    Takes a Group_ID, Role_ID, and Member_ID.
+
+    OUTPUT
+    Removes the specified Member from the specified Role's Member_ID
+    relation.  If the Member was not actually in that relation, throws an 
+    Exception saying the specified Member did not have that Role.
+    '''
     return None
 
 #----------------------------------------------------------------------------#
@@ -188,9 +276,13 @@ def approve_task():
     '''
     return None
 
-#----------------------------------------------------------------------------#
+
+
+###############################################
+#-----------------------------------------------------------------------------#
 # Controllers.
-#----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+###############################################
 
 @app.route('/')
 def home():

@@ -21,8 +21,8 @@ Users separated from the specific activity of each group.  All association is ha
 - Photo (Binary)
 
 ### Groups
-Groups are collections of members.  They also hold roles.  Eventually, a group will exist with surrounding features like by-laws, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  It has the columns:
-- Human Name (String) : A non-unique name to refer to the group by, to make 
+Groups are collections of Members.  They also point to Roles and Tasks.  Eventually, a group there will be surrounding features like by-laws, voting, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  It has the columns:
+- Display Name (String) : A non-unique name to refer to the group by, to make 
 standard use easier.
 - Code Name (String) : A unique name for the group similar to a Twitter handle
 or Facebook URL.
@@ -30,7 +30,7 @@ or Facebook URL.
 - By-Line (String)
 - Description (Long String)
 - Roles (One to Many)
-- Responsibilities (One to Many)
+- Tasks (One to Many)
 
 ### Members
 A Member contains all the information a user would want to interact with in the group.  Specifically, members perform roles, have responsibilities, and gather points.  It has the columns:
@@ -89,15 +89,17 @@ I haven't implemented it yet because I'm terrible!  Once I have each piece worki
 
 ## Future Features
 There are two glaringly huge features I want to implement, which are by-laws and a reddit-style discussion system for motions.  They get their own sections.  Random things I want in here go in no particular order starting now:
+- Potential redesign of Tasks: Instead of tying them down to Members, tie them to Roles.  This allows for assignment of one task to a group of people who perform a Role, as well as specifying that only people with certain Roles can assign certain
+Tasks.  This should happen soon, because Roles are designed with that functionality in mind -- they have a relationship to Tasks on a doing and giving basis.  Just need to determine how Tasks prioritize their relations to Roles and Members.
+- A lot of Tasks are template tasks -- just think of nightly and party works here at TDC.  You should be able to define templates and then periodically fill them in to assign the next batch of tasks.  For style points, accept an input of a .csv that has the right columns so people can work on it from Google Docs and send it straight over.
+- Roles need to have Permissions baked into them ASAP.  Certain Roles need to be able to assign certain Tasks, some need to be able to add Members or report to other Groups.  Fundamentally, different people in groups have different levels of control over how the group is run, and the system needs to reflect that.
 - There should be mulitple ways to "deliver" a deliverable, ranging from writing some text, signing your virtual name, uploading a photo or file, etc.
 - Once we have by-laws and motion discussion, we need to have Votes in the system.  You should get votes like people get notifications, telling you there's something to be decided on.
+- There needs to be a group discussion form.  If I have my way, we basically just clone reddit.  Members can submit links to a message board, there's some voting thrown in the mix.  Additionally, submissions can have type tags, meant ot allow for things like sorting between announcement, motions, and idle discussion.
+- Groups need to have the concept of by-laws.  A description says what the group is about, but the by-laws describe how they do it.  They can be really simple, but the core concept of by-laws that require votes to be changed/amended/updated should be in there.  As with everything else, some sort of recursive system of adding new sections and subsections would work best.
 - Once the system supports actual interaction between these data elements, there should be a timeline view of groups which displays all recent actions to members.  It should integrate different permission levels so non-members can get a gloss of what's happening but current members can be an in-depth view on the goings on of the organization.
 - Outline admin functionality.  What functions can only an admin perform, what functions can a member perform, how do we make those settings up to the user?  More importantly, how do I start integrating a full permissions sytem?
 - A points logger.  All changes in points (namely when a responsibility becomes delivered and the member's point count increases) need to be logged in the system so the logs can be manually parsed just in case.  Each log should contain the responsibility delivered, the user who was awarded points, the timestamp at which it was delivered, the points awarded, the user's prior point count, and their subsequent point count.
 - Thought on the points system -- the duration over which points accumulate needs to be a setting, so each group can determine when (or if) they refresh.
 - A reminder system which lets users assigning tasks specify a time for email and text message reminders to the person who has to do the task.
 - Group templates!  Users should be able to say whether they're making a club, fraternity, sports team, project group, company, etc.
-
-### By-Laws by Wiki
-
-### Motion Discuss by reddit

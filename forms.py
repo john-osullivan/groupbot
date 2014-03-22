@@ -40,7 +40,7 @@ class ForgotForm(Form):
     email       = TextField('Email', validators = [DataRequired(), Length(min=6, max=40)])
 
 class GroupForm(Form):
-    human_name = TextField('Group "Human Name"', validators=[DataRequired(), Length(min=6, max=80)])
+    display_name = TextField('Group "Display Name"', validators=[DataRequired(), Length(min=6, max=80)])
     code_name = TextField('Group "Code Name"', validators=[DataRequired(), Length(min=6, max=80)])
     byline = TextField('Group By-Line', validators=[Length(min=6, max=160)])
     description = TextField('Group Description', validators=[Length(min=40, max=2048)])
