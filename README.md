@@ -22,7 +22,10 @@ Users separated from the specific activity of each group.  All association is ha
 
 ### Groups
 Groups are collections of members.  They also hold roles.  Eventually, a group will exist with surrounding features like by-laws, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  It has the columns:
-- Name (String)
+- Human Name (String) : A non-unique name to refer to the group by, to make 
+standard use easier.
+- Code Name (String) : A unique name for the group similar to a Twitter handle
+or Facebook URL.
 - Members (One to Many)
 - By-Line (String)
 - Description (Long String)
@@ -65,11 +68,12 @@ Lastly, a task is the basic unit of getting things done.  They are hierarchical,
 I need to figure out what front-end pages are required to make this thing work.  For the basest functionality, you need to be able to make an account, create a group, join/leave a group.  Create roles, assign them to members, take them away, change who it's assigned to.  Create responsibilities in a template fashion, give roles the ability to give them out, have them be doable and reward members with points.  Speaking of points, I need to make a points logger -- it just needs to sit on the database class and record every transaction based on the group.  Actually, based on everything.  We should be able to pick apart that points log however we want, to allow for many different views from different privacy levels.
 
 If I have all of that in there, though, I think I could make a sample group.  The concept of responsibilities as a template is important.  It makes a responsibility a standard type of thing you have to get done.
+
 ### User Dashboard
-The user's dashboard needs to be a summary of all their groups.  It should collect the roles and responsibilities they have in each group, separating those they have to complete and those they need other people to complete.  It should be a gloss of all their commitments, only listing the titles.  Those titles should be links to the commitment's detail page.
+The user's dashboard holds a summary of the activity from all of their memberships.  It collects the Roles and Tasks they have in each group, separating those they have to complete and those they need other people to complete.  It is essentially a gloss of all their commitments, only listing the titles.  Those titles link to the task's detail page.
 
 ### Group Page
-A group's page needs to list its name, by-line, and description.  Additionally, it should have a roster (list of all members), list of officers, and a listing of any group-wide responsibilities.  Any responsibility that is required of every member should be listed on this page with its percent completion by the brotherhood.  This would include things like attendance to meeting, clean-ups, and nightly duties.
+A group's page lists its name, by-line, and description.  Additionally, it should have a roster (list of all members), list of officers, and a listing of any group-wide responsibilities.  Any responsibility that is required of every member should be listed on this page with its percent completion by the brotherhood.  This would include things like attendance to meeting, clean-ups, and nightly duties.
 
 ### Member Page
 The member page includes all roles held, current responsibilities, points count and history.  Additionally, it can store a history of prior roles held and how they did in them (because why not?).  It also has different section for the responsibilities required of the member and the responsibilities checked by the member.
@@ -92,6 +96,7 @@ There are two glaringly huge features I want to implement, which are by-laws and
 - A points logger.  All changes in points (namely when a responsibility becomes delivered and the member's point count increases) need to be logged in the system so the logs can be manually parsed just in case.  Each log should contain the responsibility delivered, the user who was awarded points, the timestamp at which it was delivered, the points awarded, the user's prior point count, and their subsequent point count.
 - Thought on the points system -- the duration over which points accumulate needs to be a setting, so each group can determine when (or if) they refresh.
 - A reminder system which lets users assigning tasks specify a time for email and text message reminders to the person who has to do the task.
+- Group templates!  Users should be able to say whether they're making a club, fraternity, sports team, project group, company, etc.
 
 ### By-Laws by Wiki
 

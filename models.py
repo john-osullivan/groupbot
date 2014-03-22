@@ -94,7 +94,8 @@ class Group(Base):
     TDC National.  A horizontal connection implies a partnership -- TDC at MIT
     cooperates with MIT IFC to help make Greek life better for everyone.
 
-    name = String(80)
+    code_name = String(80)
+    human_name = String(80)
     byline = String(160)
     description = String(1024)
     members = --> Member, one-to-many
@@ -109,7 +110,8 @@ class Group(Base):
     '''
 
     group_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    human_name = db.Column(db.String(80), nullable=False)
+    code_name = db.Column(db.String(80), unique=True, nullable=False)
     byline = db.Column(db.String(160))
     description = db.Column(db.String(2048))
 
@@ -126,9 +128,10 @@ class Group(Base):
     parent_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
     children = relationship('Group', backref='parent')
 
-    def __init__(self, name, byline=None, description=None, members=None,\
+    def __init__(self, human_name, code_name, byline=None, description=None, members=None,\
                         parent_id=None, children=None):
-        self.name = name
+        self.human_name = human_name
+        self.code_name = code_name
         self.byline = byline
         self.description = description
         self.members = members
@@ -267,10 +270,10 @@ class Task(Base):
                         and is responsible for checking it
     '''
 
-    task_id = db.Column(db.Integer, primary_key=True)
+    task_id = db.Col umn(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(512))
-    due_at = db.Column(db.DateTime)
+    deadline = db.Column(db.DateTime)
     delivered = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, default=False)
     points = db.Column(db.Integer)
