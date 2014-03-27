@@ -88,7 +88,6 @@ The responsibility page needs to display the name, description, optional points 
 I haven't implemented it yet because I'm terrible!  Once I have each piece working such that shit can display, unit tests.  Unit tests for everyone.
 
 ## Future Features
-There are two glaringly huge features I want to implement, which are by-laws and a reddit-style discussion system for motions.  They get their own sections.  Random things I want in here go in no particular order starting now:
 - Potential redesign of Tasks: Instead of tying them down to Members, tie them to Roles.  This allows for assignment of one task to a group of people who perform a Role, as well as specifying that only people with certain Roles can assign certain
 Tasks.  This should happen soon, because Roles are designed with that functionality in mind -- they have a relationship to Tasks on a doing and giving basis.  Just need to determine how Tasks prioritize their relations to Roles and Members.
 - A lot of Tasks are template tasks -- just think of nightly and party works here at TDC.  You should be able to define templates and then periodically fill them in to assign the next batch of tasks.  For style points, accept an input of a .csv that has the right columns so people can work on it from Google Docs and send it straight over.

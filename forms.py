@@ -1,9 +1,14 @@
 from flask_wtf import Form
 from wtforms import TextField, DateField, IntegerField, \
-        SelectField, PasswordField
+        SelectField, PasswordField, FormField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
+
+class TelephoneForm(Form):
+    country_code = IntegerField('Country Code', validators = [DataRequired()])
+    area_code    = IntegerField('Area Code/Exchange', validators = [DataRequired()])
+    number       = TextField('Number', validators = [DataRequired()])
 
 class RegisterForm(Form):
     username = TextField('Username', validators=[Length(min=6, max=30), DataRequired()])
@@ -15,9 +20,9 @@ class RegisterForm(Form):
     bio = TextField('Bio', validators = [Length(min=1, max=160)])
   
 class PasswordChangeForm(Form):
-    old_password = Password('Old Password', validators = [Length(min=6, max=40)])
-    password = Password('New Password', validators = [Length(min=6, max=40)])
-    confirm =   Password('Confirm NewPassword', validators = [Length(min=6, max=40)])
+    old_password = PasswordField('Old Password', validators = [Length(min=6, max=40)])
+    password = PasswordField('New Password', validators = [Length(min=6, max=40)])
+    confirm =   PasswordField('Confirm NewPassword', validators = [Length(min=6, max=40)])
 
 class UserInfoChangeForm(Form):
     name        = TextField('Real/Display Name', validators = [Length(min=6, max=40)])
@@ -27,11 +32,6 @@ class UserInfoChangeForm(Form):
 class EmailChangeForm(Form):
     email       = TextField('New Email', validators = [DataRequired(), Length(min=6, max=40)])
 
-class TelephoneForm(Form):
-    country_code = IntegerField('Country Code', [validators.required()])
-    area_code    = IntegerField('Area Code/Exchange', [validators.required()])
-    number       = TextField('Number')
-
 class LoginForm(Form):
     name        = TextField('Username', [DataRequired()])
     password    = PasswordField('Password', [DataRequired()])
@@ -40,7 +40,7 @@ class ForgotForm(Form):
     email       = TextField('Email', validators = [DataRequired(), Length(min=6, max=40)])
 
 class GroupForm(Form):
-    display_name = TextField('Group "Display Name"', validators=[DataRequired(), Length(min=6, max=80)])
+    human_name = TextField('Group Display Name', validators=[DataRequired(), Length(min=6, max=80)])
     code_name = TextField('Group "Code Name"', validators=[DataRequired(), Length(min=6, max=80)])
     byline = TextField('Group By-Line', validators=[Length(min=6, max=160)])
     description = TextField('Group Description', validators=[Length(min=40, max=2048)])
