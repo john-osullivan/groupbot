@@ -203,6 +203,10 @@ def remove_member():
     from all Roles they were assigned to.  If a Task was only assigned to them,
     it is removed as well.
     '''
+    member_id = request.POST['member_id']  
+    member = Member.query.get(member_id)
+    db_session.delete(member)
+    db_session.commit()
     return None
 
 #----------------------------------------------------------------------------#
@@ -222,6 +226,14 @@ def create_role():
     If a Member_ID is supplied, that Member automatically becomes the first 
     person to hold the Role.
     '''
+    group_id = int(request.POST['group_id'])
+    role_name = request.form['name']
+    if request.form['description']: description = request.form['description'] else: description = None
+    if request.form['member']: member = int(request.form['member']) else: member = None
+    new_role = Role(group_id = group_id, name = role_name, \
+                                description = description, member_id = member)
+    db_session.add(new_role)
+    db_session.commit()
     return None
 
 @app.route('/deleteRole')
@@ -235,6 +247,12 @@ def delete_role():
     with any members.  If there are any Tasks only approved by that Role, then the
     approval responsibilities move to the people who were last holding said Role.
     '''
+    group_id = int(request.POST['group_id'])
+    role_id = int(request.POST['role_id'])
+    role = Role.query.get(role_id)
+    if role.group_id == group_id:
+        db_session.delete(role)
+        db_session.commit()
     return None
 
 # Gives a Role to a specific Member
