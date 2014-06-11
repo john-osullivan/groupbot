@@ -103,7 +103,46 @@ def view_info(group_code_name, info_id):
     HTML string within the structure of the page we define. 
     '''
 
-# Error handlers.
+###############################################
+#---------------------------------------------#
+# Edit Pages
+#---------------------------------------------#
+###############################################
+@app.route('/group/<group_code_name>/edit')
+def edit_group_view(group_code_name):
+    '''
+    '''
+
+@app.route('/group/<group_code_name>/event/<event_id>/edit')
+def edit_event_view(group_code_name, event_id):
+    '''
+    '''
+
+@app.route('/group/<group_code_name>/task/<task_id>/edit')
+def edit_task_view(group_code_name, task_id):
+    '''
+    '''
+
+@app.route('/group/<group_code_name>/info/<info_id>/edit')
+def edit_info_view(group_code_name, info_id):
+    '''
+    '''
+
+@app.route('/group/<group_code_name>/role/<role_id>/edit')
+def edit_role_view(group_code_name, role_id):
+    '''
+    '''
+
+@app.route('/group/<group_code_name>/member/<member_id>/edit')
+def edit_member_view(group_code_name, member_id):
+    '''
+    '''
+
+###############################################
+#---------------------------------------------#
+# Error Handlers
+#---------------------------------------------#
+###############################################
 
 @app.errorhandler(500)
 def internal_error(error):

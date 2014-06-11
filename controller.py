@@ -43,6 +43,8 @@ def create_user():
 
 @app.route('/user/<username>'):
 def view_user(username):
+    '''
+    '''
 
 @app.route('/user/<username>/delete')
 def delete_user(username):
@@ -103,7 +105,7 @@ def edit_user(username):
 # Atomic Events for GROUPS.
 #----------------------------------------------------------------------------#
 
-@app.route('/createGroup')
+@app.route('/group/create')
 def create_group():
     '''
     INPUT
@@ -125,7 +127,7 @@ def create_group():
     flash("You just created {0}!".format(str(request.form['display_name'])))
     return render_template('group_home.html', group=new_group)
 
-@app.route('/group/<group_code_name>/deleteGroup')
+@app.route('/group/<group_code_name>/delete')
 def delete_group(group_code_name):
     '''
     INPUT
@@ -145,6 +147,14 @@ def delete_group(group_code_name):
     db_session.commit()
     flash('You\'ve deleted the group "{0} ({1})."'.format(human_name, code_name))
     return render_template('user_dash.html')
+
+@app.route('/group/<group_code_name>/edit')
+def edit_group(group_code_name):
+    '''
+    INPUT
+    A filled-out GroupForm which validates.  Essentially, the edit uses the same
+    view as the create 
+    '''
 
 @app.route('/group/joinPartnership/<group_code_name>/<other_group_code_name>')
 def join_partnership(group_code_name, other_group_code_name):
@@ -225,6 +235,18 @@ def add_member(group_code_name):
     if request.form['preferred_name']: pref_name = request.form['preferred_name'] else: pref_name = None
     new_member = Member(group_id=group_id, preferred_name=pref_name)
     return render_template('group_home.html', group = group)
+
+@app.route('/member/<member_id>/edit')
+def edit_member(member_id):
+    '''
+    INPUT
+    A Member ID whose profile is being edited, a validated MemberForm to update
+    their information.
+
+    RESULT
+    Updates the Member's information, returns True if successful and throws an
+    Exception if it wasn't.
+    '''
 
 @app.route('/member/<member_id>/remove')
 def remove_member(member_id):
@@ -439,19 +461,18 @@ def create_event():
     '''
 
 @app.route('/event/<event_id>/delete')
-def delete_event(group_code_name, event_id):
+def delete_event(event_id):
     '''
     INPUT
-
-    REQUIRES
-    Member object in the request.
+    Member object in the request to validate Permissions.  Other than that, the event_id
+    is enough.
 
     RESULT
     If all goes well, event is deleted and returns True.  Otherwise, an Exception.
     '''
 
 @app.route('/event/<event_id/edit')
-def edit_event(group_code_name, event_id):
+def edit_event(event_id):
     '''
     INPUT
     Member object in the request to check permissions.  Also a fresh EventCreate form
@@ -462,50 +483,52 @@ def edit_event(group_code_name, event_id):
     '''
 
 @app.route('/event/<event_id>/rsvpEventYes')
-def rsvp_event_yes(group_code_name, event_id):
+def rsvp_event_yes(event_id):
     '''
     INPUT
-
-    REQUIRES
-    Member object in the request.
+    Member object in the request to make sure they were invited to begin with. Other
+    than that, the event_id is enough to work things out.    
 
     RESULT
-    
+    The Member is added to the Event's .rsvp_yes attribute.  The function returns
+    True to confirm successful operation, Exception if it fails.
     '''
 
 @app.route('/event/<event_id>/rsvpEventNo')
-def rsvp_event_no(group_code_name, event_id):
+def rsvp_event_no(event_id):
     '''
     INPUT
-
-    REQUIRES
-    Member object in the request.
+    Member object in the request to make sure they were invited and so we can use their
+    information.  
 
     RESULT
-    
+    The member is added to the Event's .rsvp_no attribute.  As elsewhere, True means success,
+    Exception means failure.
     '''
 
 @app.route('/event/<event_id>/attendEvent')
-def attend_event(group_code_name, event_id):
+def attend_event(event_id):
     '''
     INPUT
-    REQUIRES
-    Member object in the request.
+    Need a Member object in the request, representing the Member who attended.  This may not
+    be the Member who calls the function, so it's important to make sure we're putting the
+    right Member's information in.  Other than that, we're good with event_id.
 
     RESULT
-    
+    Member is added to the Event's .attended_yes attribute.  Same success:True, 
+    failure:Exception behavior as elsewhere.
     '''
 
 @app.route('/event/<event_id>/missEvent')
-def miss_event(group_code_name, event_id):
+def miss_event(event_id):
     '''
     INPUT
-
-    REQUIRES
-    Member object in the request.
+    Need a Member object in the request, representing the Member who didn't attend.  
+    Other than that, we're good with event_id.
 
     RESULT
-    
+    Member is added to the Event's .attended_no attribute.  Same success:True,
+    failure:Exception behavior as seen elsewhere.
     '''
 
 
@@ -516,12 +539,12 @@ def miss_event(group_code_name, event_id):
 def create_infopage():
     '''
     INPUT
-
-    REQUIRES
     Member object in the request, in order to check that Permissions are valid.
+    Additionally a validated InfoPageForm.
 
     RESULT
-
+    Infopage is created, the function returns True if everything goes well.  If
+    something breaks, it'll throw an Exception.
     '''
 
 @app.route('/info/<info_id>/delete')
@@ -539,9 +562,8 @@ def delete_infopage(info_id):
 def edit_infopage(info_id):
     '''
     INPUT
-    A string of sanitized HTML (via some text editor JS library) which overrides all
-    the relevant fields in an Infopage.  Member object in the request, in order to 
-    check that Permissions are valid.
+    A validated InfoPageForm which has the sanitized HTML string we need to save.
+    Member object in the request, in order to check that Permissions are valid.
 
     RESULT
     Infopage has its content updated, it returns True if all goes well -- otherwise

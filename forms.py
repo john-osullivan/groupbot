@@ -80,5 +80,3 @@ class EventRSVPForm(Form):
 class EventAttendanceForm(Form):
 
 class InfoPageForm(Form):
-
-class InfoPageEditForm(Form):

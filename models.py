@@ -409,8 +409,11 @@ class Event(Base):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2000))
     creator_id = db.Column(db.Integer, db.ForeignKey('members.member_id'))
-    date = db.Column(db.DateTime(datetime.datetime(0)))
-    duration = db.Column(db.DateTime(datetime.datetime(0)))
+    start_time = db.Column(db.DateTime(datetime.datetime(0)))
+    end_time = db.Column(db.DateTime(datetime.datetime(0)))
+
+    # List of people invited to the event
+    invited = db.relationship('Member', backref='events')
 
     # People's reponces to the event will be recorded here
     rsvp_yes = db.relationship('Member', backref='events')
@@ -429,13 +432,13 @@ class Event(Base):
     # Hosts are people who also have creator access
     host = db.relationship('Member', backref='events')
 
-    def __init__(self, name, host_group_id=None, host_task_id=None, host_user_id=None, host_role_id=None, \
+    def __init__(self, name, start_time=None, end_time=None, host_group_id=None, host_task_id=None, host_user_id=None, host_role_id=None, \
                         host_member_id=None, host_gp_id=None, content=None, description=None):
         self.name = name
         self.description = description
         self.creator_id=creator_id
-        self.date=date
-        self.duration=duration
+        self.start_time=start_time
+        self.end_time=end_time
         self.rsvp_yes=rsvp_yes
         self.rsvp_no=rsvp_no
         self.attended_yes=attended_yes
