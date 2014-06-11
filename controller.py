@@ -13,9 +13,9 @@ from models import db_session, User, GroupPartnership, Group, Member, \
 ##############################################
 
 #----------------------------------------------------------------------------#
-# Users.
+# Atomic Events for USERS.
 #----------------------------------------------------------------------------#
-@app.route('/createUser', methods=['POST'])
+@app.route('/user/create', methods=['POST'])
 def create_user():
     '''
     INPUT
@@ -41,9 +41,11 @@ def create_user():
     flash("You're a user of Groupify now, {0}!".format(str(request.form['username'])))
     return render_template('user_dash.html') 
 
+@app.route('/user/<username>'):
+def view_user(username):
 
-@app.route('/deleteUser')
-def delete_user():
+@app.route('/user/<username>/delete')
+def delete_user(username):
     '''
     INPUT
     User_ID of the account to be deleted.
@@ -59,8 +61,8 @@ def delete_user():
     flash("We're sad to see you go, {0} :(".format(username))
     return render_template('home.html')
 
-@app.route('/editUser')
-def edit_user():
+@app.route('/user/<username>/edit')
+def edit_user(username):
     '''
     INPUT
     A PasswordChangeForm, EmailChangeForm, or UserInfoChangeForm,
@@ -98,7 +100,7 @@ def edit_user():
     return render_template('user_dash.html')
 
 #----------------------------------------------------------------------------#
-# Groups.
+# Atomic Events for GROUPS.
 #----------------------------------------------------------------------------#
 
 @app.route('/createGroup')
@@ -123,8 +125,8 @@ def create_group():
     flash("You just created {0}!".format(str(request.form['display_name'])))
     return render_template('group_home.html', group=new_group)
 
-@app.route('/deleteGroup')
-def delete_group():
+@app.route('/group/<group_code_name>/deleteGroup')
+def delete_group(group_code_name):
     '''
     INPUT
     Takes the ID of the group and the User_ID of the person who submitted
@@ -144,8 +146,8 @@ def delete_group():
     flash('You\'ve deleted the group "{0} ({1})."'.format(human_name, code_name))
     return render_template('user_dash.html')
 
-@app.route('/joinPartnership')
-def join_partnership():
+@app.route('/group/joinPartnership/<group_code_name>/<other_group_code_name>')
+def join_partnership(group_code_name, other_group_code_name):
     '''
     INPUT
     Takes the IDs of the partnership and the new partner.
@@ -159,8 +161,8 @@ def join_partnership():
     '''
     return None
 
-@app.route('/leavePartnership')
-def leave_partnership():
+@app.route('/group/leavePartnership/<group_code_name>/<other_group_code_name>')
+def leave_partnership(group_code_name, other_group_code_name):
     '''
     INPUT
     Takes the IDs of the partnership and partner.
@@ -202,11 +204,11 @@ def leave_partnership():
 #     return None
 
 #----------------------------------------------------------------------------#
-# Members.
+# Atomic Events for MEMBERS.
 #----------------------------------------------------------------------------#
 
-@app.route('/addMember')
-def add_member():
+@app.route('/member/add')
+def add_member(group_code_name):
     '''
     INPUT
     A group ID, a user ID, and a Member Form which only has one (optional)
@@ -224,11 +226,11 @@ def add_member():
     new_member = Member(group_id=group_id, preferred_name=pref_name)
     return render_template('group_home.html', group = group)
 
-@app.route('/removeMember')
-def remove_member():
+@app.route('/member/<member_id>/remove')
+def remove_member(member_id):
     '''
     INPUT
-    A group ID and Member ID for the member to be removed.
+    A  Member ID for the member to be removed.
 
     OUTPUT
     Removes the specified Member's row from the database, removing them 
@@ -244,10 +246,10 @@ def remove_member():
     return render_template('group_home.html', group = group)
 
 #----------------------------------------------------------------------------#
-# Roles.
+# Atomic Events for ROLES.
 #----------------------------------------------------------------------------#
 
-@app.route('/createRole')
+@app.route('/role/create')
 def create_role():
     '''
     INPUT
@@ -270,11 +272,11 @@ def create_role():
     db_session.commit()
     return render('group_home.html', group = group)
 
-@app.route('/deleteRole')
-def delete_role():
+@app.route('/role/<role_id>/delete')
+def delete_role(role_id):
     '''
     INPUT
-    Takes a Group_ID and Role_ID to be deleted.
+    Takes a Role_ID to be deleted.
 
     OUTPUT
     Removes the Role's row from the database.  It is therefore no longer associated
@@ -291,8 +293,8 @@ def delete_role():
     return render('group_home.html', group=group)
 
 # Gives a Role to a specific Member
-@app.route('/assignRole')
-def assign_role():
+@app.route('/role/<role_id>/assign')
+def assign_role(role_id):
     '''
     INPUT
     Takes a Group_ID, Role_ID, and Member_ID.
@@ -322,8 +324,8 @@ def assign_role():
     db_session.commit()
     return render_template('group_home.html')
 
-@app.route('/removeRole')
-def remove_role():
+@app.route('/role/<role_id>/remove')
+def remove_role(role_id):
     '''
     INPUT
     Takes a Group_ID, Role_ID, and Member_ID.
@@ -348,10 +350,10 @@ def remove_role():
     return render_template('group_home.html', group=group)
 
 #----------------------------------------------------------------------------#
-# Tasks.
+# Atomic Events for TASKS.
 #----------------------------------------------------------------------------#
 
-@app.route('/createTask')
+@app.route('/task/create')
 def create_task():
     '''
     INPUT
@@ -365,8 +367,17 @@ def create_task():
     '''
     return None
 
-@app.route('/deleteTask')
-def delete_task():
+@app.route('/task/<task_id>/edit')
+def edit_task(task_id):
+    '''
+    INPUT
+
+    RESULT
+    
+    '''
+
+@app.route('/task/<task_id>/delete')
+def delete_task(task_id):
     '''
     INPUT
     Triggered via a close button element, handed the task_id implicitly from the
@@ -382,8 +393,8 @@ def delete_task():
     return None
 
 # Used to deliver tasks.
-@app.route('/deliverTask')
-def deliver_task():
+@app.route('/task/<task_id>/deliver')
+def deliver_task(task_id):
     '''
     INPUT
     Triggered via a delivery mechanism.  Only requires the task_id and a reference
@@ -395,8 +406,8 @@ def deliver_task():
     '''
     return None
 
-@app.route('/approveTask')
-def approve_task():
+@app.route('/task/<task_id>/approve')
+def approve_task(task_id):
     '''
     INPUT
     Requires the task_id and the ID of the request submitter.  Checks to make 
@@ -410,23 +421,129 @@ def approve_task():
 
 
 #----------------------------------------------------------------------------#
-# Events.
+# Atomic Events for EVENTS
 #----------------------------------------------------------------------------#
 
-@app.route('/createEvent')
+@app.route('/event/create')
 def create_event():
+    '''
+    INPUT
+    Member object in the request to make sure Permissions are valid.  Also a filled
+    out EventCreate form.
 
-@app.route('/deleteEvent')
-def delete_event():
+    REQUIRES
+    Member object in the request.
 
-@app.route('/rsvpEventYes')
-def rsvp_event_yes():
+    RESULT
+    If all goes well, event is created and returns True.  Otherwise, an Exception.
+    '''
 
-@app.route('/attendEventNo')
-def rsvp_event_no():
+@app.route('/event/<event_id>/delete')
+def delete_event(group_code_name, event_id):
+    '''
+    INPUT
 
-@app.route('/attendEvent')
-def attend_event():
+    REQUIRES
+    Member object in the request.
 
-@app.route('/missEvent')
-def miss_event():
+    RESULT
+    If all goes well, event is deleted and returns True.  Otherwise, an Exception.
+    '''
+
+@app.route('/event/<event_id/edit')
+def edit_event(group_code_name, event_id):
+    '''
+    INPUT
+    Member object in the request to check permissions.  Also a fresh EventCreate form
+    in order to update the contents of this one.
+
+    RESULT
+    If all goes well, event is edited and returns True.  Otherwise, an Exception.
+    '''
+
+@app.route('/event/<event_id>/rsvpEventYes')
+def rsvp_event_yes(group_code_name, event_id):
+    '''
+    INPUT
+
+    REQUIRES
+    Member object in the request.
+
+    RESULT
+    
+    '''
+
+@app.route('/event/<event_id>/rsvpEventNo')
+def rsvp_event_no(group_code_name, event_id):
+    '''
+    INPUT
+
+    REQUIRES
+    Member object in the request.
+
+    RESULT
+    
+    '''
+
+@app.route('/event/<event_id>/attendEvent')
+def attend_event(group_code_name, event_id):
+    '''
+    INPUT
+    REQUIRES
+    Member object in the request.
+
+    RESULT
+    
+    '''
+
+@app.route('/event/<event_id>/missEvent')
+def miss_event(group_code_name, event_id):
+    '''
+    INPUT
+
+    REQUIRES
+    Member object in the request.
+
+    RESULT
+    
+    '''
+
+
+#----------------------------------------------------------------------------#
+# Infopages.
+#----------------------------------------------------------------------------#
+@app.route('/info/create')
+def create_infopage():
+    '''
+    INPUT
+
+    REQUIRES
+    Member object in the request, in order to check that Permissions are valid.
+
+    RESULT
+
+    '''
+
+@app.route('/info/<info_id>/delete')
+def delete_infopage(info_id):
+    '''
+    INPUT
+    Member object in the request, in order to check that Permissions are valid.
+
+    RESULT
+    Infopage is deleted, it returns True if all goes well -- otherwise it
+    throws an Exception.
+    '''
+
+@app.route('/info/<info_id>/edit')
+def edit_infopage(info_id):
+    '''
+    INPUT
+    A string of sanitized HTML (via some text editor JS library) which overrides all
+    the relevant fields in an Infopage.  Member object in the request, in order to 
+    check that Permissions are valid.
+
+    RESULT
+    Infopage has its content updated, it returns True if all goes well -- otherwise
+    it throws an Exception.
+    '''

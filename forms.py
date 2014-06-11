@@ -24,7 +24,7 @@ class PasswordChangeForm(Form):
     password = PasswordField('New Password', validators = [Length(min=6, max=40)])
     confirm =   PasswordField('Confirm NewPassword', validators = [Length(min=6, max=40)])
 
-class UserInfoChangeForm(Form):
+class UserEditForm(Form):
     name        = TextField('Real/Display Name', validators = [Length(min=6, max=40)])
     phone = FormField(TelephoneForm)
     bio = TextField('Bio', validators = [Length(min=1, max=160)])
@@ -52,6 +52,9 @@ class RoleForm(Form):
     name = TextField('Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Description', validators=[Length(min=40, max=2048)])
 
+class RoleAssignForm(Form):
+    member_name = 
+
 class TaskForm(Form):
     name = TextField('Task Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Task Description', validators=[Length(min=6, max=512)])
@@ -59,3 +62,23 @@ class TaskForm(Form):
     deadline = DateField('Deadline')
     points = IntegerField('Point Value')
     comments = TextField('Comments', validators=[Length(min=6, max=256)])
+
+class TaskDeliverForm(Form):
+    # This one is an interesting question.  What delivery methods do we want to support
+    # up front? -JJO
+
+class EventForm(Form):
+    name = 
+    host =
+    start_time =
+    end_time =
+    location = 
+    description =
+
+class EventRSVPForm(Form):
+
+class EventAttendanceForm(Form):
+
+class InfoPageForm(Form):
+
+class InfoPageEditForm(Form):

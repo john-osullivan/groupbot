@@ -22,9 +22,9 @@ def login_required(test):
 
 
 ###############################################
-#-----------------------------------------------------------------------------#
+#---------------------------------------------#
 # Controllers.
-#-----------------------------------------------------------------------------#
+#---------------------------------------------#
 ###############################################
 
 @app.route('/')
@@ -49,6 +49,59 @@ def register():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form = form)
+
+###############################################
+#---------------------------------------------#
+# View Pages
+#---------------------------------------------#
+###############################################
+@app.route('/dashboard')
+def dashboard():
+    '''
+    View which combines a list of quick summaries concerning the goings-on
+    for each of your groups.
+    '''
+
+@app.route('/group/<group_code_name>')
+def view_group(group_code_name):
+    '''
+    In-depth view of the recent activity of the group, including everything
+    pertaining to the specific member viewing it.  The group can mark
+    specific content as public and viewable by anonymous members if it so
+    chooses (think of it like combining your management and your publicity
+    into the same activity).
+    '''
+
+@app.route('/group/<group_code_name>/task/<task_id>')
+def view_task(group_code_name, task_id):
+    '''
+    A complete view of all information relevant to a task, aka the detail view.
+    This would include giving, do-er, deliverable, deadline, description, approval
+    status.
+    '''
+
+@app.route('/group/<group_code_name>/event/<event_id>')
+def view_event(group_code_name, event_id):
+    '''
+    A complete view of all information relevant to an event, aka the detail view.
+    This would include the host, start time, end time, 
+    '''
+
+@app.route('/group/<group_code_name>/role/<role_id>')
+def view_role(group_code_name, role_id):
+    '''
+    A complete view of all the information relevant to a role.  This would include
+    all Tasks given to or from the Role, all Events hosted with its permission,
+    a link to its Info, and a list of all Members who are performing it.  Additionally
+    it would have links 
+    '''
+
+@app.route('/group/<group_code_name>/info/<info_id>')
+def view_info(group_code_name, info_id):
+    '''
+    This displays the info page.  It should essentially boil down to rendering the
+    HTML string within the structure of the page we define. 
+    '''
 
 # Error handlers.
 
