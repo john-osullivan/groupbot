@@ -312,20 +312,20 @@ class Infopage(Base):
     '''
     Infopages allow for quick display of relevant information about a group, description of roles
     or any additional supporting material. Infopages are supposed to map to a group, a member, a user,
-    a role, a task another infopage or not have any parent at all (i.e. help page for groupify).
+    a role, a task another infopage or not have any host at all (i.e. help page for groupify).
     For the developmental stage of groupify, Infopages shall be a massive container for HTML code that can
     be modified and made links between. Later on, a custom set of templates will be created to simplify and 
     standardize the look of all the Infopage instances.
 
-    title = String(80) - big title of the Infopage
+    name = String(80) - big name of the Infopage
     description = String(150) - Short description of the infopage
-    parent_xxx_id = ForeignKey of any other class type xxx, points to the parent of this Infopage
+    host_xxx_id = ForeignKey of any other class type xxx, points to the host of this Infopage
     content = String(42420) - The HTML holder for all the content
     children = --> sub-infopages, if any
     '''
 
     infopage_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
+    name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(150))
     content = db.Column(db.String(42420))
 
@@ -335,54 +335,115 @@ class Infopage(Base):
 
     # One of these should be non-null. The great variety of classes is there because different things might
     # require infopages
-    parent_group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
-    parent_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
-    parent_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    parent_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
-    parent_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'))
-    parent_gp_id=db.Column(db.Integer, db.ForeignKey('group_partnerships.gp_id'))
+    host_group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
+    host_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    host_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    host_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
+    host_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'))
+    host_gp_id=db.Column(db.Integer, db.ForeignKey('group_partnerships.gp_id'))
 
-    def __init__(self, title, parent_group_id=None, parent_task_id=None, parent_user_id=None, parent_role_id=None, \
-                        parent_member_id=None, parent_gp_id=None, content=None, description=None):
-        self.title = title
-        self.parent_group_id = parent_group_id
-        self.parent_task_id = parent_task_id
-        self.parent_user_id = parent_user_id
-        self.parent_role_id = parent_role_id
-        self.parent_member_id = parent_member_id
-        self.parent_gp_id = parent_gp_id
+    def __init__(self, name, host_group_id=None, host_task_id=None, host_user_id=None, host_role_id=None, \
+                        host_member_id=None, host_gp_id=None, content=None, description=None):
+        self.name = name
+        self.host_group_id = host_group_id
+        self.host_task_id = host_task_id
+        self.host_user_id = host_user_id
+        self.host_role_id = host_role_id
+        self.host_member_id = host_member_id
+        self.host_gp_id = host_gp_id
         self.description = description
         self.content=content
 
         # This bit is for the __repr__ function that comes right after - to be able to display readable parameters,
-        # you need to be able to see what the parent of the Infopage is, and the parent's id.
-        if parent_group_id!=None:
-            self.parent_human_name="Group"
-            self.parent_human_id=parent_group_id
-        elif parent_member_id!=None:
-            self.parent_human_name="Member"
-            self.parent_human_id=parent_member_id
-        elif parent_role_id!=None:
-            self.parent_human_name="Role"
-            self.parent_human_id=parent_role_id
-        elif parent_task_id!=None:
-            self.parent_human_name="Task"
-            self.parent_human_id=parent_task_id
-        elif parent_user_id!=None:
-            self.parent_human_name="User"
-            self.parent_human_id=parent_user_id
-        elif parent_gp_id!=None:
-            self.parent_human_name="Partnership"
-            self.parent_human_id=parent_gp_id
+        # you need to be able to see what the host of the Infopage is, and the host's id.
+        if host_group_id!=None:
+            self.host_human_name="Group"
+            self.host_human_id=host_group_id
+        elif host_member_id!=None:
+            self.host_human_name="Member"
+            self.host_human_id=host_member_id
+        elif host_role_id!=None:
+            self.host_human_name="Role"
+            self.host_human_id=host_role_id
+        elif host_task_id!=None:
+            self.host_human_name="Task"
+            self.host_human_id=host_task_id
+        elif host_user_id!=None:
+            self.host_human_name="User"
+            self.host_human_id=host_user_id
+        elif host_gp_id!=None:
+            self.host_human_name="Partnership"
+            self.host_human_id=host_gp_id
         else:
-            self.parent_human_name="Solitary"
-            self.parent_human_id=0
+            self.host_human_name="Solitary"
+            self.host_human_id=0
 
 
     def __repr__(self):
-        return "%s Infopage #(%s). Parent: %s #(%s)"%(self.parent_human_name, self.infopage_id, \
-                self.parent_human_name, self.parent_human_id)
+        return "%s Infopage #(%s). Host: %s #(%s)"%(self.host_human_name, self.infopage_id, \
+                self.host_human_name, self.host_human_id)
 
+class Event(Base):
+    __tablename__ = 'events'
+
+    '''
+    Events are a class for getting people to come to a particular place at a particular time.
+    Events have a date, RSVP lists, location, description, name, duration and attended/missed people.
+
+    name = String(80) - big name of the Event
+    description = String(150) - Short description of the Event
+    creator_id = ForeignKey - Original creator of the event
+    date = DateTime - the date and time of the event
+    duration = DateTime - the duration of the event
+    rsvp_yes/rsvp_no - collection of members who are RSVPing yes or no
+    attended_yes/attended_no - collection of member who attended or not
+    location = String(200) - location of the event, if any
+    host - collection of additional people who can be added to host the event
+
+    children = --> sub-infopages, if any
+
+    '''
+
+    # A couple of parameters defining the different unique characteristics of an event type
+    event_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.String(2000))
+    creator_id = db.Column(db.Integer, db.ForeignKey('members.member_id'))
+    date = db.Column(db.DateTime(datetime.datetime(0)))
+    duration = db.Column(db.DateTime(datetime.datetime(0)))
+
+    # People's reponces to the event will be recorded here
+    rsvp_yes = db.relationship('Member', backref='events')
+    rsvp_no = db.relationship('Member', backref='events')
+
+    # List of people who attended and those who didn't, not always used
+    attended_yes = db.relationship('Member', backref='events')
+    attended_no = db.relationship('Member', backref='events')
+    
+    # See if there is a way to format location similarly to datetime, until then its a String
+    location = db.Column(db.String(200))
+
+    # Descriptor Infopage
+    children = db.relationship('Infopage', backref='parent')
+
+    # Hosts are people who also have creator access
+    host = db.relationship('Member', backref='events')
+
+    def __init__(self, name, host_group_id=None, host_task_id=None, host_user_id=None, host_role_id=None, \
+                        host_member_id=None, host_gp_id=None, content=None, description=None):
+        self.name = name
+        self.description = description
+        self.creator_id=creator_id
+        self.date=date
+        self.duration=duration
+        self.rsvp_yes=rsvp_yes
+        self.rsvp_no=rsvp_no
+        self.attended_yes=attended_yes
+        self.attended_no=attended_no
+        self.location=location
+
+    def __repr__(self):
+        return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)
 
 # Create tables.
 Base.metadata.create_all(bind=engine)
