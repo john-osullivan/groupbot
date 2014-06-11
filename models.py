@@ -392,8 +392,16 @@ class Event(Base):
 
     name = String(80) - big name of the Event
     description = String(150) - Short description of the Event
-    host_xxx_id = ForeignKey of any other class type xxx, points to the host of this Event
+    creator_id = ForeignKey - Original creator of the event
+    date = DateTime - the date and time of the event
+    duration = DateTime - the duration of the event
+    rsvp_yes/rsvp_no - collection of members who are RSVPing yes or no
+    attended_yes/attended_no - collection of member who attended or not
+    location = String(200) - location of the event, if any
+    host - collection of additional people who can be added to host the event
+
     children = --> sub-infopages, if any
+
     '''
 
     # A couple of parameters defining the different unique characteristics of an event type
