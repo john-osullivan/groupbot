@@ -7,9 +7,12 @@ For now, it talks about the database back-end, then the functionality front-end,
 The system recognizes five underlying objects which correspond to database tables:
 - Users
 - Groups
+- Group Partnerships
 - Members
 - Roles
 - Tasks
+- Infopages
+- Events
 
 ### Users
 Users separated from the specific activity of each group.  All association is handled through members, allowing users to fluidly be a part of multiple groups.  It has the colums:
@@ -22,6 +25,18 @@ Users separated from the specific activity of each group.  All association is ha
 
 ### Groups
 Groups are collections of Members.  They also point to Roles and Tasks.  Eventually, a group there will be surrounding features like by-laws, voting, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  It has the columns:
+- Display Name (String) : A non-unique name to refer to the group by, to make 
+standard use easier.
+- Code Name (String) : A unique name for the group similar to a Twitter handle
+or Facebook URL.
+- Members (One to Many)
+- By-Line (String)
+- Description (Long String)
+- Roles (One to Many)
+- Tasks (One to Many)
+
+### Group Partnerships
+Partnerships are designed to allow for cooperation between different groups. They share members, can create their own tasks and events, and are generally very much like groups.
 - Display Name (String) : A non-unique name to refer to the group by, to make 
 standard use easier.
 - Code Name (String) : A unique name for the group similar to a Twitter handle
@@ -50,7 +65,7 @@ A role is part of a group, has a description, comes with some responsibilities, 
 
 
 ### Tasks
-Lastly, a task is the basic unit of getting things done.  They are hierarchical, such that any task can have sub-tasks.  If a task has points enabled, the points on its subtasks should always sum to an equal or lesser amount -- however, this constraint is not yet enforced.  They are equipped with double approval, first from the person who performed the task and second from the person who assigned it.  It also has a field for a due date, which will later be used to send text or email reminders.  It has a name, a description, a delivered Boolean (whether the doer says it is complete), an approved Boolean (whether the giver says it's complete), an optional due data, an optional points reward, and an optional comments section.  The columns are:
+A task is the basic unit of getting things done.  They are hierarchical, such that any task can have sub-tasks.  If a task has points enabled, the points on its subtasks should always sum to an equal or lesser amount -- however, this constraint is not yet enforced.  They are equipped with double approval, first from the person who performed the task and second from the person who assigned it.  It also has a field for a due date, which will later be used to send text or email reminders.  It has a name, a description, a delivered Boolean (whether the doer says it is complete), an approved Boolean (whether the giver says it's complete), an optional due data, an optional points reward, and an optional comments section.  The columns are:
 - Name (Short String)
 - Description (Medium String)
 - Due Date (DateTime)
@@ -62,6 +77,26 @@ Lastly, a task is the basic unit of getting things done.  They are hierarchical,
 - Comments (Short String)
 - Parent_ID (ForeignKey Integer)
 - Child (One-to-Many Relationship)
+
+### Infopages
+Infopages allow for quick display of relevant information about a group, description of roles or any additional supporting material.  The columns are:
+- Title (Required String)
+- Parent ID (Foreign Key)
+- Description (150 character long String)
+- Content (42420 character String) : Will need to be changed later
+- Children (if any)
+
+### Events
+Events are a class for getting people to come to a particular place at a particular time. Events have a date, RSVP lists, location, description, name, duration and attended/missed people.
+- Name (String) - big name of the Event
+- Description (String) - Short description of the Event
+- Creator (ForeignKey) - Original creator of the event
+- Date (DateTime) - The date and time of the event
+- Duration (DateTime) - The duration of the event
+- RSVP - collection of members who are RSVPing yes or no
+- Attendance - collection of member who attended or not
+- Location (String) - Location of the event, if any
+- Host - collection of additional people who can be added to host the event
 
 
 ## Front-End Functionality
