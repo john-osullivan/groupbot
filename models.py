@@ -313,15 +313,17 @@ class Infopage(Base):
     be modified and made links between. Later on, a custom set of templates will be created to simplify and 
     standardize the look of all the Infopage instances.
 
-    title = String(80) - big title of the 
+    title = String(80) - big title of the Infopage
     description = String(150) - Short description of the infopage
     parent_xxx_id = ForeignKey of any other class type xxx, points to the parent of this Infopage
-    children = --> Task, one-to-many to sub-infopages, if any
+    content = String(42420) - The HTML holder for all the content
+    children = --> sub-infopages, if any
     '''
 
     infopage_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(150))
+    content = db.Column(db.String(42420))
 
     # Relations to establish one-to-many parent-child db.relationships.
     children = db.relationship('Infopage', backref='parent')
@@ -337,7 +339,7 @@ class Infopage(Base):
     parent_gp_id=db.Column(db.Integer, db.ForeignKey('group_partnerships.gp_id'))
 
     def __init__(self, title, parent_group_id=None, parent_task_id=None, parent_user_id=None, parent_role_id=None, \
-                        parent_member_id=None, parent_gp_id=None, description=None):
+                        parent_member_id=None, parent_gp_id=None, content=None, description=None):
         self.title = title
         self.parent_group_id = parent_group_id
         self.parent_task_id = parent_task_id
@@ -346,9 +348,10 @@ class Infopage(Base):
         self.parent_member_id = parent_member_id
         self.parent_gp_id = parent_gp_id
         self.description = description
+        self.content=content
 
         # This bit is for the __repr__ function that comes right after - to be able to display readable parameters,
-        # you need to be able to see what the parent of the Infopage is
+        # you need to be able to see what the parent of the Infopage is, and the parent's id.
         if parent_group_id!=None:
             self.parent_human_name="Group"
             self.parent_human_id=parent_group_id
