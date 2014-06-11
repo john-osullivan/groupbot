@@ -39,7 +39,8 @@ def create_user():
     db_session.add(newUser)
     db_session.commit()
     flash("You're a user of Groupify now, {0}!".format(str(request.form['username'])))
-    return render_template('user_dash.html')
+    return render_template('user_dash.html') 
+
 
 @app.route('/deleteUser')
 def delete_user():
@@ -54,6 +55,7 @@ def delete_user():
     user = User.query.get(int(user_id))
     username = str(user.username)
     db_session.delete(user)
+    db_session.commit()
     flash("We're sad to see you go, {0} :(".format(username))
     return render_template('home.html')
 
@@ -68,7 +70,32 @@ def edit_user():
     Modifies the user's row in the database as specified by whichever form
     was submitted
     '''
-    return None
+    user_id = request.POST['user_id']
+    user = User.query.get(int(user_id))
+    if request.form['username']: 
+        username = request.form['username']
+        user.username = username
+    if request.form['password']:
+        password = request.form['password']
+        user.password = password
+    if request.form['name']:
+        name = request.form['name']
+        user.name = name
+    if request.form['email']:
+        email = request.form['email']
+        user.email = email
+    if request.form['phone']:
+        phone = request.form['phone']
+        user.phone = int(phone)
+    if request.form['bio']:
+        bio = request.form['bio']
+        user.bio = bio
+    if request.form['photo']:
+        photo = request.form['photo']
+        user.photo = photo
+    db_session.add(user)
+    db_session.commit()
+    return render_template('user_dash.html')
 
 #----------------------------------------------------------------------------#
 # Groups.
@@ -94,7 +121,7 @@ def create_group():
     db_session.add(new_group)
     db_session.commit()
     flash("You just created {0}!".format(str(request.form['display_name'])))
-    return render_template('group_view.html', group=new_group)
+    return render_template('group_home.html', group=new_group)
 
 @app.route('/deleteGroup')
 def delete_group():
@@ -146,29 +173,33 @@ def leave_partnership():
     '''
     return None
 
-@app.route('/createSubgrouping')
-def create_subgrouping():
-    '''
-    INPUT
-    Takes the IDs of the parent and child groups.
 
-    OUTPUT
-    Sets the child's parent_id attribute to the ID of the parent group.  Adds the
-    child's ID to the parent's children ForeignKey relation.
-    '''
-    return None
+# THIS IS CONTROLLER FUNCTIONALITY FOR HIERARCHICAL, PARENT:CHILD GROUPS.
+# Since we're not using that route right now, it's commented out.
+#
+# @app.route('/createSubgrouping')
+# def create_subgrouping():
+#     '''
+#     INPUT
+#     Takes the IDs of the parent and child groups.
 
-@app.route('/deleteSubgrouping')
-def delete_subgrouping():
-    '''
-    INPUT
-    Takes the IDs of the parent and child groups.
+#     OUTPUT
+#     Sets the child's parent_id attribute to the ID of the parent group.  Adds the
+#     child's ID to the parent's children ForeignKey relation.
+#     '''
+#     return None
 
-    OUTPUT
-    Sets the child's parent_id attribute to null, simultaneously removing it
-    from the parent group's children ForeignKey relation.
-    '''
-    return None
+# @app.route('/deleteSubgrouping')
+# def delete_subgrouping():
+#     '''
+#     INPUT
+#     Takes the IDs of the parent and child groups.
+
+#     OUTPUT
+#     Sets the child's parent_id attribute to null, simultaneously removing it
+#     from the parent group's children ForeignKey relation.
+#     '''
+#     return None
 
 #----------------------------------------------------------------------------#
 # Members.
@@ -188,9 +219,10 @@ def add_member():
     empty by default. 
     '''
     group_id = request.POST['group_id']
+    group = Group.query.get(group_id)
     if request.form['preferred_name']: pref_name = request.form['preferred_name'] else: pref_name = None
     new_member = Member(group_id=group_id, preferred_name=pref_name)
-    return render_template('group_view.html')
+    return render_template('group_home.html', group = group)
 
 @app.route('/removeMember')
 def remove_member():
@@ -203,11 +235,13 @@ def remove_member():
     from all Roles they were assigned to.  If a Task was only assigned to them,
     it is removed as well.
     '''
-    member_id = request.POST['member_id']  
+    member_id = request.POST['member_id']
+    group_id = request.POST['group_id']
     member = Member.query.get(member_id)
+    group = Group.query.get(group_id)
     db_session.delete(member)
     db_session.commit()
-    return None
+    return render_template('group_home.html', group = group)
 
 #----------------------------------------------------------------------------#
 # Roles.
@@ -234,7 +268,7 @@ def create_role():
                                 description = description, member_id = member)
     db_session.add(new_role)
     db_session.commit()
-    return None
+    return render('group_home.html', group = group)
 
 @app.route('/deleteRole')
 def delete_role():
@@ -248,12 +282,13 @@ def delete_role():
     approval responsibilities move to the people who were last holding said Role.
     '''
     group_id = int(request.POST['group_id'])
+    group = Group.query.get(group_id)
     role_id = int(request.POST['role_id'])
     role = Role.query.get(role_id)
     if role.group_id == group_id:
         db_session.delete(role)
         db_session.commit()
-    return None
+    return render('group_home.html', group=group)
 
 # Gives a Role to a specific Member
 @app.route('/assignRole')
@@ -267,7 +302,25 @@ def assign_role():
     specified Group.  If the Member is already assigned to the Role, throws an
     Exception saying that Role was already assigned to that Member.
     '''
-    return None
+    # Get IDs from the request
+    group_id = int(request.POST['group_id'])
+    role_id = int(request.POST['role_id'])
+    member_id = int(request.POST['member_id'])
+
+    # Grab the actual Role & Member objects using the provided IDs.
+    group = Group.query.get(group_id)
+    role = Role.query.get(role_id)
+    member = Member.query.get(member_id)
+
+    # Next, run a sanity check to make sure that Role is part of the Member's Group
+    if role not in group.roles:
+        raise Exception("This Role isn't a part of that Group, it can't go to that Member!")
+
+    # Finally, add the Member to the Role's Role.member_id property and commit.
+    role.member_id.append(member)
+    db_session.add(role)
+    db_session.commit()
+    return render_template('group_home.html')
 
 @app.route('/removeRole')
 def remove_role():
@@ -280,7 +333,19 @@ def remove_role():
     relation.  If the Member was not actually in that relation, throws an 
     Exception saying the specified Member did not have that Role.
     '''
-    return None
+    group_id = int(request.POST['group_id'])
+    role_id = int(request.POST['role_id'])
+
+    group = Group.query.get(group_id)
+    role = Role.query.get(role_id)
+
+    if role not in group.roles:
+        raise Exception("This Role isn't a part of that Group to begin with!")
+    else:
+        db_session.delete(role)
+        db_session.commit()
+        flash("The '{0}' was deleted from the '{1}' group.".format(role.name, group.human_name))
+    return render_template('group_home.html', group=group)
 
 #----------------------------------------------------------------------------#
 # Tasks.
@@ -342,3 +407,26 @@ def approve_task():
     the points are then awarded to the doer of the task.
     '''
     return None
+
+
+#----------------------------------------------------------------------------#
+# Events.
+#----------------------------------------------------------------------------#
+
+@app.route('/createEvent')
+def create_event():
+
+@app.route('/deleteEvent')
+def delete_event():
+
+@app.route('/rsvpEventYes')
+def rsvp_event_yes():
+
+@app.route('/attendEventNo')
+def rsvp_event_no():
+
+@app.route('/attendEvent')
+def attend_event():
+
+@app.route('/missEvent')
+def miss_event():

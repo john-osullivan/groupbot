@@ -117,12 +117,15 @@ class Group(Base):
 
     members = db.relationship('Member', backref='groups')
     tasks = db.relationship('Task', backref='groups')
+    roles = db.relationship('Role', backref='groups')
 
     # Relations to establish non-hierarchical partnerships between groups.
     partnerships = db.relationship('GroupPartnership', backref='partners', primaryjoin=id==GroupPartnership.partnerships)
     partners = db.relationship('GroupPartnership', backref='partnerships', primaryjoin=id==GroupPartnership.partners)
 
     # Relations to establish one-to-many parent-child db.relationships.
+    # NOTE: Not currently being used, as all group connection is being
+    # handled by partnerships.
     parent_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
     children = db.relationship('Group', backref='parent')
 
@@ -135,6 +138,7 @@ class Group(Base):
         self.members = members
         self.parent_id = parent_id
         self.children = children
+        self.roles = None
 
     def __repr__(self):
         return "Group #: %s --  Group Name: %s" % (self.group_id, self.name)
@@ -205,7 +209,7 @@ class Role(Base):
 
     # Bookkeping ids
     role_id = db.Column(db.Integer, primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True, nullable=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), index=True, nullable=False)
     member_id = db.relationship('Member', secondary=member_roles)
 
     # Position information
