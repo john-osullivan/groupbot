@@ -98,8 +98,8 @@ def edit_user(username):
         photo = request.form['photo']
         user.photo = photo
     db_session.add(user)
-    db_session.commit()
-    return render_template('user_dash.html')
+    # db_session.commit()
+    return True
 
 #----------------------------------------------------------------------------#
 # Atomic Events for GROUPS.
@@ -124,8 +124,8 @@ def create_group():
                                     byline = byline, description = description)
     db_session.add(new_group)
     db_session.commit()
-    flash("You just created {0}!".format(str(request.form['display_name'])))
-    return render_template('group_home.html', group=new_group)
+    # flash("You just created {0}!".format(str(request.form['display_name'])))
+    return True
 
 @app.route('/group/<group_code_name>/delete')
 def delete_group(group_code_name):
@@ -145,73 +145,79 @@ def delete_group(group_code_name):
     human_name = str(group.human_name)
     db_session.delete(group)
     db_session.commit()
-    flash('You\'ve deleted the group "{0} ({1})."'.format(human_name, code_name))
-    return render_template('user_dash.html')
+    # flash('You\'ve deleted the group "{0} ({1})."'.format(human_name, code_name))
+    return True
 
 @app.route('/group/<group_code_name>/edit')
 def edit_group(group_code_name):
     '''
     INPUT
     A filled-out GroupForm which validates.  Essentially, the edit uses the same
-    view as the create 
+    view as the create.  It allows you to update the description, by-line, and
+    display name. 
     '''
+    # Grab object we're changing
+    group = Group.query.filter_by(code_name = group_code_name)
+    
+    # Grab new values from form
+    new_name = request.form['human-name']
+    new_byline = request.form['by-line']
+    new_desc = request.form['description']
+    
+    # Modify the object
+    group.human_name = new_name
+    group.byline = new_byline
+    group.description = new_desc
 
-@app.route('/group/joinPartnership/<group_code_name>/<other_group_code_name>')
-def join_partnership(group_code_name, other_group_code_name):
+    # Commit our changes to the session
+    db_session.commit()
+    return True
+
+@app.route('/bond/create')
+def create_bond():
     '''
     INPUT
-    Takes the IDs of the partnership and the new partner.
+    Requires the two group's IDs to be in the request, formatted as:
+    request['groups'] = [group1_id, group2_id]
 
     OUTPUT
-    Add the partner to the Partnership Group's Partners relation.  Conversely, 
-    it also adds the partnership to the partner's Partnerships relation.  If the
-    groups are already partnered, an Exception is thrown.  If the groups are 
-    already part of a parent or child relationship with each other, an Exception
-    is thrown.
+    Creates the object in the database.  The Bond initializier handles the creation of
+    necessary associations in the foreign key.
     '''
-    return None
+    
+    # Get the IDs encoded in the request.
+    (group1_id, group2_id) = request.POST['groups']
 
-@app.route('/group/leavePartnership/<group_code_name>/<other_group_code_name>')
-def leave_partnership(group_code_name, other_group_code_name):
+    # Give them to the Bond initializer, then add and save the new Bond.
+    new_bond = Bond(group1_id, group2_id)
+    db_session.add(new_bond)
+    db_session.commit()
+    return True
+
+@app.route('/bond/<bond_id>/delete')
+def delete_bond(bond_id):
     '''
     INPUT
-    Takes the IDs of the partnership and partner.
+    Takes the IDs of the Bond being deleted from the URL.  Needs to find the group_ids in 
+    the Bond encoded in the request (same syntax as create), for validation's sake.  
+
+    (Once there's a Permission's system built in, it should also take the Member's ID
+    to make sure they have Permission to make that action.)
 
     OUTPUT
-    Removes the Partner from the Partnership Group's Partners relation.  This
-    has the equivalent effect of removing the Partnership Group from the 
-    Partner Group's Partnership relation.  If the groups aren't partnered, 
-    it throws an Exception saying so.
+    Deletes the object
     '''
-    return None
-
-
-# THIS IS CONTROLLER FUNCTIONALITY FOR HIERARCHICAL, PARENT:CHILD GROUPS.
-# Since we're not using that route right now, it's commented out.
-#
-# @app.route('/createSubgrouping')
-# def create_subgrouping():
-#     '''
-#     INPUT
-#     Takes the IDs of the parent and child groups.
-
-#     OUTPUT
-#     Sets the child's parent_id attribute to the ID of the parent group.  Adds the
-#     child's ID to the parent's children ForeignKey relation.
-#     '''
-#     return None
-
-# @app.route('/deleteSubgrouping')
-# def delete_subgrouping():
-#     '''
-#     INPUT
-#     Takes the IDs of the parent and child groups.
-
-#     OUTPUT
-#     Sets the child's parent_id attribute to null, simultaneously removing it
-#     from the parent group's children ForeignKey relation.
-#     '''
-#     return None
+    (group1_id, group2_id) = request.POST['groups']
+    group1 = Group.query.get(group1_id)
+    group2 = Group.query.get(group2_id)
+    dead_bond = Bond.query.get(bond_id)
+    bond_groups = dead_bond.groups
+    if (group1 in bond_groups) and (group2 in bond_groups):
+        db_session.delete(dead_bond)
+        db_session.commit()
+        return True
+    else:
+        raise Exception("The group's specified weren't part of the Bond to be deleted!")
 
 #----------------------------------------------------------------------------#
 # Atomic Events for MEMBERS.
@@ -234,7 +240,7 @@ def add_member(group_code_name):
     group = Group.query.get(group_id)
     if request.form['preferred_name']: pref_name = request.form['preferred_name'] else: pref_name = None
     new_member = Member(group_id=group_id, preferred_name=pref_name)
-    return render_template('group_home.html', group = group)
+    return True
 
 @app.route('/member/<member_id>/edit')
 def edit_member(member_id):
@@ -247,6 +253,10 @@ def edit_member(member_id):
     Updates the Member's information, returns True if successful and throws an
     Exception if it wasn't.
     '''
+    member = Member.query.get(member_id)
+    new_name = request.form['preferred_name']
+    member.preferred_name = new_name
+    return True
 
 @app.route('/member/<member_id>/remove')
 def remove_member(member_id):
@@ -265,7 +275,7 @@ def remove_member(member_id):
     group = Group.query.get(group_id)
     db_session.delete(member)
     db_session.commit()
-    return render_template('group_home.html', group = group)
+    return True
 
 #----------------------------------------------------------------------------#
 # Atomic Events for ROLES.
@@ -292,7 +302,7 @@ def create_role():
                                 description = description, member_id = member)
     db_session.add(new_role)
     db_session.commit()
-    return render('group_home.html', group = group)
+    return True
 
 @app.route('/role/<role_id>/delete')
 def delete_role(role_id):
@@ -312,7 +322,7 @@ def delete_role(role_id):
     if role.group_id == group_id:
         db_session.delete(role)
         db_session.commit()
-    return render('group_home.html', group=group)
+    return True
 
 # Gives a Role to a specific Member
 @app.route('/role/<role_id>/assign')
@@ -344,7 +354,7 @@ def assign_role(role_id):
     role.member_id.append(member)
     db_session.add(role)
     db_session.commit()
-    return render_template('group_home.html')
+    return True
 
 @app.route('/role/<role_id>/remove')
 def remove_role(role_id):
@@ -369,7 +379,7 @@ def remove_role(role_id):
         db_session.delete(role)
         db_session.commit()
         flash("The '{0}' was deleted from the '{1}' group.".format(role.name, group.human_name))
-    return render_template('group_home.html', group=group)
+    return True
 
 #----------------------------------------------------------------------------#
 # Atomic Events for TASKS.
@@ -387,16 +397,68 @@ def create_task():
     Creates a new Task entry in the database associated with all relevant
     parties, adding it to the Tasks for each Member assigned.
     '''
-    return None
+
+    # Grab the information of the creator group & member
+    group_id = request.POST['group_id']
+    giver_member_id = request.POST['member_id']
+
+    # Grab the mandatory information associated with the task
+    name = request.form['name']
+    doer_member_id = request.POST['doing_member']
+
+    # Grab the optional information associated with the task
+    if request.form['parent_id'] != None: parent_id = request.form['parent_id'] else: parent_id = None
+    if request.form['deadline'] != None: deadline = request.form['deadline'] else: deadline = None
+    if request.form['description'] != None: description = request.form['description'] else: description = None
+    if request.form['comments'] != None: comments = request.form['comments'] else: comments = None
+    if request.form['points'] != None: points = int(request.form['points']) else: points = None
+
+    # Create the task and set its optional parameters
+    new_task = Task(name, doer_member_id, giver_member_id, group_id)
+    new_task.deadline = deadline
+    new_task.description = description
+    new_task.comments = comments
+    new_task.points = points
+    new_task.parent = Task.query.get(parent_id)
+
+    # Add and save our work.
+    db_session.add(new_task)
+    db_session.commit()
+    return True
 
 @app.route('/task/<task_id>/edit')
 def edit_task(task_id):
     '''
     INPUT
+    Uses the task_id to get the Task object, uses any updated parameters from the form
+    to change its attributes.  Assumes, as always, that the group_id and member_id are
+    coming through the request.
 
     RESULT
-    
+    The Task is updated in the database -- what did you think was going to happen?  True
+    if success, Exception if not.
     '''
+    # Grab the task we're talking about
+    task = Task.query.get(task_id)
+    
+    # Grab any new values from the form, choose the old ones if the form field wasn't updated.
+    if request.form['name'] != task.name: new_name = request.form['name'] else: new_name = task.name
+    if request.form['description'] != task.description: new_desc = request.form['description'] else: new_desc = task.description
+    if request.form['doing_member'] != task.doing_member: new_doing_member = request.form['doing_member'] else: new_doing_member = task.doing_member
+    if request.form['deadline'] != task.deadline: new_deadline = request.form['deadline'] else: new_deadline = task.deadline
+    if int(request.form['points']) != task.points: new_points = int(request.form['points']) else: new_points = task.points
+    if request.form['comments'] != task.comments: new_comments = request.form['comments'] else: new_comments = task.comments
+
+    # Modify the Task to fit our new values.
+    task.name = new_name
+    task.description = new_desc
+    task.doing_member = new_doing_member
+    task.deadline = new_deadline
+    task.points = new_points
+    task.comments = new_comments
+
+    # No need to add, since the object already exists in the database!
+    db_session.commit()
 
 @app.route('/task/<task_id>/delete')
 def delete_task(task_id):
@@ -569,3 +631,12 @@ def edit_infopage(info_id):
     Infopage has its content updated, it returns True if all goes well -- otherwise
     it throws an Exception.
     '''
+
+#----------------------------------------------------------------------------#
+# Representatives.
+#----------------------------------------------------------------------------#
+
+
+#----------------------------------------------------------------------------#
+# Committee.
+#----------------------------------------------------------------------------#

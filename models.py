@@ -58,29 +58,56 @@ class User(Base):
     def __repr__(self):
         return "User #: %s"%(self.user_id)
 
-class GroupPartnership(Base):
-    __tablename__ = 'group_partnerships'
+# class GroupPartnership(Base):
+#     __tablename__ = 'group_partnerships'
 
+#     '''
+#     GroupPartnership Table stores all the horizontal connections between groups.
+#     It has its own tables because groups are horizontally connected in a
+#     many-to-many db.relationship.  It takes two inputs to create a connection.  The
+#     partnerships field describes groups which contain this group (i.e. TDC has a
+#     representative at IFC).  The partners field describes groups which are contained
+#     by this group (i.e. IFC has a number of partners, one of which is TDC).
+#     '''
+
+#     gp_id = db.Column(db.Integer, primary_key = True)
+
+#     partnerships = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
+#     partners = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
+
+#     def __init__(self, partnerships=None, partners=None):
+#         self.partners = partners
+#         self.partnerships = partnerships
+
+#     def __repr__(self):
+#         return "Group Partnership #{0}".format(self.gp_id)
+
+class Bond(Base):
+    __tablename__ = 'bonds'
     '''
-    GroupPartnership Table stores all the horizontal connections between groups.
-    It has its own tables because groups are horizontally connected in a
-    many-to-many db.relationship.  It takes two inputs to create a connection.  The
-    partnerships field describes groups which contain this group (i.e. TDC has a
-    representative at IFC).  The partners field describes groups which are contained
-    by this group (i.e. IFC has a number of partners, one of which is TDC).
+    Bond Table is a database of the connections between groups.  It takes the IDs of the two
+    groups entering into a bond as initialization arguments. The groups attribute is a
+    one-to-many relationship with Groups.  As of the current design (6/17/2014), a Bond can
+    contain two and only two Groups.  They are pairwise links.  This constraint has to be
+    ensured within the class.
     '''
 
-    gp_id = db.Column(db.Integer, primary_key = True)
+    bond_id = db.Column(db.Integer, primary_key=True)
+    
+    groups = db.relationship("Group", backref='bonds')
+    representatives = db.relationship("Representative", backref='bonds')
 
-    partnerships = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
-    partners = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
-
-    def __init__(self, partnerships=None, partners=None):
-        self.partners = partners
-        self.partnerships = partnerships
+    def __init__(self, group1_id, group2_id):
+        group1 = Group.query.get(group1_id)
+        group2 = Group.query.get(group2_id)
+        self.groups.append(group1)
+        self.groups.append(group2)
 
     def __repr__(self):
-        return "Group Partnership #{0}".format(self.gp_id)
+
+    def is_valid(self):
+        return len(self.groups) == 2
+
 
 class Group(Base):
     __tablename__ = 'groups'
@@ -119,10 +146,10 @@ class Group(Base):
     tasks = db.relationship('Task', backref='groups')
     roles = db.relationship('Role', backref='groups')
 
-    # Relations to establish non-hierarchical partnerships between groups.
-    partnerships = db.relationship('GroupPartnership', backref='partners', primaryjoin=id==GroupPartnership.partnerships)
-    partners = db.relationship('GroupPartnership', backref='partnerships', primaryjoin=id==GroupPartnership.partners)
-
+    # Relations to establish bonds between groups.
+    left_bond = db.relationship('Bond', backref='bonds')
+    right_bond = db.relationship('Bond', backref='bonds')
+    
     # Relations to establish one-to-many parent-child db.relationships.
     # NOTE: Not currently being used, as all group connection is being
     # handled by partnerships.
@@ -302,6 +329,8 @@ class Task(Base):
         self.doing_id = doer_id
         self.giving_id = giver_id
         self.group_id = group_id
+        self.delivered = False
+        self.approved = False
 
     def __repr__(self):
         return "Task #(%s) of Group #(%s) held by Member #(%s)"%(self.task_id, self.group_id, self.doing_id)
@@ -319,69 +348,36 @@ class Infopage(Base):
 
     name = String(80) - big name of the Infopage
     description = String(150) - Short description of the infopage
-    host_xxx_id = ForeignKey of any other class type xxx, points to the host of this Infopage
+    source_table = String(80) - String name of the table this Infopage points to
+    source_id = ForeignKey value for source_table, specifies host of this Infopage
     content = String(42420) - The HTML holder for all the content
     children = --> sub-infopages, if any
+
+    POTENTIAL REDESIGN:
+    Invert the way infopages are referenced.  Every info page has a String representing the name
+    of a table, and an integer ID representing which record in that table it's an Infopage for.
     '''
 
     infopage_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(150))
+    source_table = db.Column(db.String(80), nullable=False)
+    source_id = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(1024))
     content = db.Column(db.String(42420))
 
     # Relations to establish one-to-many parent-child db.relationships.
-    children = db.relationship('Infopage', backref='parent')
+    children = db.relationship('Infopage', backref='parent') # +1 This is really slick. -JJO
 
-
-    # One of these should be non-null. The great variety of classes is there because different things might
-    # require infopages
-    host_group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
-    host_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
-    host_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    host_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
-    host_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'))
-    host_gp_id=db.Column(db.Integer, db.ForeignKey('group_partnerships.gp_id'))
-
-    def __init__(self, name, host_group_id=None, host_task_id=None, host_user_id=None, host_role_id=None, \
-                        host_member_id=None, host_gp_id=None, content=None, description=None):
+    def __init__(self, name, source_table, source_id, description=None, content=None):
         self.name = name
-        self.host_group_id = host_group_id
-        self.host_task_id = host_task_id
-        self.host_user_id = host_user_id
-        self.host_role_id = host_role_id
-        self.host_member_id = host_member_id
-        self.host_gp_id = host_gp_id
+        self.source_table = source_table
+        self.source_id =source_id
         self.description = description
-        self.content=content
-
-        # This bit is for the __repr__ function that comes right after - to be able to display readable parameters,
-        # you need to be able to see what the host of the Infopage is, and the host's id.
-        if host_group_id!=None:
-            self.host_human_name="Group"
-            self.host_human_id=host_group_id
-        elif host_member_id!=None:
-            self.host_human_name="Member"
-            self.host_human_id=host_member_id
-        elif host_role_id!=None:
-            self.host_human_name="Role"
-            self.host_human_id=host_role_id
-        elif host_task_id!=None:
-            self.host_human_name="Task"
-            self.host_human_id=host_task_id
-        elif host_user_id!=None:
-            self.host_human_name="User"
-            self.host_human_id=host_user_id
-        elif host_gp_id!=None:
-            self.host_human_name="Partnership"
-            self.host_human_id=host_gp_id
-        else:
-            self.host_human_name="Solitary"
-            self.host_human_id=0
-
+        self.content = content
 
     def __repr__(self):
-        return "%s Infopage #(%s). Host: %s #(%s)"%(self.host_human_name, self.infopage_id, \
-                self.host_human_name, self.host_human_id)
+        return "Infopage #{0} -- {1} #{2} -- {3}".format(self.infopage_id, self.source_table,\
+                self.source_id, self.name)
 
 class Event(Base):
     __tablename__ = 'events'
@@ -400,8 +396,6 @@ class Event(Base):
     location = String(200) - location of the event, if any
     host - collection of additional people who can be added to host the event
 
-    children = --> sub-infopages, if any
-
     '''
 
     # A couple of parameters defining the different unique characteristics of an event type
@@ -415,7 +409,7 @@ class Event(Base):
     # List of people invited to the event
     invited = db.relationship('Member', backref='events')
 
-    # People's reponces to the event will be recorded here
+    # People's responses to the event will be recorded here
     rsvp_yes = db.relationship('Member', backref='events')
     rsvp_no = db.relationship('Member', backref='events')
 
@@ -425,9 +419,6 @@ class Event(Base):
     
     # See if there is a way to format location similarly to datetime, until then its a String
     location = db.Column(db.String(200))
-
-    # Descriptor Infopage
-    children = db.relationship('Infopage', backref='parent')
 
     # Hosts are people who also have creator access
     host = db.relationship('Member', backref='events')
@@ -447,6 +438,31 @@ class Event(Base):
 
     def __repr__(self):
         return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)
+
+class Representative(Base):
+    __tablename__ = 'representatives'
+    '''
+    A table containing information unique to a Representative.  Which group are they from,
+    which group are they representing in.  Also a string describing how it's chosen -- elected
+    or appointed.
+    '''
+
+    def __init__(self):
+
+    def __repr__(self):
+
+class Committee(Base):
+    __tablename__ = 'committees'
+    '''
+    A table containing the internal sub-groupings.  A committee is a Group which is meant
+    to be purely internal to another Group.  It can't Bond with Groups other than its host,
+    and it shares all InfoPage access with the host group.  It is only separate because it
+    allows for special functionality of smaller, lighter sub-spaces within the larger Group
+    space.
+    '''
+    def __init__(self):
+
+    def __repr__(self):
 
 # Create tables.
 Base.metadata.create_all(bind=engine)

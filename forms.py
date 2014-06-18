@@ -45,20 +45,27 @@ class GroupForm(Form):
     byline = TextField('Group By-Line', validators=[Length(min=6, max=160)])
     description = TextField('Group Description', validators=[Length(min=40, max=2048)])
 
-class MemberForm(Form):
+class MemberEditForm(Form):
     preferred_name = TextField('Preferred Name', validators=[Length(min=6, max=80)])
+
+class MemberChoiceForm(Form):
+    member = SelectField('Member', coerce=int, validators=[DataRequired()])
+
+class RoleChoiceForm(Form):
+    role = SelectField('Role', coerce=int, validators=[DataRequired()])
 
 class RoleForm(Form):
     name = TextField('Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Description', validators=[Length(min=40, max=2048)])
 
 class RoleAssignForm(Form):
-    member_name = 
-
+    role = FormField(RoleChoiceForm)
+    member = FormField(MemberChoiceForm)
+ 
 class TaskForm(Form):
     name = TextField('Task Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Task Description', validators=[Length(min=6, max=512)])
-    assignee = FormField(MemberForm)
+    doing_member = FormField(MemberForm)
     deadline = DateField('Deadline')
     points = IntegerField('Point Value')
     comments = TextField('Comments', validators=[Length(min=6, max=256)])
