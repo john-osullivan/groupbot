@@ -145,6 +145,7 @@ class Group(Base):
     members = db.relationship('Member', backref='groups')
     tasks = db.relationship('Task', backref='groups')
     roles = db.relationship('Role', backref='groups')
+    events = db.relationship('Event', backref='groups')
 
     # Relations to establish bonds between groups.
     left_bond = db.relationship('Bond', backref='bonds')
@@ -198,6 +199,7 @@ class Member(Base):
     roles = db.relationship('Role', backref='members')
     doing_tasks = db.relationship('Task', backref='members')
     giving_tasks = db.relationship('Task', backref='members')
+    events_hosted = 
 
     def __init__(self, group_id, preferred_name=None, points=None, roles=None):
         self.group_id = group_id
@@ -304,6 +306,7 @@ class Task(Base):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(512))
     deadline = db.Column(db.DateTime)
+    deliverable = db.Column(db.LargeBinary)
     delivered = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, default=False)
     points = db.Column(db.Integer)
@@ -313,7 +316,7 @@ class Task(Base):
     parent_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
     children = db.relationship('Task', backref='parent')
 
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
     doing_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
     giving_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
  
@@ -330,6 +333,7 @@ class Task(Base):
         self.giving_id = giver_id
         self.group_id = group_id
         self.delivered = False
+        self.deliverable = None
         self.approved = False
 
     def __repr__(self):
@@ -379,6 +383,36 @@ class Infopage(Base):
         return "Infopage #{0} -- {1} #{2} -- {3}".format(self.infopage_id, self.source_table,\
                 self.source_id, self.name)
 
+event_host_table = db.Table('event_hosts', Base.metadata,
+    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
+)
+
+event_invite_table = db.Table('event_invites', Base.metadata,
+    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
+)
+
+event_rsvp_yes_table = db.Table('event_rsvp_yes', Base.metadata,
+    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
+)
+
+event_rsvp_no_table = db.Table('event_rsvp_no', Base.metadata,
+    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
+)
+
+event_attend_yes_table = db.Table('event_attend_yes', Base.metadata,
+    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
+)
+
+event_attend_no_table = db.Table('event_attend_no', Base.metadata,
+    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
+)
+
 class Event(Base):
     __tablename__ = 'events'
 
@@ -402,39 +436,37 @@ class Event(Base):
     event_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2000))
-    creator_id = db.Column(db.Integer, db.ForeignKey('members.member_id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
     start_time = db.Column(db.DateTime(datetime.datetime(0)))
     end_time = db.Column(db.DateTime(datetime.datetime(0)))
 
     # List of people invited to the event
-    invited = db.relationship('Member', backref='events')
+    invited = db.relationship('Member', backref='events', secondary=event_invite_table)
 
     # People's responses to the event will be recorded here
-    rsvp_yes = db.relationship('Member', backref='events')
-    rsvp_no = db.relationship('Member', backref='events')
+    rsvp_yes = db.relationship('Member', backref='events', secondary=event_rsvp_yes_table)
+    rsvp_no = db.relationship('Member', backref='events', secondary=event_rsvp_no_table)
 
     # List of people who attended and those who didn't, not always used
-    attended_yes = db.relationship('Member', backref='events')
-    attended_no = db.relationship('Member', backref='events')
+    attended_yes = db.relationship('Member', backref='events', secondary=event_attend_yes_table)
+    attended_no = db.relationship('Member', backref='events', secondary=event_attend_no_table)
     
     # See if there is a way to format location similarly to datetime, until then its a String
     location = db.Column(db.String(200))
 
     # Hosts are people who also have creator access
-    host = db.relationship('Member', backref='events')
+    host = db.relationship('Member', backref='events', secondary=event_host_table)
 
-    def __init__(self, name, start_time=None, end_time=None, host_group_id=None, host_task_id=None, host_user_id=None, host_role_id=None, \
-                        host_member_id=None, host_gp_id=None, content=None, description=None):
+    def __init__(self, name, group_id, start_time=None, end_time=None, host_member_id=None,
+                 description=None):
         self.name = name
         self.description = description
-        self.creator_id=creator_id
         self.start_time=start_time
         self.end_time=end_time
-        self.rsvp_yes=rsvp_yes
-        self.rsvp_no=rsvp_no
-        self.attended_yes=attended_yes
-        self.attended_no=attended_no
         self.location=location
+        Group.query.get(group_id).events.append(self)
+        if host_member_id != None: self.host.append(Member.query.get(host_member_id))
+
 
     def __repr__(self):
         return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)

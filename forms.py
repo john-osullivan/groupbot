@@ -75,15 +75,27 @@ class TaskDeliverForm(Form):
     # up front? -JJO
 
 class EventForm(Form):
-    name = 
-    host =
-    start_time =
-    end_time =
-    location = 
-    description =
+    name = TextField('Event Name', validators=[DataRequired(), Length(min=6, max=80)])
+    host_id = FormField(MemberChoiceForm, validators=[DataRequired()])
+    start_time = DateField('Starting Time', validators=[DateRequired()])
+    end_time = DateField('Ending Time')
+    location = TextField('Event Location', validators=[DataRequired(), Length(min=6, max=80)])
+    description = TextField('Event Description', validators=[Length(min=6, max=1024)])
+
+class EventChoiceForm(Form):
+    event = SelectField('Event Name',coerce=int)
+
+class EventInviteForm(Form):
+    event = FormField(EventChoiceForm)
+    member = FormField(MemberChoiceForm)
 
 class EventRSVPForm(Form):
+    event = FormField(EventChoiceForm)
+    attending = RadioField("Attending?", choices=[(True, 'Yes'), (False, 'No')])
 
 class EventAttendanceForm(Form):
+    event = FormField(EventChoiceForm)
+    member = FormField(MemberChoiceForm)
+    attended = RadioField("Attended?", choices=[(True, 'Yes'), (False, 'No')])
 
 class InfoPageForm(Form):

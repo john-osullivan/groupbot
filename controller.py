@@ -194,7 +194,7 @@ def create_bond():
     db_session.commit()
     return True
 
-@app.route('/bond/<bond_id>/delete')
+@app.route('/bond/<int:bond_id>/delete')
 def delete_bond(bond_id):
     '''
     INPUT
@@ -242,7 +242,7 @@ def add_member(group_code_name):
     new_member = Member(group_id=group_id, preferred_name=pref_name)
     return True
 
-@app.route('/member/<member_id>/edit')
+@app.route('/member/<int:member_id>/edit')
 def edit_member(member_id):
     '''
     INPUT
@@ -258,7 +258,7 @@ def edit_member(member_id):
     member.preferred_name = new_name
     return True
 
-@app.route('/member/<member_id>/remove')
+@app.route('/member/<int:member_id>/remove')
 def remove_member(member_id):
     '''
     INPUT
@@ -304,7 +304,7 @@ def create_role():
     db_session.commit()
     return True
 
-@app.route('/role/<role_id>/delete')
+@app.route('/role/<int:role_id>/delete')
 def delete_role(role_id):
     '''
     INPUT
@@ -325,7 +325,7 @@ def delete_role(role_id):
     return True
 
 # Gives a Role to a specific Member
-@app.route('/role/<role_id>/assign')
+@app.route('/role/<int:role_id>/assign')
 def assign_role(role_id):
     '''
     INPUT
@@ -356,7 +356,7 @@ def assign_role(role_id):
     db_session.commit()
     return True
 
-@app.route('/role/<role_id>/remove')
+@app.route('/role/<int:role_id>/remove')
 def remove_role(role_id):
     '''
     INPUT
@@ -426,7 +426,7 @@ def create_task():
     db_session.commit()
     return True
 
-@app.route('/task/<task_id>/edit')
+@app.route('/task/<int:task_id>/edit')
 def edit_task(task_id):
     '''
     INPUT
@@ -459,13 +459,14 @@ def edit_task(task_id):
 
     # No need to add, since the object already exists in the database!
     db_session.commit()
+    return True
 
 @app.route('/task/<task_id>/delete')
-def delete_task(task_id):
+def delete_task(int:task_id):
     '''
     INPUT
     Triggered via a close button element, handed the task_id implicitly from the
-    page request.
+    page request.  Assumes there will be a member_id and group_id in the request.
 
     REQUIREMENT
     Can only be used before a task has been delivered.
@@ -474,23 +475,47 @@ def delete_task(task_id):
     Removes a Task entry from the database, erasing it from the Tasks of each
     Member.
     '''
-    return None
+    # Grab the Group, Member, and Task we need.
+    group = Group.query.get(request.POST['group_id'])
+    member = Member.query.get(request.POST['member_id'])
+    task = Task.query.get(task_id)
+
+    # Make sure the Task and Member are both part of the Group.
+    if ((task.group_id == group.id) and (task.giving_id == member.id)):
+        # Then delete the object from the database and save the change.
+        db_session.delete(task)
+        db_session.commit()
+        return True
+    else:
+        raise Exception("Either the Task wasn't part of the given group, or you weren't!")
 
 # Used to deliver tasks.
-@app.route('/task/<task_id>/deliver')
+@app.route('/task/<int:task_id>/deliver')
 def deliver_task(task_id):
     '''
     INPUT
     Triggered via a delivery mechanism.  Only requires the task_id and a reference
     to the deliverable which completed it.  If an already delivered task is delivered
-    again, the new deliverable overwrites the old one.
+    again, the new deliverable overwrites the old one.  Assumes that request.POST['deliverable']
+    has something in it -- text, image, file, whatever.  For now, it's stored as binary data.
 
     OUTPUT
-    Changes the delivered Boolean of the specified Task to True.
+    Changes the delivered Boolean of the specified Task to True, puts whatever was stored at
+    that part of the request into the Task.deliverable attribute.
     '''
-    return None
+    group = Group.query.get(request.POST['group_id'])
+    delivering_member = Group.query.get(request.POST['member_id'])
+    task = Task.query.get(task_id)
+    deliverable = request.POST['deliverable']
+    if (task.doing_member == delivering_member):
+        task.delivered = True
+        task.deliverable = deliverable
+        db_session.commit()
+        return True
+    else:
+        raise Exception("The person turning this in isn't the one who was supposed to!")
 
-@app.route('/task/<task_id>/approve')
+@app.route('/task/<int:task_id>/approve')
 def approve_task(task_id):
     '''
     INPUT
@@ -501,7 +526,16 @@ def approve_task(task_id):
     Changes the approved boolean of the task to True.  If Points are enabled,
     the points are then awarded to the doer of the task.
     '''
-    return None
+    group = Group.query.get(request.POST['group_id'])
+    approving_member = Group.query.get(request.POST['member_id'])
+    task = Task.query.get(task_id)
+    if (task.giving_id == approving_member.member_id):
+        task.approved = True
+        task.doing_member.points += task.points
+        db_session.commit()
+        return True
+    else:
+        raise Exception("The person submitting this approval isn't the one who was supposed to!")
 
 
 #----------------------------------------------------------------------------#
@@ -521,8 +555,26 @@ def create_event():
     RESULT
     If all goes well, event is created and returns True.  Otherwise, an Exception.
     '''
+    # Grab the standard Group and Member so we know who and where the request is coming from.
+    group_id = request.POST['group_id']
+    member_id = request.POST['member_id']
 
-@app.route('/event/<event_id>/delete')
+    # Grab the mandatory parameters out of the form
+    name = request.form['name']
+    host_id = request.form['host']
+    start_time = request.form['start_time']
+    location = request.form['location']
+
+    # Grab the two optional parameters.
+    if request.form['end_time'] != "": end_time = request.form['end_time'] else: end_time = None
+    if request.form['description'] != "": description = request.form['description'] else: description = None
+
+    # Make a new object, set its parameters which aren't handled by the init function.
+    new_event = Event(name, group_id, start_time, end_time, host_id, description)
+    db_session.add(new_event)
+    db_session.commit()
+
+@app.route('/event/<int:event_id>/delete')
 def delete_event(event_id):
     '''
     INPUT
@@ -532,20 +584,73 @@ def delete_event(event_id):
     RESULT
     If all goes well, event is deleted and returns True.  Otherwise, an Exception.
     '''
+    # Grab the standard Group and Member so we know who and where the request is coming from.
+    group_id = request.POST['group_id']
+    member_id = request.POST['member_id']
 
-@app.route('/event/<event_id/edit')
+    # Grab the specified Event
+    event = Event.query.get(request.POST['event_id'])
+
+    # Delete it and save our work.
+    db_session.delete(event)
+    db_session.commit()
+
+@app.route('/event/<int:event_id>/edit')
 def edit_event(event_id):
     '''
     INPUT
-    Member object in the request to check permissions.  Also a fresh EventCreate form
-    in order to update the contents of this one.
+    Member object in the request to check permissions.  Also an Event form in order to
+    update the contents of this one.
 
     RESULT
     If all goes well, event is edited and returns True.  Otherwise, an Exception.
     '''
+    # Grab the event as well as the standard Group and Member so we know who and where the 
+    # request is coming from.
+    group_id = request.POST['group_id']
+    member_id = request.POST['member_id']
+    event = Event.query.get(event_id)
 
-@app.route('/event/<event_id>/rsvpEventYes')
-def rsvp_event_yes(event_id):
+    # Check if each parameter was updated, grab the valid version (updated or still in database)
+    if request.POST['updated']:
+        event.name = request.form['name']
+        event.host_id = request.form['host_id']
+        event.start_time = request.form['start_time']
+        event.end_time = request.form['end_time']
+        event.location = request.form['location']
+        event.description = request.form['description']
+        db_session.commit()
+
+@app.route('/event/<int:event_id>/invite')
+def invite_member(event_id):
+    '''
+    INPUT
+    There needs to be a member object in the request, but this is not the Member being invited.
+    The Member in the request is the User doing the inviting, and needs to be verified to make
+    sure they have Permission to invite people.  The Member being invited is contained in 
+    request.form['member'].  The event, of course, comes from the URL.
+
+    RESULT
+    The specified Member is added to the Event's 'invited' relationship.  It returns True if
+    everything goes the same way.
+    '''
+    # Grab the standard Group and Member so we know who and where the request is coming from.
+    group_id = request.POST['group_id']
+    inviting_member = Member.query.get(request.POST['member_id'])
+    event = Event.query.get(event_id)
+    
+    # Check to make sure the inviting Member is a host.
+    if inviting_member in event.host:
+
+        # Grab the Member who was invited and add them to the invited relation.
+        invited_member = Member.query.get(request.form['member'])       
+        event.invited.append(invited_member)
+        db_session.commit()
+    else:
+        raise Exception("That Member can't invite someone, they're not a host!")
+
+@app.route('/event/<int:event_id>/rsvp')
+def rsvp(event_id):
     '''
     INPUT
     Member object in the request to make sure they were invited to begin with. Other
@@ -555,21 +660,23 @@ def rsvp_event_yes(event_id):
     The Member is added to the Event's .rsvp_yes attribute.  The function returns
     True to confirm successful operation, Exception if it fails.
     '''
+    # Grab the standard Group and Member so we know who and where the request is coming from.
+    group_id = request.POST['group_id']
+    rsvp_member = Member.query.get(request.POST['member_id'])
+    event = Event.query.get(event_id)
+    if rsvp_member in event.invited:
+        attending = request.form['attending']
+        if attending: # Note, this works specifically because the form's value for Yes is True.
+            event.rsvp_yes.append(rsvp_member)
+        else:
+            event.rsvp_no.append(rsvp_member)
+        db_session.commit()
+    else:
+        return Exception("That member wasn't even invited to this event!")
 
-@app.route('/event/<event_id>/rsvpEventNo')
-def rsvp_event_no(event_id):
-    '''
-    INPUT
-    Member object in the request to make sure they were invited and so we can use their
-    information.  
 
-    RESULT
-    The member is added to the Event's .rsvp_no attribute.  As elsewhere, True means success,
-    Exception means failure.
-    '''
-
-@app.route('/event/<event_id>/attendEvent')
-def attend_event(event_id):
+@app.route('/event/<int:event_id>/attend')
+def attend(event_id):
     '''
     INPUT
     Need a Member object in the request, representing the Member who attended.  This may not
@@ -580,8 +687,21 @@ def attend_event(event_id):
     Member is added to the Event's .attended_yes attribute.  Same success:True, 
     failure:Exception behavior as elsewhere.
     '''
+    group_id = request.POST['group_id']
+    attend_member = Member.query.get(int(request.form['member']))
+    event = Event.query.get(int(request.form['event']))
+    if attend_member in event.invited:
+        attended = request.form['attended']
+        if attended:
+            event.attended_yes.append(attend_member)
+        else:
+            event.attended_no.append(attend_member)
+        db_session.commit()
+        return True
+    else:
+        return Exception("That Member wasn't invited to begin with!")
 
-@app.route('/event/<event_id>/missEvent')
+@app.route('/event/<int:event_id>/missEvent')
 def miss_event(event_id):
     '''
     INPUT
@@ -600,6 +720,9 @@ def miss_event(event_id):
 @app.route('/info/create')
 def create_infopage():
     '''
+    NOTE
+    This function is meant to be a barebones creator of an InfoPage.  Given their 
+
     INPUT
     Member object in the request, in order to check that Permissions are valid.
     Additionally a validated InfoPageForm.
@@ -609,7 +732,7 @@ def create_infopage():
     something breaks, it'll throw an Exception.
     '''
 
-@app.route('/info/<info_id>/delete')
+@app.route('/info/<int:info_id>/delete')
 def delete_infopage(info_id):
     '''
     INPUT
@@ -620,7 +743,7 @@ def delete_infopage(info_id):
     throws an Exception.
     '''
 
-@app.route('/info/<info_id>/edit')
+@app.route('/info/<int:info_id>/edit')
 def edit_infopage(info_id):
     '''
     INPUT

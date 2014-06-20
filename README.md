@@ -7,7 +7,7 @@ For now, it talks about the database back-end, then the functionality front-end,
 The system recognizes five underlying objects which correspond to database tables:
 - Users
 - Groups
-- Group Partnerships
+- Bonds
 - Members
 - Roles
 - Tasks
@@ -35,8 +35,8 @@ or Facebook URL.
 - Roles (One to Many)
 - Tasks (One to Many)
 
-### Group Partnerships
-Partnerships are designed to allow for cooperation between different groups. They share members, can create their own tasks and events, and are generally very much like groups.
+### Bonds
+Bonds are designed to allow for cooperation between different groups. They share members, can create their own tasks and events, and are generally very much like groups.
 - Display Name (String) : A non-unique name to refer to the group by, to make 
 standard use easier.
 - Code Name (String) : A unique name for the group similar to a Twitter handle
