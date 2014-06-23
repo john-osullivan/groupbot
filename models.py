@@ -2,16 +2,60 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
+from sqlalchemy.engine import reflection
 from app import db
 
 engine = create_engine('sqlite:///database.db', echo=True)
+inspector = reflection.Inspector.from_engine(engine)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
 
-# Set your classes here.
+NAMES_TO_CLASSES = {
+    'users': User,
+    'bonds' : Bond,
+    'groups' : Group,
+    'members' : Member,
+    'roles' : Role,
+    'tasks' : Task,
+    'events' : Event,
+    'infopages' : Infopage
+}
+
+###############################################
+#---------------------------------------------#
+# Helper Functions.
+#---------------------------------------------#
+###############################################
+# Helper function to convert a string table name to a reference to the class.
+# This mostly allows us to be a little more fluid with how we get a class when
+# we want to make a query on it. Currently still a method stub.
+def tablename_to_class(table_string):
+    return NAMES_TO_CLASSES[table_string]
+
+# Helper function to validate whether a table string is valid -- meaning if
+# it's one of our tablenames.
+def is_table(table_string):
+    print inspector.get_table_names
+    return table_string in inspector.get_table_names()
+
+# Helper function to validate if a table and ID pair point to a valid object
+# in the database.  This validates both the table string and the object.  Currently
+# still a method stub.
+def is_real_thing(table, thing_id):
+    if is_table(table):
+        return tablename_to_class(table).query.get(thing_id) != None:
+
+def name_to_thing(table_name, thing_id):
+
+
+###############################################
+#---------------------------------------------#
+# Models.
+#---------------------------------------------#
+###############################################
 
 class User(Base):
     __tablename__ = 'users'
@@ -41,7 +85,7 @@ class User(Base):
     bio = db.Column(db.String(160))
     photo = db.Column(db.LargeBinary)
 
-    memberships = db.relationship("Member", backref= 'users')
+    memberships = db.relationship("Member", backref= 'user')
 
 
     def __init__(self, username, password, name=None, email=None, phone=None, \
@@ -58,38 +102,14 @@ class User(Base):
     def __repr__(self):
         return "User #: %s"%(self.user_id)
 
-# class GroupPartnership(Base):
-#     __tablename__ = 'group_partnerships'
-
-#     '''
-#     GroupPartnership Table stores all the horizontal connections between groups.
-#     It has its own tables because groups are horizontally connected in a
-#     many-to-many db.relationship.  It takes two inputs to create a connection.  The
-#     partnerships field describes groups which contain this group (i.e. TDC has a
-#     representative at IFC).  The partners field describes groups which are contained
-#     by this group (i.e. IFC has a number of partners, one of which is TDC).
-#     '''
-
-#     gp_id = db.Column(db.Integer, primary_key = True)
-
-#     partnerships = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
-#     partners = db.Column(db.Integer, db.ForeignKey('groups.group_id'), primary_key=True)
-
-#     def __init__(self, partnerships=None, partners=None):
-#         self.partners = partners
-#         self.partnerships = partnerships
-
-#     def __repr__(self):
-#         return "Group Partnership #{0}".format(self.gp_id)
-
 class Bond(Base):
     __tablename__ = 'bonds'
     '''
     Bond Table is a database of the connections between groups.  It takes the IDs of the two
     groups entering into a bond as initialization arguments. The groups attribute is a
     one-to-many relationship with Groups.  As of the current design (6/17/2014), a Bond can
-    contain two and only two Groups.  They are pairwise links.  This constraint has to be
-    ensured within the class.
+    contain two and only two Groups.  They are pairwise links.  This is ensured within the
+    class by the is_valid_bond(self) function.
     '''
 
     bond_id = db.Column(db.Integer, primary_key=True)
@@ -104,8 +124,10 @@ class Bond(Base):
         self.groups.append(group2)
 
     def __repr__(self):
+        return "Bond #{0}".format(bond_id)
 
-    def is_valid(self):
+    # Validity here means a Bond containing two Groups.
+    def is_valid_bond(self):
         return len(self.groups) == 2
 
 
@@ -146,11 +168,7 @@ class Group(Base):
     tasks = db.relationship('Task', backref='groups')
     roles = db.relationship('Role', backref='groups')
     events = db.relationship('Event', backref='groups')
-
-    # Relations to establish bonds between groups.
-    left_bond = db.relationship('Bond', backref='bonds')
-    right_bond = db.relationship('Bond', backref='bonds')
-    
+   
     # Relations to establish one-to-many parent-child db.relationships.
     # NOTE: Not currently being used, as all group connection is being
     # handled by partnerships.
@@ -199,7 +217,6 @@ class Member(Base):
     roles = db.relationship('Role', backref='members')
     doing_tasks = db.relationship('Task', backref='members')
     giving_tasks = db.relationship('Task', backref='members')
-    events_hosted = 
 
     def __init__(self, group_id, preferred_name=None, points=None, roles=None):
         self.group_id = group_id
@@ -339,6 +356,16 @@ class Task(Base):
     def __repr__(self):
         return "Task #(%s) of Group #(%s) held by Member #(%s)"%(self.task_id, self.group_id, self.doing_id)
 
+group_infos_table = db.Table('group_infopages', Base.metadata,
+    db.Column('group_id', db.Integer, db.ForeignKey('groups.group_id')),
+    db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
+)
+
+member_infos_table = db.Table('member_infopages', Base.metadata,
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id')),
+    db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
+)
+
 class Infopage(Base):
     __tablename__ = 'infopages'
 
@@ -364,10 +391,19 @@ class Infopage(Base):
 
     infopage_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
+
+    # These two properties completely describe what the item in database 
     source_table = db.Column(db.String(80), nullable=False)
     source_id = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(1024))
     content = db.Column(db.String(42420))
+
+    # Associations to Groups to make it easy to chunk Infopages by the Groups&Members
+    # which contribute to their construction. Note that the backref means 
+    # Group&Member objects can use 'object.infopages' to get a Query
+    # of all their Infopages.
+    groups = relationship("Group", secondary=group_infos_table, backref='infopages')
+    contributors = relationship("Member", secondary=member_infos_table, backref='infopages')
 
     # Relations to establish one-to-many parent-child db.relationships.
     children = db.relationship('Infopage', backref='parent') # +1 This is really slick. -JJO
@@ -382,6 +418,10 @@ class Infopage(Base):
     def __repr__(self):
         return "Infopage #{0} -- {1} #{2} -- {3}".format(self.infopage_id, self.source_table,\
                 self.source_id, self.name)
+
+    def source(self):
+        if is_real_thing(self.source_table, self.source_id):
+            return 
 
 event_host_table = db.Table('event_hosts', Base.metadata,
     db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
@@ -471,30 +511,30 @@ class Event(Base):
     def __repr__(self):
         return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)
 
-class Representative(Base):
-    __tablename__ = 'representatives'
-    '''
-    A table containing information unique to a Representative.  Which group are they from,
-    which group are they representing in.  Also a string describing how it's chosen -- elected
-    or appointed.
-    '''
+# class Representative(Base):
+#     __tablename__ = 'representatives'
+#     '''
+#     A table containing information unique to a Representative.  Which group are they from,
+#     which group are they representing in.  Also a string describing how it's chosen -- elected
+#     or appointed.
+#     '''
 
-    def __init__(self):
+#     def __init__(self):
 
-    def __repr__(self):
+#     def __repr__(self):
 
-class Committee(Base):
-    __tablename__ = 'committees'
-    '''
-    A table containing the internal sub-groupings.  A committee is a Group which is meant
-    to be purely internal to another Group.  It can't Bond with Groups other than its host,
-    and it shares all InfoPage access with the host group.  It is only separate because it
-    allows for special functionality of smaller, lighter sub-spaces within the larger Group
-    space.
-    '''
-    def __init__(self):
+# class Committee(Base):
+#     __tablename__ = 'committees'
+#     '''
+#     A table containing the internal sub-groupings.  A committee is a Group which is meant
+#     to be purely internal to another Group.  It can't Bond with Groups other than its host,
+#     and it shares all InfoPage access with the host group.  It is only separate because it
+#     allows for special functionality of smaller, lighter sub-spaces within the larger Group
+#     space.
+#     '''
+#     def __init__(self):
 
-    def __repr__(self):
+#     def __repr__(self):
 
 # Create tables.
 Base.metadata.create_all(bind=engine)

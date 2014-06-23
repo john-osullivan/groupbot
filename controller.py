@@ -605,10 +605,10 @@ def edit_event(event_id):
     RESULT
     If all goes well, event is edited and returns True.  Otherwise, an Exception.
     '''
-    # Grab the event as well as the standard Group and Member so we know who and where the 
-    # request is coming from.
-    group_id = request.POST['group_id']
-    member_id = request.POST['member_id']
+    # First, grab the Group and Member creating the InfoPage to do some validation.
+    (group, member) = get_group_member(request)
+
+    # Next, the event.
     event = Event.query.get(event_id)
 
     # Check if each parameter was updated, grab the valid version (updated or still in database)
@@ -635,8 +635,7 @@ def invite_member(event_id):
     everything goes the same way.
     '''
     # Grab the standard Group and Member so we know who and where the request is coming from.
-    group_id = request.POST['group_id']
-    inviting_member = Member.query.get(request.POST['member_id'])
+    (group, inviting_member) = get_group_member(request)
     event = Event.query.get(event_id)
     
     # Check to make sure the inviting Member is a host.
@@ -661,8 +660,11 @@ def rsvp(event_id):
     True to confirm successful operation, Exception if it fails.
     '''
     # Grab the standard Group and Member so we know who and where the request is coming from.
-    group_id = request.POST['group_id']
-    rsvp_member = Member.query.get(request.POST['member_id'])
+    (group, rsvp_member) = get_group_member(request)
+
+    # Grab the event and validate where the guest was even invited.
+    # ...
+    # Because *God*, does she even go here?
     event = Event.query.get(event_id)
     if rsvp_member in event.invited:
         attending = request.form['attending']
@@ -687,6 +689,9 @@ def attend(event_id):
     Member is added to the Event's .attended_yes attribute.  Same success:True, 
     failure:Exception behavior as elsewhere.
     '''
+    # First, grab the Group and Member creating the InfoPage to do some validation.
+    (group, member) = get_group_member(request)
+
     group_id = request.POST['group_id']
     attend_member = Member.query.get(int(request.form['member']))
     event = Event.query.get(int(request.form['event']))
@@ -700,18 +705,6 @@ def attend(event_id):
         return True
     else:
         return Exception("That Member wasn't invited to begin with!")
-
-@app.route('/event/<int:event_id>/missEvent')
-def miss_event(event_id):
-    '''
-    INPUT
-    Need a Member object in the request, representing the Member who didn't attend.  
-    Other than that, we're good with event_id.
-
-    RESULT
-    Member is added to the Event's .attended_no attribute.  Same success:True,
-    failure:Exception behavior as seen elsewhere.
-    '''
 
 
 #----------------------------------------------------------------------------#
@@ -731,17 +724,55 @@ def create_infopage():
     Infopage is created, the function returns True if everything goes well.  If
     something breaks, it'll throw an Exception.
     '''
+    # First, grab the Group and Member creating the InfoPage to do some validation.
+    (group, member) = get_group_member(request)
+
+    if member in group.members:
+        # Pull in the requried paramters of the InfoPage
+        source_table = request.form['page_source']['table_name']
+        source_id = request.form['page_source']['table_id']
+        page_name = request.form['page_name']
+
+        # Pull in the optional ones
+        if request.form['description'] != "": description = request.form['description'] \
+                                        else: description = None
+        if request.form['content'] != "": content = request.form['content'] \
+                                    else: content = None
+
+        # Create our friendly new InfoPage and save it in.
+        new_page = Infopage(page_name, source_table, source_id, description, content)
+        db_session.add(new_page)
+        db_session.commit()
+        return True
+    else:
+        raise Exception("That Member isn't part of that Group, they can't make a page for it!")
+
 
 @app.route('/info/<int:info_id>/delete')
 def delete_infopage(info_id):
     '''
     INPUT
-    Member object in the request, in order to check that Permissions are valid.
+    Member object in the request, in order to check that Permissions are valid.  Additionally,
+    the ID of an InfoPage that needs to get deleted.
 
     RESULT
     Infopage is deleted, it returns True if all goes well -- otherwise it
     throws an Exception.
     '''
+    # First, grab the Group and Member creating the InfoPage to do some validation.
+    (group, member) = get_group_member(request)
+
+    # This is a sanity check for now, and it will eventually be upgraded to a full call to the
+    # Permissions authorizer to make sure this Member has the authority to perform this Action.
+    if member in group.members:
+        # Get the InfoPage, delete it, save our work.
+        info_id = request.POST['infopage_id']
+        infopage = Infopage.query.get(info_id)
+        db_session.delete(infopage)
+        db_session.commit()
+        return True
+    else:
+        raise Exception("The Member isn't part of the Group, they can't delete one of its Infopages!")
 
 @app.route('/info/<int:info_id>/edit')
 def edit_infopage(info_id):
@@ -754,6 +785,27 @@ def edit_infopage(info_id):
     Infopage has its content updated, it returns True if all goes well -- otherwise
     it throws an Exception.
     '''
+    # First, grab the Group, Member, and Infopage to do some validation.
+    (group, member) = get_group_member(request)
+    infopage = Infopage.query.get(info_id)
+
+    # Validate that the Member is part of the Group, all that jazz.
+    if member in group.members:
+        new_name = request.form['page_name']
+        new_description = request.form['page_description']
+        new_content = request.form['page_content']
+
+        # TODO: Put in some sort of content filtering or sanitization.
+
+        # Actually modify the page and save our work.
+        infopage.name = new_name
+        infopage.description = new_description
+        infopage.content = new_content
+        db_session.commit()
+        return True
+    else:
+        raise Exception("That Member isn't part of the ")
+
 
 #----------------------------------------------------------------------------#
 # Representatives.
@@ -763,3 +815,11 @@ def edit_infopage(info_id):
 #----------------------------------------------------------------------------#
 # Committee.
 #----------------------------------------------------------------------------#
+
+#----------------------------------------------------------------------------#
+# Helper Methods (that span across many functions).
+#----------------------------------------------------------------------------#
+    def get_group_member(request):
+        group = Group.query.get(request.POST['group_id'])
+        member = Member.query.get(request.POST['member_id'])
+        return (group, member)

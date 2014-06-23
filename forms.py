@@ -98,4 +98,15 @@ class EventAttendanceForm(Form):
     member = FormField(MemberChoiceForm)
     attended = RadioField("Attended?", choices=[(True, 'Yes'), (False, 'No')])
 
-class InfoPageForm(Form):
+class InfoPageSourceForm(Form):
+    table_name = SelectField('Subject Type', validators=[DataRequired()])
+    table_id = IntegerField('Subject ID', validators=[DataRequired()])
+
+class InfoPageCreateForm(Form):
+    page_source = FormField(InfoPageSourceForm)
+    page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
+
+class InfoPageEditForm(Form):
+    page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
+    page_description = TextField('InfoPage Description', validators=[Length(min=16, max=256)])
+    page_content = TextField('InfoPage Content', validators=[Length(min=64, max=2048)])

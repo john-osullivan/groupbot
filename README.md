@@ -1,10 +1,16 @@
 # Welcome
-This is Groupify, a cloud-based group management platform.  In a sentence, it lets people make *groups* which have *members* who perform *roles* which have and distributed *responsibilities*.  Those responsibilities can optionally be worth points.  Groups can also connect to other groups in a hierarchy (i.e. a fraternity is a child of its national organization) or in partnership (i.e. a fraternity works with its school's IntraFraternity Council).  The system is being prototyped for a fraternity, so the examples throughout will correlate to that structure.
+This is Bond, an online group organization platform being developed by John O'Sullivan and Harry Bleyan (not that we don't welcome help!).  In a sentence, it lets people bond into *Groups* which have *Members*.  These *Members* have *Roles*.  These *Roles* let them create and manage *Events*, give and receive *Tasks*, and contribute to the Role's *InfoPage*.  Groups can also *Bond* to other Groups, letting them share InfoPages and choose *Representatives* for each other's Groups.
 
-For now, it talks about the database back-end, then the functionality front-end, then current/next things to work on and build.
+Additionally, the platform is going to be expanded to support Discussions and Meetings.  In general, it will be expanded to support many more things -- the idea is in FLUX.  
 
-## Database Schema
-The system recognizes five underlying objects which correspond to database tables:
+This README is going to discuss:
+- Backend Data Model
+- Controller/View Functions
+- Front-End Design Documentation
+- Future Features/Dream Ideas
+
+## Backend Data Model
+The system currently recognizes eight SQLAlchemy models which correspond to database tables:
 - Users
 - Groups
 - Bonds
@@ -13,6 +19,10 @@ The system recognizes five underlying objects which correspond to database table
 - Tasks
 - Infopages
 - Events
+- (Pending) Representatives
+- (Pending) Committees/InGroups
+- (Pending) Meetings
+- (Pending) Discussions
 
 ### Users
 Users separated from the specific activity of each group.  All association is handled through members, allowing users to fluidly be a part of multiple groups.  It has the colums:
@@ -22,6 +32,7 @@ Users separated from the specific activity of each group.  All association is ha
 - Bio (String)
 - Members (Many to Many)
 - Photo (Binary)
+- memberships (relation to Members)
 
 ### Groups
 Groups are collections of Members.  They also point to Roles and Tasks.  Eventually, a group there will be surrounding features like by-laws, voting, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  It has the columns:
@@ -32,20 +43,17 @@ or Facebook URL.
 - Members (One to Many)
 - By-Line (String)
 - Description (Long String)
-- Roles (One to Many)
+- Roles (One to Many
 - Tasks (One to Many)
 
+It also inherits things from relationship backrefs, like:
+- 'bonds'
+- 
+
 ### Bonds
-Bonds are designed to allow for cooperation between different groups. They share members, can create their own tasks and events, and are generally very much like groups.
-- Display Name (String) : A non-unique name to refer to the group by, to make 
-standard use easier.
-- Code Name (String) : A unique name for the group similar to a Twitter handle
-or Facebook URL.
-- Members (One to Many)
-- By-Line (String)
-- Description (Long String)
-- Roles (One to Many)
-- Tasks (One to Many)
+Bonds are designed to allow for cooperation between different groups.  They let Groups designate shared InfoPages, and they let them establish Representatives into each other.  For now, that's it.
+- groups : relationship to Groups, meant to be only two groups.
+- Representatives : relationship to Members.
 
 ### Members
 A Member contains all the information a user would want to interact with in the group.  Specifically, members perform roles, have responsibilities, and gather points.  It has the columns:
@@ -54,6 +62,10 @@ A Member contains all the information a user would want to interact with in the 
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
 - Points (Integer)
+
+It also inherits a great deal of properties from relationship backrefs, like:
+- 'user'
+- 
 
 ### Roles
 A role is part of a group, has a description, comes with some responsibilities, and also gives people the power to assign some types of responsibilities.  It also comes with a title, because of course.  The columns are:
@@ -98,42 +110,43 @@ Events are a class for getting people to come to a particular place at a particu
 - Location (String) - Location of the event, if any
 - Host - collection of additional people who can be added to host the event
 
+## UNIMPLEMENTED CLASSES
 
-## Front-End Functionality
+###
+
+
+## Controller/View Functions
 I need to figure out what front-end pages are required to make this thing work.  For the basest functionality, you need to be able to make an account, create a group, join/leave a group.  Create roles, assign them to members, take them away, change who it's assigned to.  Create responsibilities in a template fashion, give roles the ability to give them out, have them be doable and reward members with points.  Speaking of points, I need to make a points logger -- it just needs to sit on the database class and record every transaction based on the group.  Actually, based on everything.  We should be able to pick apart that points log however we want, to allow for many different views from different privacy levels.
 
 If I have all of that in there, though, I think I could make a sample group.  The concept of responsibilities as a template is important.  It makes a responsibility a standard type of thing you have to get done.
 
+## Front-End Design Documentation
+I haven't implemented it yet because I'm terrible!  Once I have each piece working such that shit can display, unit tests.  Unit tests for everyone.
+
 ### User Dashboard
 The user's dashboard holds a summary of the activity from all of their memberships.  It collects the Roles and Tasks they have in each group, separating those they have to complete and those they need other people to complete.  It is essentially a gloss of all their commitments, only listing the titles.  Those titles link to the task's detail page.
 
-### Group Page
+### Group InfoPage
 A group's page lists its name, by-line, and description.  Additionally, it should have a roster (list of all members), list of officers, and a listing of any group-wide responsibilities.  Any responsibility that is required of every member should be listed on this page with its percent completion by the brotherhood.  This would include things like attendance to meeting, clean-ups, and nightly duties.
 
-### Member Page
+### Member InfoPage
 The member page includes all roles held, current responsibilities, points count and history.  Additionally, it can store a history of prior roles held and how they did in them (because why not?).  It also has different section for the responsibilities required of the member and the responsibilities checked by the member.
 
-### Role Page
+### Role InfoPage
 The role's page holds its title, description, the responsibilities required of and distributed by, and a list of prior members who held that role.  It will later be expanded to include reports on how it went and how to do it, similar to a bible for each role.
 
-### Responsibility Page
-The responsibility page needs to display the name, description, optional points reward, comments, and whether or not it has been delivered.  Additionally, it should have a variable section for different forms of "deliverable".  This would initially be a digital signature which the user typed their name into, and would expand to photo/file upload.
+### Task InfoPage
 
-## Testing
-I haven't implemented it yet because I'm terrible!  Once I have each piece working such that shit can display, unit tests.  Unit tests for everyone.
 
 ## Future Features
-- Potential redesign of Tasks: Instead of tying them down to Members, tie them to Roles.  This allows for assignment of one task to a group of people who perform a Role, as well as specifying that only people with certain Roles can assign certain
-Tasks.  This should happen soon, because Roles are designed with that functionality in mind -- they have a relationship to Tasks on a doing and giving basis.  Just need to determine how Tasks prioritize their relations to Roles and Members.
-- A lot of Tasks are template tasks -- just think of nightly and party works here at TDC.  You should be able to define templates and then periodically fill them in to assign the next batch of tasks.  For style points, accept an input of a .csv that has the right columns so people can work on it from Google Docs and send it straight over.
-- Roles need to have Permissions baked into them ASAP.  Certain Roles need to be able to assign certain Tasks, some need to be able to add Members or report to other Groups.  Fundamentally, different people in groups have different levels of control over how the group is run, and the system needs to reflect that.
-- There should be mulitple ways to "deliver" a deliverable, ranging from writing some text, signing your virtual name, uploading a photo or file, etc.
-- Once we have by-laws and motion discussion, we need to have Votes in the system.  You should get votes like people get notifications, telling you there's something to be decided on.
-- There needs to be a group discussion form.  If I have my way, we basically just clone reddit.  Members can submit links to a message board, there's some voting thrown in the mix.  Additionally, submissions can have type tags, meant ot allow for things like sorting between announcement, motions, and idle discussion.
-- Groups need to have the concept of by-laws.  A description says what the group is about, but the by-laws describe how they do it.  They can be really simple, but the core concept of by-laws that require votes to be changed/amended/updated should be in there.  As with everything else, some sort of recursive system of adding new sections and subsections would work best.
-- Once the system supports actual interaction between these data elements, there should be a timeline view of groups which displays all recent actions to members.  It should integrate different permission levels so non-members can get a gloss of what's happening but current members can be an in-depth view on the goings on of the organization.
-- Outline admin functionality.  What functions can only an admin perform, what functions can a member perform, how do we make those settings up to the user?  More importantly, how do I start integrating a full permissions sytem?
-- A points logger.  All changes in points (namely when a responsibility becomes delivered and the member's point count increases) need to be logged in the system so the logs can be manually parsed just in case.  Each log should contain the responsibility delivered, the user who was awarded points, the timestamp at which it was delivered, the points awarded, the user's prior point count, and their subsequent point count.
-- Thought on the points system -- the duration over which points accumulate needs to be a setting, so each group can determine when (or if) they refresh.
+There are buckets of future functionality planned, including exhaustive Role-based Permissions, automated Task reminders, Google Drive/Docs integration, Facebook event integration, and more.
+
+- THINGS: We need to have a single Table which lists every other entry in the database so we can uniquely identify them and determine what Permissions a specific Member should have on it.  
+- We need Task and Event creation templating.  The Task creation screen should let you make a duplicate of a Task and only changing specific fields really easily, then automatically make the individual Tasks for each Member.  This would work best if it integrated with a Google Drive spreadsheet.
+- PERMISSIONS: Everything is listed in a Table so we can determine what each Member's Permission is for that Thing. The potential permissions are should they be able to SEE/EDIT/CREATE/DELETE a InfoPage, Event, Task, whathaveyou.  Ideally, we want a piece of code which gets a Thing, Member, and action type, and we get back a boolean of whether or not it's authorized.
+- There should be mulitple ways to "deliver" a deliverable, ranging from writing some text, signing your virtual name, uploading a photo or file, etc.  Expanding this really broadens the number of usecases for a Task.
+- VOTES: There needs to be a built-in idea of a vote which goes to every Member and has a minimum satisfaction margin that is a variable property.  This should be able to flip easily between being a one minute vote to table a motion, or one week vote to decide between two option for an event.
+- DISCUSS: We want a forum-style implementation that uses reddit voting combined with tagging to filter and sort the Discussion board into a legitimately useful place to talk shit with your Groups.
+- POINTS: Groups have currencies.  There's always some way to measure how much someone is doing, and we need to represent that.  There should be potential Points attached to Tasks, and those Points should be able to be called whatever the Group wants.  Points needs to be able to have a refresh period determined, a Point at which they're tallied and collection begins once more.
 - A reminder system which lets users assigning tasks specify a time for email and text message reminders to the person who has to do the task.
 - Group templates!  Users should be able to say whether they're making a club, fraternity, sports team, project group, company, etc.
