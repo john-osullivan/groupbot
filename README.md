@@ -45,9 +45,9 @@ or Facebook URL.
 - Description (Long String)
 - Roles (One to Many
 - Tasks (One to Many)
+
 It also inherits things from relationship backrefs, like:
-- 'bonds'
-- 
+  - 'bonds'
 
 ### Bonds
 Bonds are designed to allow for cooperation between different groups.  They let Groups designate shared InfoPages, and they let them establish Representatives into each other.  For now, that's it.
@@ -61,6 +61,7 @@ A Member contains all the information a user would want to interact with in the 
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
 - Points (Integer)
+
 It also inherits a great deal of properties from relationship backrefs, like:
 - 'user'
 - 'group'
@@ -72,6 +73,7 @@ A role is part of a group, has a description, comes with some responsibilities, 
 - Description (Long String)
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
+
 Inherited from relationship backrefs:
 - groups -> Group
 - members -> Member
@@ -90,6 +92,7 @@ A task is the basic unit of getting things done.  They are hierarchical, such th
 - Comments (Short String)
 - Parent_ID (ForeignKey Integer)
 - Child (One-to-Many Relationship)
+
 Inherited from relationship backrefs:
 - groups -> Group
 
