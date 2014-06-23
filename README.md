@@ -62,7 +62,7 @@ A Member contains all the information a user would want to interact with in the 
 - Giving Tasks (Many to Many)
 - Points (Integer)
 
-It also inherits a great deal of properties from relationship backrefs, like:
+   It also inherits a great deal of properties from relationship backrefs, like:
 - 'user'
 - 'group'
 
@@ -74,9 +74,9 @@ A role is part of a group, has a description, comes with some responsibilities, 
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
 
-Inherited from relationship backrefs:
-- groups -> Group
-- members -> Member
+   Inherited from relationship backrefs:
+   - groups -> Group
+   - members -> Member
 
 
 ### Tasks
@@ -93,8 +93,8 @@ A task is the basic unit of getting things done.  They are hierarchical, such th
 - Parent_ID (ForeignKey Integer)
 - Child (One-to-Many Relationship)
 
-Inherited from relationship backrefs:
-- groups -> Group
+   Inherited from relationship backrefs:
+   - groups -> Group
 
 ### Infopages
 Infopages allow for quick display of relevant information about a group, description of roles or any additional supporting material.  The columns are:
@@ -118,7 +118,8 @@ Events are a class for getting people to come to a particular place at a particu
 - rsvp_no - collection of members who RSVPd 'No'.
 - attended_yes - collection of members who DID attend the event, as verified by the /attend function on events.  This is useful for roll call, quorum, etc.
 - attended_no - collection of members who DIDN'T attend the event.
-Inherited from relationship backrefs:
+
+  Inherited from relationship backrefs:
 
 
 ## UNIMPLEMENTED CLASSES
