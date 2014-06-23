@@ -115,7 +115,7 @@ class Bond(Base):
     bond_id = db.Column(db.Integer, primary_key=True)
     
     groups = db.relationship("Group", backref='bonds')
-    representatives = db.relationship("Representative", backref='bonds')
+    representatives = db.relationship("Representative", backref='bond')
 
     def __init__(self, group1_id, group2_id):
         group1 = Group.query.get(group1_id)
@@ -256,7 +256,7 @@ class Role(Base):
     # Bookkeping ids
     role_id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), index=True, nullable=False)
-    member_id = db.relationship('Member', secondary=member_roles)
+    members = db.relationship('Member', secondary=member_roles)
 
     # Position information
     name = db.Column(db.String(80), nullable=False)
@@ -402,8 +402,8 @@ class Infopage(Base):
     # which contribute to their construction. Note that the backref means 
     # Group&Member objects can use 'object.infopages' to get a Query
     # of all their Infopages.
-    groups = relationship("Group", secondary=group_infos_table, backref='infopages')
-    contributors = relationship("Member", secondary=member_infos_table, backref='infopages')
+    groups = db.relationship("Group", secondary=group_infos_table, backref='infopages')
+    contributors = db.relationship("Member", secondary=member_infos_table, backref='infopages')
 
     # Relations to establish one-to-many parent-child db.relationships.
     children = db.relationship('Infopage', backref='parent') # +1 This is really slick. -JJO

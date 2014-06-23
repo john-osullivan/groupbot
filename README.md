@@ -45,7 +45,6 @@ or Facebook URL.
 - Description (Long String)
 - Roles (One to Many
 - Tasks (One to Many)
-
 It also inherits things from relationship backrefs, like:
 - 'bonds'
 - 
@@ -62,10 +61,9 @@ A Member contains all the information a user would want to interact with in the 
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
 - Points (Integer)
-
 It also inherits a great deal of properties from relationship backrefs, like:
 - 'user'
-- 
+- 'group'
 
 ### Roles
 A role is part of a group, has a description, comes with some responsibilities, and also gives people the power to assign some types of responsibilities.  It also comes with a title, because of course.  The columns are:
@@ -74,6 +72,9 @@ A role is part of a group, has a description, comes with some responsibilities, 
 - Description (Long String)
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
+Inherited from relationship backrefs:
+- groups -> Group
+- members -> Member
 
 
 ### Tasks
@@ -89,6 +90,8 @@ A task is the basic unit of getting things done.  They are hierarchical, such th
 - Comments (Short String)
 - Parent_ID (ForeignKey Integer)
 - Child (One-to-Many Relationship)
+Inherited from relationship backrefs:
+- groups -> Group
 
 ### Infopages
 Infopages allow for quick display of relevant information about a group, description of roles or any additional supporting material.  The columns are:
@@ -100,19 +103,30 @@ Infopages allow for quick display of relevant information about a group, descrip
 
 ### Events
 Events are a class for getting people to come to a particular place at a particular time. Events have a date, RSVP lists, location, description, name, duration and attended/missed people.
-- Name (String) - big name of the Event
-- Description (String) - Short description of the Event
-- Creator (ForeignKey) - Original creator of the event
-- Date (DateTime) - The date and time of the event
-- Duration (DateTime) - The duration of the event
-- RSVP - collection of members who are RSVPing yes or no
-- Attendance - collection of member who attended or not
-- Location (String) - Location of the event, if any
-- Host - collection of additional people who can be added to host the event
+- name (String) - big name of the Event
+- group_id -> Group which is hosting/owning the event.
+- host - collection of additional people who can be added to host the event
+- description (String) - Short description of the Event
+- location (String) - Location of the event, if any
+- start_time (DateTime) - The starting time of the event
+- end_time (DateTime) - The ending of the event
+- invited - collection of Members who were invited to the Event
+- rsvp_yes - collection of members who RSVPd 'Yes'.
+- rsvp_no - collection of members who RSVPd 'No'.
+- attended_yes - collection of members who DID attend the event, as verified by the /attend function on events.  This is useful for roll call, quorum, etc.
+- attended_no - collection of members who DIDN'T attend the event.
+Inherited from relationship backrefs:
+
 
 ## UNIMPLEMENTED CLASSES
 
-###
+### Representatives
+As of right now, a Representative is a dummy class whose only attributes are the Member ID and Bond ID.  It also has some properites descended from relationship backrefs, like:
+- bond
+
+### Discussions
+
+### Meetings
 
 
 ## Controller/View Functions
