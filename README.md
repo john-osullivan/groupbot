@@ -55,25 +55,23 @@ Bonds are designed to allow for cooperation between different groups.  They let 
 - Representatives : relationship to Members.
 
 ### Members
-A Member contains all the information a user would want to interact with in the group.  Specifically, members perform roles, have responsibilities, and gather points.  It has the columns:
+A Member contains all the information a user would want to interact with in the group.  Specifically, Members perform Roles, give/receive Tasks, host/attend Events, and edit InfoPages.  It has the columns:
 - Preferred Name (Optional String)
 - Role (Many to Many)
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
 - Points (Integer)
-
    It also inherits a great deal of properties from relationship backrefs, like:
 - 'user'
 - 'group'
 
 ### Roles
-A role is part of a group, has a description, comes with some responsibilities, and also gives people the power to assign some types of responsibilities.  It also comes with a title, because of course.  The columns are:
+A Role is part of a group, can be held by multiple Members, has a description, can both give and receive Tasks, and can have Permissions assigned to it (once they're a thing).  It also comes with a title, because of course.  The columns are:
 - Name (Required String)
 - Group (Foreign Key)
 - Description (Long String)
 - Doing Tasks (Many to Many)
 - Giving Tasks (Many to Many)
-
    Inherited from relationship backrefs:
    - groups -> Group
    - members -> Member
