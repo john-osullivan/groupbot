@@ -511,30 +511,46 @@ class Event(Base):
     def __repr__(self):
         return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)
 
-# class Representative(Base):
-#     __tablename__ = 'representatives'
-#     '''
-#     A table containing information unique to a Representative.  Which group are they from,
-#     which group are they representing in.  Also a string describing how it's chosen -- elected
-#     or appointed.
-#     '''
+class Representative(Base):
+    __tablename__ = 'representatives'
+    '''
+    A table containing information unique to a Representative.  Which group are they from,
+    which group are they representing in.  Also a string describing how it's chosen -- elected
+    or appointed.
+    '''
 
-#     def __init__(self):
+    def __init__(self):
 
-#     def __repr__(self):
+    def __repr__(self):
 
-# class Committee(Base):
-#     __tablename__ = 'committees'
-#     '''
-#     A table containing the internal sub-groupings.  A committee is a Group which is meant
-#     to be purely internal to another Group.  It can't Bond with Groups other than its host,
-#     and it shares all InfoPage access with the host group.  It is only separate because it
-#     allows for special functionality of smaller, lighter sub-spaces within the larger Group
-#     space.
-#     '''
-#     def __init__(self):
+class Committee(Base):
+    __tablename__ = 'committees'
+    '''
+    A table containing the internal sub-groupings.  A committee is a Group which is meant
+    to be purely internal to another Group.  It can't Bond with Groups other than its host,
+    and it shares all InfoPage access with the host group.  It is only separate because it
+    allows for special functionality of smaller, lighter sub-spaces within the larger Group
+    space.
+    '''
+    def __init__(self):
 
-#     def __repr__(self):
+    def __repr__(self):
+
+class Discussion(Base):
+    __tablename__ = 'discussions'
+    '''
+    '''
+    def __init__(self):
+
+    def __repr__(self):
+
+class Infoblock(Base):
+    __tablename__ = 'infoblocks'
+    '''
+    '''
+    def __init__(self):
+
+    def __repr__(self):
 
 # Create tables.
 Base.metadata.create_all(bind=engine)
