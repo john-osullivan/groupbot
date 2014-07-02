@@ -98,15 +98,19 @@ class EventAttendanceForm(Form):
     member = FormField(MemberChoiceForm)
     attended = RadioField("Attended?", choices=[(True, 'Yes'), (False, 'No')])
 
-class InfoPageSourceForm(Form):
-    table_name = SelectField('Subject Type', validators=[DataRequired()])
-    table_id = IntegerField('Subject ID', validators=[DataRequired()])
+# This part right 'hurr is sketchy.  It was written before Infopages were the way
+# you looked at EVERYTHING, back when you created them for a thing.  Nowadays, this
+# will probably be built in to the source code and happen automatically -- not via
+# user form input.
+# class InfoPageSourceForm(Form):
+#     table_name = SelectField('Subject Type', validators=[DataRequired()])
+#     table_id = IntegerField('Subject ID', validators=[DataRequired()])
 
-class InfoPageCreateForm(Form):
-    page_source = FormField(InfoPageSourceForm)
-    page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
+# class InfoPageCreateForm(Form):
+#     page_source = FormField(InfoPageSourceForm)
+#     page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
 
-class InfoPageEditForm(Form):
-    page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
-    page_description = TextField('InfoPage Description', validators=[Length(min=16, max=256)])
-    page_content = TextField('InfoPage Content', validators=[Length(min=64, max=2048)])
+# class InfoPageEditForm(Form):
+#     page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
+#     page_description = TextField('InfoPage Description', validators=[Length(min=16, max=256)])
+#     page_content = TextField('InfoPage Content', validators=[Length(min=64, max=2048)])

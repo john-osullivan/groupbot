@@ -102,6 +102,13 @@ An Infopage is the way to view any user-facing object in the database.  It is a 
 - Content (42420 character String) : Will need to be changed later
 - Children (if any)
 
+### Infoblocks
+An Infoblock represents one unit box on an Infopage.  These boxes have one of three fixed widths (30%, 60% 90%), and their height is however damn tall they need to be.  They are listed in an order on a page, leading to a natural tiling.  They have a name, like everyThing else.  Last but not least, they have content.  This content is sanitized HTML for now, it could be expanded into more subdivisions as required.
+- .name (optional String(80))
+- .width (Integer) - Supposed to be the numerator of a fraction describing the width of the box on the screen.  The denominator would currently be three, but it could theoretically go as high as 12.  None of that is enforced in the database, however.
+- .order (Integer) - Supposed to be an index in a *zero-indexed* list of Infoblocks.  Also not enforced at all within the database.
+- .content (Required String(42420)) - This is the actual (allegedly but not yet really sanitized) HTML which gets rendered in the box.
+
 ### Events
 Events are a class for getting people to come to a particular place at a particular time. Events have a date, RSVP lists, location, description, name, duration and attended/missed people.
 - name (String) - big name of the Event
@@ -121,8 +128,6 @@ Events are a class for getting people to come to a particular place at a particu
 
 
 ## UNIMPLEMENTED CLASSES
-
-### Infoblocks
 
 ### Representatives
 As of right now, a Representative is a dummy class whose only attributes are the Member ID and Bond ID.  It also has some properites descended from relationship backrefs, like:

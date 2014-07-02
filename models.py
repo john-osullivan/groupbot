@@ -53,7 +53,7 @@ def name_to_thing(table_name, thing_id):
 
 ###############################################
 #---------------------------------------------#
-# Models.
+# User + Group + Member Models
 #---------------------------------------------#
 ###############################################
 
@@ -238,6 +238,26 @@ member_roles = db.Table(
     db.Column('role_id', Integer, ForeignKey('roles.role_id'))
     )
 
+class Representative(Base):
+    __tablename__ = 'representatives'
+    '''
+    A table containing information unique to a Representative.  Which group are they from,
+    which group are they representing in.  Also a string describing how it's chosen -- elected
+    or appointed.
+    '''
+
+    def __init__(self):
+
+    def __repr__(self):
+
+
+###############################################
+#---------------------------------------------#
+# Group work: Roles/Tasks/Events
+#---------------------------------------------#
+###############################################
+
+
 class Role(Base):
     __tablename__ = 'roles'
 
@@ -356,72 +376,6 @@ class Task(Base):
     def __repr__(self):
         return "Task #(%s) of Group #(%s) held by Member #(%s)"%(self.task_id, self.group_id, self.doing_id)
 
-group_infos_table = db.Table('group_infopages', Base.metadata,
-    db.Column('group_id', db.Integer, db.ForeignKey('groups.group_id')),
-    db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
-)
-
-member_infos_table = db.Table('member_infopages', Base.metadata,
-    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id')),
-    db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
-)
-
-class Infopage(Base):
-    __tablename__ = 'infopages'
-
-    '''
-    Infopages allow for quick display of relevant information about a group, description of roles
-    or any additional supporting material. Infopages are supposed to map to a group, a member, a user,
-    a role, a task another infopage or not have any host at all (i.e. help page for groupify).
-    For the developmental stage of groupify, Infopages shall be a massive container for HTML code that can
-    be modified and made links between. Later on, a custom set of templates will be created to simplify and 
-    standardize the look of all the Infopage instances.
-
-    name = String(80) - big name of the Infopage
-    description = String(150) - Short description of the infopage
-    source_table = String(80) - String name of the table this Infopage points to
-    source_id = ForeignKey value for source_table, specifies host of this Infopage
-    content = String(42420) - The HTML holder for all the content
-    children = --> sub-infopages, if any
-
-    POTENTIAL REDESIGN:
-    Invert the way infopages are referenced.  Every info page has a String representing the name
-    of a table, and an integer ID representing which record in that table it's an Infopage for.
-    '''
-
-    infopage_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-
-    # These two properties completely describe what the item in database 
-    source_table = db.Column(db.String(80), nullable=False)
-    source_id = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String(1024))
-    content = db.Column(db.String(42420))
-
-    # Associations to Groups to make it easy to chunk Infopages by the Groups&Members
-    # which contribute to their construction. Note that the backref means 
-    # Group&Member objects can use 'object.infopages' to get a Query
-    # of all their Infopages.
-    groups = db.relationship("Group", secondary=group_infos_table, backref='infopages')
-    contributors = db.relationship("Member", secondary=member_infos_table, backref='infopages')
-
-    # Relations to establish one-to-many parent-child db.relationships.
-    children = db.relationship('Infopage', backref='parent') # +1 This is really slick. -JJO
-
-    def __init__(self, name, source_table, source_id, description=None, content=None):
-        self.name = name
-        self.source_table = source_table
-        self.source_id =source_id
-        self.description = description
-        self.content = content
-
-    def __repr__(self):
-        return "Infopage #{0} -- {1} #{2} -- {3}".format(self.infopage_id, self.source_table,\
-                self.source_id, self.name)
-
-    def source(self):
-        if is_real_thing(self.source_table, self.source_id):
-            return 
 
 event_host_table = db.Table('event_hosts', Base.metadata,
     db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
@@ -511,17 +465,141 @@ class Event(Base):
     def __repr__(self):
         return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)
 
-class Representative(Base):
-    __tablename__ = 'representatives'
+###############################################
+#---------------------------------------------#
+# UI Classes
+#---------------------------------------------#
+###############################################
+
+group_infos_table = db.Table('group_infopages', Base.metadata,
+    db.Column('group_id', db.Integer, db.ForeignKey('groups.group_id')),
+    db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
+)
+
+member_infos_table = db.Table('member_infopages', Base.metadata,
+    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id')),
+    db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
+)
+
+class Infopage(Base):
+    __tablename__ = 'infopages'
+
     '''
-    A table containing information unique to a Representative.  Which group are they from,
-    which group are they representing in.  Also a string describing how it's chosen -- elected
-    or appointed.
+    Infopages allow for quick display of relevant information about a group, description of roles
+    or any additional supporting material. Infopages are supposed to map to a group, a member, a user,
+    a role, a task another infopage or not have any host at all (i.e. help page for groupify).
+    For the developmental stage of groupify, Infopages shall be a massive container for HTML code that can
+    be modified and made links between. Later on, a custom set of templates will be created to simplify and 
+    standardize the look of all the Infopage instances.
+
+    name = String(80) - big name of the Infopage
+    description = String(150) - Short description of the infopage
+    source_table = String(80) - String name of the table this Infopage points to
+    source_id = ForeignKey value for source_table, specifies host of this Infopage
+    content = String(42420) - The HTML holder for all the content
+    children = --> sub-infopages, if any
+
+    POTENTIAL REDESIGN:
+    Invert the way infopages are referenced.  Every info page has a String representing the name
+    of a table, and an integer ID representing which record in that table it's an Infopage for.
     '''
 
-    def __init__(self):
+    infopage_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+
+    # These two properties completely describe what the item in database 
+    source_table = db.Column(db.String(80), nullable=False)
+    source_id = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(1024))
+    content = db.Column(db.String(42420))
+
+    # Associations to Groups to make it easy to chunk Infopages by the Groups&Members
+    # which contribute to their construction. Note that the backref means 
+    # Group&Member objects can use 'object.infopages' to get a Query
+    # of all their Infopages.
+    groups = db.relationship("Group", secondary=group_infos_table, backref='infopages')
+    contributors = db.relationship("Member", secondary=member_infos_table, backref='infopages')
+
+    # Relations to establish one-to-many parent-child db.relationships.
+    children = db.relationship('Infopage', backref='parent') # +1 This is really slick. -JJO
+
+    # Relations to the two categories of Infoblocks -- the main Infoblocks and the user  Infoblocks.  
+    main_infoblocks = db.relationship("Infoblock", secondary=main_infoblocks, backref="infopage")
+    user_infoblocks = db.relationship("Infoblock", secondary=user_infoblocks, backref="infopage")
+
+    def __init__(self, name, source_table, source_id, description=None, content=None):
+        self.name = name
+        self.source_table = source_table
+        self.source_id =source_id
+        self.description = description
+        self.content = content
 
     def __repr__(self):
+        return "Infopage #{0} -- {1} #{2} -- {3}".format(self.infopage_id, self.source_table,\
+                self.source_id, self.name)
+
+    def source(self):
+        if is_real_thing(self.source_table, self.source_id):
+            return 
+
+
+main_infoblocks = db.Table(
+    '''
+    Stores the relations from Infopages to their main Infoblocks, the ones produced and
+    laid out by us.
+    '''
+    'main_infoblocks', Base.metadata,
+    db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
+    db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
+    )
+
+user_infoblocks = db.Table(
+    '''
+    This stores the relations to determine which Infoblocks have been created by users
+    on which pages.  Just a straight up ID, no need to get fancy.
+    '''
+    ''
+    'user_infoblocks', Base.metadata,
+    db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
+    db.Column('infoblock_id', Integer, Foreign('infoblock_id.infoblock_id'))
+    )
+
+class Infoblock(Base):
+    __tablename__ = 'infoblocks'
+    '''
+    This class describes one "block" on an Infopage.  A block looks similar to one
+    Pinterest post.  It can take up 1, 2, or 3 thirds of the screen and has a variable
+    height (it's as tall as it needs to be).  Each Infoblock appears on one page,
+    they are not shared.  They are stored in an order, so they have an integer
+    describing their position.  Their actual content is HTML, stored as a sanitized
+    string.  Like other units, they also have a name.
+
+    .name = String(80)
+    .width = Integer, 1 <= n <= 3
+    .infopage_id = Foreign Key to Infopage table
+    .order = Integer, n >= 0
+    .content = String(42420)
+    '''
+    infoblock_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    width = db.Column(db.Integer, nullable = False)
+    order = db.Column(db.Integer, nullable = False)
+    content = db.Column(db.String(42420), nullable = False)
+
+    def __init__(self, name, width, order, content):
+        self.name = name
+        self.width = width
+        self.order = order
+        self.content = content
+
+    def __repr__(self):
+        return "Infoblock #{0}: {1}".format(self.infoblock_id, self.name)
+
+###############################################
+#---------------------------------------------#
+# Disorganized stubs.
+#---------------------------------------------#
+###############################################
 
 class Committee(Base):
     __tablename__ = 'committees'
@@ -538,14 +616,6 @@ class Committee(Base):
 
 class Discussion(Base):
     __tablename__ = 'discussions'
-    '''
-    '''
-    def __init__(self):
-
-    def __repr__(self):
-
-class Infoblock(Base):
-    __tablename__ = 'infoblocks'
     '''
     '''
     def __init__(self):
