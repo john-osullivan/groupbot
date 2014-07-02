@@ -808,6 +808,36 @@ def edit_infopage(info_id):
 
 
 #----------------------------------------------------------------------------#
+# Infoblocks.
+#----------------------------------------------------------------------------#
+@app.route('/infoblock/create')
+def create_infoblock():
+    '''
+    INPUT
+
+    RESULT
+
+    '''
+
+@app.route('/infoblock/<int:infoblock_id>/edit')
+def edit_infoblock(infoblock_id):
+    '''
+    INPUT
+
+    RESULT
+    
+    '''
+
+@app.route('/infoblock/<int:infoblock_id>/delete')
+def delete_infoblock(infopage_id):
+    '''
+    INPUT
+
+    RESULT
+    
+    '''
+
+#----------------------------------------------------------------------------#
 # Representatives.
 #----------------------------------------------------------------------------#
 
