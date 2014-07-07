@@ -511,7 +511,6 @@ class Infopage(Base):
     source_table = db.Column(db.String(80), nullable=False)
     source_id = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(1024))
-    content = db.Column(db.String(42420))
 
     # Associations to Groups to make it easy to chunk Infopages by the Groups&Members
     # which contribute to their construction. Note that the backref means 
@@ -572,24 +571,29 @@ class Infoblock(Base):
     height (it's as tall as it needs to be).  Each Infoblock appears on one page,
     they are not shared.  They are stored in an order, so they have an integer
     describing their position.  Their actual content is HTML, stored as a sanitized
-    string.  Like other units, they also have a name.
+    string.  Like other units, they also have a name.  Whether the Infoblock is
+    created by our system or created by users is stored in the content_type
+    attribute.
 
     .name = String(80)
     .width = Integer, 1 <= n <= 3
     .infopage_id = Foreign Key to Infopage table
     .order = Integer, n >= 0
+    .content_type = String(40)
     .content = String(42420)
     '''
     infoblock_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     width = db.Column(db.Integer, nullable = False)
     order = db.Column(db.Integer, nullable = False)
+    content_type = db.Column(db.String(40), nullable = False)
     content = db.Column(db.String(42420), nullable = False)
 
-    def __init__(self, name, width, order, content):
+    def __init__(self, name=None, width, order, content_type, content):
         self.name = name
         self.width = width
         self.order = order
+        self.content_type = content_type
         self.content = content
 
     def __repr__(self):

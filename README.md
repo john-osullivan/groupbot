@@ -1,5 +1,5 @@
 # Welcome
-This is Bond, an online group organization platform being developed by John O'Sullivan and Harry Bleyan (not that we don't welcome help!).  In a sentence, it lets people bond into *Groups* which have *Members*.  These *Members* have *Roles*.  These *Roles* let them create and manage *Events*, give and receive *Tasks*, and contribute to the Role's *InfoPage*.  Groups can also *Bond* to other Groups, letting them share InfoPages and choose *Representatives* for each other's Groups.
+This is GroupBot, an online group organization platform being developed by John O'Sullivan and Harry Bleyan.  In a sentence, it lets people join into *Groups* as *Members*.  These *Members* have *Roles*.  These *Roles* let them create and manage *Events*, give and receive *Tasks*, and contribute to the Role's *InfoPage*.  Groups can also *Bond* to other Groups, letting them share InfoPages and choose *Representatives* for each other's Groups.
 
 Additionally, the platform is going to be expanded to support Discussions and Meetings.  In general, it will be expanded to support many more things -- the idea is in FLUX.  
 
@@ -99,14 +99,16 @@ An Infopage is the way to view any user-facing object in the database.  It is a 
 - source_table (required 80 character string)
 - source_id (required integer)
 - Description (150 character long String)
-- Content (42420 character String) : Will need to be changed later
+- .main_infoblocks (One-to-many w/ Infoblock) - Reserved for the standard Infoblocks created for each Thing
+- .user_infoblocks (One-to-many w/ Infoblock) - Reserved for the user-generated Infoblocks created for each Thing
 - Children (if any)
 
 ### Infoblocks
-An Infoblock represents one unit box on an Infopage.  These boxes have one of three fixed widths (30%, 60% 90%), and their height is however damn tall they need to be.  They are listed in an order on a page, leading to a natural tiling.  They have a name, like everyThing else.  Last but not least, they have content.  This content is sanitized HTML for now, it could be expanded into more subdivisions as required.
+An Infoblock represents one unit box on an Infopage.  These boxes have one of three fixed widths (30%, 60% 90%), and their height is however damn tall they need to be.  They are listed in an order on a page, leading to a natural tiling.  They have a name, like everyThing else.  Their identity as a main Infoblock or user Infoblock is stored as the 'content_type' string.  Last but not least, they have content.  This content is sanitized HTML for now, it could be expanded into more subdivisions as required.
 - .name (optional String(80))
 - .width (Integer) - Supposed to be the numerator of a fraction describing the width of the box on the screen.  The denominator would currently be three, but it could theoretically go as high as 12.  None of that is enforced in the database, however.
 - .order (Integer) - Supposed to be an index in a *zero-indexed* list of Infoblocks.  Also not enforced at all within the database.
+- .content_type (Required String(40)) - This says either 'main' or 'user', allowing us to check from the Infoblock itself what type it is.  Not yet enforced in any way, but in the future it could have a validation to make sure the String is valid with the Infopage relationship.
 - .content (Required String(42420)) - This is the actual (allegedly but not yet really sanitized) HTML which gets rendered in the box.
 
 ### Events

@@ -713,9 +713,6 @@ def attend(event_id):
 @app.route('/info/create')
 def create_infopage():
     '''
-    NOTE
-    This function is meant to be a barebones creator of an InfoPage.  Given their 
-
     INPUT
     Member object in the request, in order to check that Permissions are valid.
     Additionally a validated InfoPageForm.
@@ -736,8 +733,6 @@ def create_infopage():
         # Pull in the optional ones
         if request.form['description'] != "": description = request.form['description'] \
                                         else: description = None
-        if request.form['content'] != "": content = request.form['content'] \
-                                    else: content = None
 
         # Create our friendly new InfoPage and save it in.
         new_page = Infopage(page_name, source_table, source_id, description, content)
@@ -778,12 +773,15 @@ def delete_infopage(info_id):
 def edit_infopage(info_id):
     '''
     INPUT
-    A validated InfoPageForm which has the sanitized HTML string we need to save.
-    Member object in the request, in order to check that Permissions are valid.
+    The request will have a hash called 'infopage'.  The 'infopage' hash contains
+    the parameters 'name', 'description', 'main_infoblock_ids', 'user_infoblock_ids',
+    and 'children_ids'.  The first two parameters are strings, the second two are
+    arrays of integers representing the infoblock, infoblock, and infopage ids
+    respectively.
 
     RESULT
-    Infopage has its content updated, it returns True if all goes well -- otherwise
-    it throws an Exception.
+    Infopage has its name and descrption updated, any children are added to the
+    association, and the infoblock relationships are updated.
     '''
     # First, grab the Group, Member, and Infopage to do some validation.
     (group, member) = get_group_member(request)
@@ -791,20 +789,47 @@ def edit_infopage(info_id):
 
     # Validate that the Member is part of the Group, all that jazz.
     if member in group.members:
+
+        # Grab all the parameters from the request in String/array form
         new_name = request.form['page_name']
         new_description = request.form['page_description']
-        new_content = request.form['page_content']
+        children_ids = request.POST['infopage']['children_ids']
+        main_infoblock_ids = request.POST['infopage']['main_infoblock_ids']
+        user_infoblock_ids = request.POST['infopage']['user_infoblock_ids']
 
-        # TODO: Put in some sort of content filtering or sanitization.
+        # Turn the id arrays into lists of actual database objects
+        children = [Infopage.query.get(int(info_id))] for info_id in children_ids]
+        main_blocks = [Infoblock.query.get(int(info_id)) for info_id in main_infoblock_ids]
+        user_blocks = [Infoblock.query.get(int(info_id)) for info_id in user_infoblock_ids]
 
-        # Actually modify the page and save our work.
+        # Get the current sets for each relationship
+        current_children = infopage.children
+        current_main_blocks = infopage.main_infoblocks
+        current_user_blocks = infopage.user_infoblocks
+
+        # Modify the page's information
         infopage.name = new_name
         infopage.description = new_description
-        infopage.content = new_content
+
+        # Update each of our relationships
+        for child in children:
+            if child not in current_children:
+                infopage.children.append(child)
+
+        for main_block in main_blocks:
+            if main_block not in current_main_blocks:
+                infopage.main_infoblocks.append(main_block)
+
+        for user_block in user_blocks:
+            if user_block not in current_user_blocks:
+                infopage.user_infoblocks.append(user_block)
+
+        # And save our work!
         db_session.commit()
+        
         return True
     else:
-        raise Exception("That Member isn't part of the ")
+        raise Exception("That Member isn't part of the group")
 
 
 #----------------------------------------------------------------------------#
@@ -814,18 +839,53 @@ def edit_infopage(info_id):
 def create_infoblock():
     '''
     INPUT
+    A request with a hash called 'infoblock'.  Within that hash, definitely 
+    include the parameters infopage_id, width, order, content_type, and content.  
+    Optionally also include a name.  Additionally, the group_id and member_id should all
+    be in the request.  The request should have the parameter 'create' in it when
+    we're trying to save the object.
 
     RESULT
-
+    A new Infoblock is created in the database, and therefore rendered on the
+    Infopage.  Ideally, the user creates one or more blocks with Javascript and
+    then all the information required to save them in the database gets sent here.
     '''
+    # First, grab the Group and Member.
+    (group, member) = get_group_member(request)
+    
+    # If we're actually doing a create (never know if we're just rendering the page!)...
+    if request.POST['create']:
+
+        # Grab all of the mandatory Infoblock parameters from the request.
+        infopage_id = request.POST['infoblock']['infopage_id']
+        infopage = Infopage.query.get(infopage_id)
+        width = int(request.POST['infoblock']['width'])
+        order = int(request.POST['infoblock']['order'])
+        content_type = request.POST['infoblock']['content_type']
+        content = request.POST['infoblock']['content']
+
+        # Grab the optional name
+        if request.POST['infoblock']['name']: name = request.POST['infoblock']['name'] else: name = None
+        
+        # Then use them to make an actual Infoblock
+        new_infoblock = Infoblock(name, width, order, content_type, content)
+
+        # Add the Infoblock to the Infopage's correct Infoblock relation
+        if content_type == 'main':
+            
 
 @app.route('/infoblock/<int:infoblock_id>/edit')
 def edit_infoblock(infoblock_id):
     '''
     INPUT
+    A request with a hash called 'infoblock' and a parameter called 'update' which
+    is set to true when the acutal update is being processed.  Inside of the 
+    'infoblock' hash, there should be an 'infopage_id', 'width', 'order', and 'content'.
+    Essentially the same thing as in the create function, right?  Additionally, the
+    request has the group_id and member_id.
 
     RESULT
-    
+    Find the infoblock in question, update each of its parameters.  Das it.
     '''
 
 @app.route('/infoblock/<int:infoblock_id>/delete')
