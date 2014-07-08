@@ -833,9 +833,10 @@ def edit_infopage(info_id):
 
 
 #----------------------------------------------------------------------------#
-# Infoblocks.
+# Infoblock C/U/D functions.  Meant to act as internal functions, not URL 
+# endpoints as of yet.  The create and edit Infopage functions will use these
+# editing Infoblocks function
 #----------------------------------------------------------------------------#
-@app.route('/infoblock/create')
 def create_infoblock():
     '''
     INPUT
@@ -872,10 +873,14 @@ def create_infoblock():
 
         # Add the Infoblock to the Infopage's correct Infoblock relation
         if content_type == 'main':
-            
+            infopage.main_infoblocks.append(new_infoblock)
+        else if content_type == 'user':
+            infopage.user_infoblocks.append(new_infoblock)
+        else:
+            raise Exception("The infoblock's content_type isn't set to main or user!")
+        return True
 
-@app.route('/infoblock/<int:infoblock_id>/edit')
-def edit_infoblock(infoblock_id):
+def edit_infoblock(infoblock_id, width, order, content, name):
     '''
     INPUT
     A request with a hash called 'infoblock' and a parameter called 'update' which
@@ -887,15 +892,32 @@ def edit_infoblock(infoblock_id):
     RESULT
     Find the infoblock in question, update each of its parameters.  Das it.
     '''
+    # First, grab the Group, Member, and Infoblock in question.
+    (group, member) = get_group_member(request)
+    infoblock = Infoblock.query.get(infoblock_id)
 
-@app.route('/infoblock/<int:infoblock_id>/delete')
-def delete_infoblock(infopage_id):
+    # Now modify the actual properties and save the work
+    infoblock.width = width
+    infoblock.order = order
+    infoblock.content = content
+    infoblock.name = name
+    db_session.commit()
+    return True
+
+def delete_infoblock(infoblock_id):
     '''
     INPUT
+    An infoblock_id representing the one to be deleted.
 
     RESULT
-    
+    The block got DELETED, yo.  Also we returned True.  If the 
     '''
+    # First, grab the Group, Member, and Infoblock in question.
+    (group, member) = get_group_member(request)
+    infoblock = Infoblock.query.get(infoblock_id)
+    db_session.delete(infoblock)
+    db_session.commit()
+    return True
 
 #----------------------------------------------------------------------------#
 # Representatives.
