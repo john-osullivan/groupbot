@@ -14,6 +14,6 @@ SECRET_KEY = 'my precious'
 # Connect to the Heroku Postgre database by grabbing the url out of the heroku config
 # command.  That way we DEFINITELY know what the URL is.
 # SQLALCHEMY_DATABASE_URI = 'postgresql://johnosullivan:Rawrqed234@localhost/groupify_test'
-database_url = subprocess.check_output(['heroku', 'config:get', 'DATABASE_URL', '-a', 'groupbot-app'], shell=True)
-print "About to try and connect to ", database_url
-SQLALCHEMY_DATABASE_URI = database_url
+# database_url = subprocess.check_output(['heroku', 'config:get', 'DATABASE_URL', '-a', 'groupbot-app'], shell=True)
+# print "About to try and connect to ", database_url
+SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
