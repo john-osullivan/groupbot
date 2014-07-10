@@ -11,7 +11,9 @@ DEBUG = True
 # http://clsc.net/tools-old/random-string-generator.php
 SECRET_KEY = 'my precious'
 
-# Connect to the database
+# Connect to the Heroku Postgre database by grabbing the url out of the heroku config
+# command.  That way we DEFINITELY know what the URL is.
 # SQLALCHEMY_DATABASE_URI = 'postgresql://johnosullivan:Rawrqed234@localhost/groupify_test'
-print "About to try and connect to ", subprocess.check_output(['heroku config:get DATABASE_URL -a groupbot-app'])
-SQLALCHEMY_DATABASE_URI = subprocess.check_output(['heroku config:get DATABASE_URL -a groupbot-app'])
+database_url = subprocess.check_output(['heroku config:get DATABASE_URL -a groupbot-app'], shell=True)
+print "About to try and connect to ", database_url
+SQLALCHEMY_DATABASE_URI = database_url
