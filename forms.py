@@ -70,10 +70,6 @@ class TaskForm(Form):
     points = IntegerField('Point Value')
     comments = TextField('Comments', validators=[Length(min=6, max=256)])
 
-# class TaskDeliverForm(Form):
-    # This one is an interesting question.  What delivery methods do we want to support
-    # up front? -JJO
-
 class EventForm(Form):
     name = TextField('Event Name', validators=[DataRequired(), Length(min=6, max=80)])
     host_id = FormField(MemberChoiceForm, validators=[DataRequired()])
