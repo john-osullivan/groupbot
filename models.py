@@ -13,16 +13,7 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 Base.query = db_session.query_property()
 
-NAMES_TO_CLASSES = {
-    'users': User,
-    'bonds' : Bond,
-    'groups' : Group,
-    'members' : Member,
-    'roles' : Role,
-    'tasks' : Task,
-    'events' : Event,
-    'infopages' : Infopage
-}
+
 
 ###############################################
 #---------------------------------------------#
@@ -46,9 +37,9 @@ def is_table(table_string):
 # still a method stub.
 def is_real_thing(table, thing_id):
     if is_table(table):
-        return tablename_to_class(table).query.get(thing_id) != None:
+        return tablename_to_class(table).query.get(thing_id) != None
 
-def name_to_thing(table_name, thing_id):
+# def name_to_thing(table_name, thing_id):
 
 
 ###############################################
@@ -238,17 +229,17 @@ member_roles = db.Table(
     db.Column('role_id', Integer, ForeignKey('roles.role_id'))
     )
 
-class Representative(Base):
-    __tablename__ = 'representatives'
-    '''
-    A table containing information unique to a Representative.  Which group are they from,
-    which group are they representing in.  Also a string describing how it's chosen -- elected
-    or appointed.
-    '''
+# class Representative(Base):
+#     __tablename__ = 'representatives'
+#     '''
+#     A table containing information unique to a Representative.  Which group are they from,
+#     which group are they representing in.  Also a string describing how it's chosen -- elected
+#     or appointed.
+#     '''
 
-    def __init__(self):
+#     def __init__(self):
 
-    def __repr__(self):
+#     def __repr__(self):
 
 
 ###############################################
@@ -431,8 +422,8 @@ class Event(Base):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2000))
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
-    start_time = db.Column(db.DateTime(datetime.datetime(0)))
-    end_time = db.Column(db.DateTime(datetime.datetime(0)))
+    start_time = db.Column(db.DateTime())
+    end_time = db.Column(db.DateTime())
 
     # List of people invited to the event
     invited = db.relationship('Member', backref='events', secondary=event_invite_table)
@@ -480,6 +471,27 @@ member_infos_table = db.Table('member_infopages', Base.metadata,
     db.Column('member_id', db.Integer, db.ForeignKey('members.member_id')),
     db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
 )
+
+main_infoblocks = db.Table(
+    '''
+    Stores the relations from Infopages to their main Infoblocks, the ones produced and
+    laid out by us.
+    '''
+    'main_infoblocks', Base.metadata,
+    db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
+    db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
+    )
+
+user_infoblocks = db.Table(
+    '''
+    This stores the relations to determine which Infoblocks have been created by users
+    on which pages.  Just a straight up ID, no need to get fancy.
+    '''
+    ''
+    'user_infoblocks', Base.metadata,
+    db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
+    db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
+    )
 
 class Infopage(Base):
     __tablename__ = 'infopages'
@@ -542,27 +554,6 @@ class Infopage(Base):
             return 
 
 
-main_infoblocks = db.Table(
-    '''
-    Stores the relations from Infopages to their main Infoblocks, the ones produced and
-    laid out by us.
-    '''
-    'main_infoblocks', Base.metadata,
-    db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
-    db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
-    )
-
-user_infoblocks = db.Table(
-    '''
-    This stores the relations to determine which Infoblocks have been created by users
-    on which pages.  Just a straight up ID, no need to get fancy.
-    '''
-    ''
-    'user_infoblocks', Base.metadata,
-    db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
-    db.Column('infoblock_id', Integer, Foreign('infoblock_id.infoblock_id'))
-    )
-
 class Infoblock(Base):
     __tablename__ = 'infoblocks'
     '''
@@ -589,7 +580,7 @@ class Infoblock(Base):
     content_type = db.Column(db.String(40), nullable = False)
     content = db.Column(db.String(42420), nullable = False)
 
-    def __init__(self, name=None, width, order, content_type, content):
+    def __init__(self, width, order, content_type, content, name=None):
         self.name = name
         self.width = width
         self.order = order
@@ -605,26 +596,37 @@ class Infoblock(Base):
 #---------------------------------------------#
 ###############################################
 
-class Committee(Base):
-    __tablename__ = 'committees'
-    '''
-    A table containing the internal sub-groupings.  A committee is a Group which is meant
-    to be purely internal to another Group.  It can't Bond with Groups other than its host,
-    and it shares all InfoPage access with the host group.  It is only separate because it
-    allows for special functionality of smaller, lighter sub-spaces within the larger Group
-    space.
-    '''
-    def __init__(self):
+# class Committee(Base):
+#     __tablename__ = 'committees'
+#     '''
+#     A table containing the internal sub-groupings.  A committee is a Group which is meant
+#     to be purely internal to another Group.  It can't Bond with Groups other than its host,
+#     and it shares all InfoPage access with the host group.  It is only separate because it
+#     allows for special functionality of smaller, lighter sub-spaces within the larger Group
+#     space.
+#     '''
+#     def __init__(self):
 
-    def __repr__(self):
+#     def __repr__(self):
 
-class Discussion(Base):
-    __tablename__ = 'discussions'
-    '''
-    '''
-    def __init__(self):
+# class Discussion(Base):
+#     __tablename__ = 'discussions'
+#     '''
+#     '''
+#     def __init__(self):
 
-    def __repr__(self):
+#     def __repr__(self):
+
+NAMES_TO_CLASSES = {
+    'users': User,
+    'bonds' : Bond,
+    'groups' : Group,
+    'members' : Member,
+    'roles' : Role,
+    'tasks' : Task,
+    'events' : Event,
+    'infopages' : Infopage
+}
 
 # Create tables.
 Base.metadata.create_all(bind=engine)

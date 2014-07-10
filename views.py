@@ -2,8 +2,9 @@ from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
 from flask.ext.sqlalchemy import SQLAlchemy,Pagination
 from app import app
-from models import db_session, User, GroupPartnership, Group, Member, \
-                                member_roles, Role, member_tasks, Task
+from models import db_session, User, Bond, Group, Member, \
+                                member_roles, Role, member_tasks, Task, \
+                                Event, Infopage, Infoblock
 
 
 # Login required decorator.
@@ -16,8 +17,6 @@ def login_required(test):
             flash('You need to login first.')
             return redirect(url_for('login'))
     return wrap
-
-
 
 
 

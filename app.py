@@ -6,8 +6,6 @@ from flask import * # do not use '*'; actually input the dependencies.
 from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
-from forms import *
-from views import *
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -16,6 +14,10 @@ from views import *
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+
+from forms import *
+from views import *
+from models import *
 
 # Automatically tear down SQLAlchemy.
 

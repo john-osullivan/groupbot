@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from wtforms import TextField, DateField, IntegerField, \
-        SelectField, PasswordField, FormField
+        SelectField, PasswordField, FormField, RadioField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
@@ -65,19 +65,19 @@ class RoleAssignForm(Form):
 class TaskForm(Form):
     name = TextField('Task Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Task Description', validators=[Length(min=6, max=512)])
-    doing_member = FormField(MemberForm)
+    doing_member = FormField(MemberChoiceForm)
     deadline = DateField('Deadline')
     points = IntegerField('Point Value')
     comments = TextField('Comments', validators=[Length(min=6, max=256)])
 
-class TaskDeliverForm(Form):
+# class TaskDeliverForm(Form):
     # This one is an interesting question.  What delivery methods do we want to support
     # up front? -JJO
 
 class EventForm(Form):
     name = TextField('Event Name', validators=[DataRequired(), Length(min=6, max=80)])
     host_id = FormField(MemberChoiceForm, validators=[DataRequired()])
-    start_time = DateField('Starting Time', validators=[DateRequired()])
+    start_time = DateField('Starting Time', validators=[DataRequired()])
     end_time = DateField('Ending Time')
     location = TextField('Event Location', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Event Description', validators=[Length(min=6, max=1024)])
