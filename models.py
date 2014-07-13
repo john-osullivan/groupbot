@@ -5,8 +5,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from sqlalchemy.engine import reflection
 from app import db
 import os
+from config import SQLALCHEMY_DATABASE_URI
 
-engine = create_engine(os.environ['DATABASE_URL'])
+engine = create_engine(SQLALCHEMY_DATABASE_URI)
 inspector = reflection.Inspector.from_engine(engine)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,

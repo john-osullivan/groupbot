@@ -18,6 +18,8 @@ SECRET_KEY = 'my precious'
 # print "About to try and connect to ", database_url
 SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL','postgresql://johnosullivan:Rawrqed234@localhost/groupify_test')
 
+SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+
 # Once upon a time (7/12/2014) this was the URL to access the Heroku Postgres database.  I wanted
 # to do it manually to run a database create.  Then nothing changed :(
 # Keeping it here for now... JUST IN CASE.
