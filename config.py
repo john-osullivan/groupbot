@@ -16,7 +16,9 @@ SECRET_KEY = 'my precious'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://johnosullivan:Rawrqed234@localhost/groupify_test'
 # database_url = subprocess.check_output(['heroku', 'config:get', 'DATABASE_URL', '-a', 'groupbot-app'], shell=True)
 # print "About to try and connect to ", database_url
-if 'DATABASE_URL' in os.environ != None:
-	SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-else:
-	SQLALCHEMY_DATABASE_URI = 'postgresql://johnosullivan:Rawrqed234@localhost/groupify_test'\
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL','postgresql://johnosullivan:Rawrqed234@localhost/groupify_test')
+
+# Once upon a time (7/12/2014) this was the URL to access the Heroku Postgres database.  I wanted
+# to do it manually to run a database create.  Then nothing changed :(
+# Keeping it here for now... JUST IN CASE.
+# engine = create_engine('postgresql://aomarwxfityqsh:ChwDthtCANnyFKc0KegNQZjAWN@ec2-23-21-185-168.compute-1.amazonaws.com:5432/d8g1juqupb36dt')

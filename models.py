@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from sqlalchemy.engine import reflection
 from app import db
 
-engine = create_engine('sqlite:///database.db', echo=True)
+engine = create_engine('postgresql://john')
 inspector = reflection.Inspector.from_engine(engine)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
