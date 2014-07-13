@@ -489,7 +489,6 @@ user_infoblocks = db.Table(
     This stores the relations to determine which Infoblocks have been created by users
     on which pages.  Just a straight up ID, no need to get fancy.
     '''
-    ''
     'user_infoblocks', Base.metadata,
     db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
     db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
