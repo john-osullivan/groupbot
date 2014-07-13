@@ -220,12 +220,12 @@ class Member(Base):
     def __repr__(self):
         return "Member # of Group #: %s --- %s"%(self.member_id, self.group_id)
 
+'''
+Handles the many-to-many db.relationship between members and roles, allowing for
+a role to have performed by multiple members or have one member perform 
+multiple roles.
+'''
 member_roles = db.Table(
-    '''
-    Handles the many-to-many db.relationship between members and roles, allowing for
-    a role to have performed by multiple members or have one member perform 
-    multiple roles.
-    '''
     'member_roles', Base.metadata,
     db.Column('member_id', Integer, ForeignKey('members.member_id')),
     db.Column('role_id', Integer, ForeignKey('roles.role_id'))
@@ -290,13 +290,13 @@ class Role(Base):
     def __repr__(self):
         return "Role #(%s) of Group #(%s) held by Member #(%s)"%(self.role_id, self.group_id, self.member_id)
 
+'''
+Table which handles the db.relationship between members and tasks.  Our goal is to have
+two members associated with each task, one who is giving it and one who is doing it.  The
+table has three columns, one for the giving_member_id, one for the doing_member_id, and
+one for the task_id.
+'''
 member_tasks = db.Table(
-    '''
-    Table which handles the db.relationship between members and tasks.  Our goal is to have
-    two members associated with each task, one who is giving it and one who is doing it.  The
-    table has three columns, one for the giving_member_id, one for the doing_member_id, and
-    one for the task_id.
-    '''
     'member_tasks', Base.metadata,
     db.Column('giving_member_id', Integer, ForeignKey('members.member_id')),
     db.Column('given_member_id', Integer, ForeignKey('members.member_id')),
