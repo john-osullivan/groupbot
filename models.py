@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from sqlalchemy.engine import reflection
 from app import db
+import os
 
 engine = create_engine(os.environ['DATABASE_URL'])
 inspector = reflection.Inspector.from_engine(engine)
