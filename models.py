@@ -474,21 +474,22 @@ member_infos_table = db.Table('member_infopages', Base.metadata,
     db.Column('infopage_id', db.Integer, db.ForeignKey('infopages.infopage_id'))
 )
 
+'''
+Stores the relations from Infopages to their main Infoblocks, the ones produced and
+laid out by us.
+'''
 main_infoblocks = db.Table(
-    '''
-    Stores the relations from Infopages to their main Infoblocks, the ones produced and
-    laid out by us.
-    '''
+
     'main_infoblocks', Base.metadata,
     db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
     db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
     )
 
+'''
+This stores the relations to determine which Infoblocks have been created by users
+on which pages.  Just a straight up ID, no need to get fancy.
+'''
 user_infoblocks = db.Table(
-    '''
-    This stores the relations to determine which Infoblocks have been created by users
-    on which pages.  Just a straight up ID, no need to get fancy.
-    '''
     'user_infoblocks', Base.metadata,
     db.Column('infopage_id', Integer, ForeignKey('infopages.infopage_id')),
     db.Column('infoblock_id', Integer, ForeignKey('infoblocks.infoblock_id'))
