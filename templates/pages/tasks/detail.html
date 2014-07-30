@@ -1,9 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <div class='col-md-8'>
+        <h6>{{ task['name'] }}</h6>
+        <p>{{ task['description'] }}</p>
+        <p>{{ task['comments'] }}</p>
+    </div>
+    <div class='col-md-4'>
+        <p>Deadline: {{ str(task['deadline']) }}</p>
+        <p>Deliverable: {{ str(task['deliverable'] }}</p>
+        {% if task['delivered'] == True %}
+        <span class='label label-success'>Delivered!</span>
+        {% else %}
+        <span class='label label-info'>Not Yet Delivered...</span>
+        {% end %}
+    </div>
+</div>

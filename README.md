@@ -18,6 +18,7 @@ The system currently recognizes eight SQLAlchemy models which correspond to data
 - Roles
 - Tasks
 - Infopages
+- Infoblocks
 - Events
 - (Pending) Representatives
 - (Pending) Committees/InGroups
@@ -35,7 +36,7 @@ Users separated from the specific activity of each group.  All association is ha
 - memberships (relation to Members)
 
 ### Groups
-Groups are collections of Members.  They also point to Roles and Tasks.  Eventually, a group there will be surrounding features like by-laws, voting, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  It has the columns:
+Groups are collections of Members.  They also point to Roles and Tasks.  Eventually, a group there will be surrounding features like by-laws, voting, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  Since a Group has an Infopage, every Group's parent points to the "Dashboard" view.  Groups have the columns:
 - Display Name (String) : A non-unique name to refer to the group by, to make 
 standard use easier.
 - Code Name (String) : A unique name for the group similar to a Twitter handle

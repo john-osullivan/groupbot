@@ -534,7 +534,7 @@ class Infopage(Base):
     contributors = db.relationship("Member", secondary=member_infos_table, backref='infopages')
 
     # Relations to establish one-to-many parent-child db.relationships.
-    children = db.relationship('Infopage', backref='parent') # +1 This is really slick. -JJO
+    children = db.relationship('Infopage', backref='parent')
 
     # Relations to the two categories of Infoblocks -- the main Infoblocks and the user  Infoblocks.  
     main_infoblocks = db.relationship("Infoblock", secondary=main_infoblocks, backref="infopage")
@@ -580,12 +580,15 @@ class Infoblock(Base):
     width = db.Column(db.Integer, nullable = False)
     order = db.Column(db.Integer, nullable = False)
     content_type = db.Column(db.String(40), nullable = False)
-    content = db.Column(db.String(42420), nullable = False)
+    content = db.Column(db.String(4200), nullable = False)
+    template = db.Column(db.String(42420), nullable = False)
 
-    def __init__(self, width, order, content_type, content, name=None):
+     def __init__(self, width, order, content_type, template, \
+                    content=None, name=None):
         self.name = name
         self.width = width
         self.order = order
+        self.template = template
         self.content_type = content_type
         self.content = content
 

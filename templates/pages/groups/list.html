@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'pages/infoblock.html' %}
 
-</body>
-</html>
+{% for group in content['groups'] %}
+<div class='row'>
+    <h6>{{ group['human_name'] }} <small>{{ group['code_name'] }}</small></h6>
+    <p class='lead'>{{ group['byline'] }}</p>
+    <p>{{ group['description'] }}</p>
+</div>
+{% endfor %}

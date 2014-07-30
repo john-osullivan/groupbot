@@ -70,6 +70,14 @@ def view_group(group_code_name):
     chooses (think of it like combining your management and your publicity
     into the same activity).
     '''
+    group = Group.query.filter_by(ode_name = group_code_name)
+    tasks = group.tasks.order_by(Task.deadline).limit(5)
+    events = group.events.order_by(Event.start_time).limit(5)
+    content = {}
+    content['group_name'] = group.human_name
+    content['group_byline'] = group.byline
+    content['tasks'] = tasks
+    return render_template('pages/groups/detail', content=content)
 
 @app.route('/group/<group_code_name>/task/<task_id>')
 def view_task(group_code_name, task_id):

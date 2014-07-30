@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<p class='lead'>Hey there, glad to see you making a Group!  Let's get started.</p>
+<form action='/' method='post'>
+    {{ form.human_name }}
+    {{ form.code_name }}
+    {{ form.byline }}
+    {{ form.description }}
+    <input type='submit' value='Create Group'>
+</form>

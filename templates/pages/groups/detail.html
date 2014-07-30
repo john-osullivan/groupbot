@@ -1,9 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<h4>{{ content['group_name'] }}</h4>
+<p>{{ content['group_byline'] }}</p>
+<div class='row'>
+    <div class='col-md-6' id='task_list'>
+        <h5>Upcoming Tasks</h5>
+        {% for task in content['tasks'] %}
+            <div class='row'>
+                <div class='col-md-8'>
+                    <h6>{{ task['name'] }}</h6>
+                    <p>{{ task['description'] }}</p>
+                </div>
+                <div class='col-md-4'>
+                    <p>Deadline: {{ str(task['deadline']) }}</p>
+                    {% if task['delivered'] == True %}
+                        <span class='label label-success'>Delivered!</span>
+                    {% else %}
+                        <span class='label label-info'>Not Yet Delivered...</span>
+                    {% end %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class='col-md-6' id='event_list'>
+        <h5>Upcoming Events</h5>
+        {% for event in content['events'] %}
+            <div class='row'>
+                <div class='col-md-8'>
+                    <h6>{{ event['name'] }}</h6>
+                    <p>{{ event['description'] }}</p>
+                </div>
+                <div class='col-md-4'>
+                    <p>Starting at: {{ event['start_time' }}</p>
+                    <p>& Ending at: {{ event['end_time'] }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class='row'>
+    <div id='member_list'>
+        <h5>Members</h5>
+        {% for member in content['members'])) %}
+            <div class='col-md-4'>
+                <h6>{{ member['name'] }}</h6>
+                {% for role in member['roles'] %}
+                    <p>{{ role['name'] }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

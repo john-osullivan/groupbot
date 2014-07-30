@@ -1,0 +1,5 @@
+{% extends 'pages/infopage.html' %}
+<div class='infoblock'>
+    <h4>{{ infoblock['name'] }}</h4>
+    {% set template = infoblock['template'] + '.html'%}{% include template %}
+</div>
