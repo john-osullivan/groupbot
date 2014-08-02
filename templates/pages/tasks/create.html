@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Okay, things to do.  Tasks to give out.  Stuff to get DONE.  LET'S DO THIS.</p>
+    <form method='POST' action='/'>
+        {{ form.name }}
+        {{ form.description }}
+        {{ form.doing_member }}
+        {{ form.deadline }}
+        {{ form.comments }}
+        <input type='submit' value='Create Task'>
+    </form>
+</div>

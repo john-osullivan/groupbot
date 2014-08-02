@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Whoa, wait a second.  This isn't right!  Let's fix it.</p>
+    <form method='POST' action='/'>
+        {{ form.name }}
+        {{ form.description }}
+        {{ form.doing_member }}
+        {{ form.deadline }}
+        {{ form.comments }}
+        <input type='submit' value='Edit Task'>
+    </form>
+</div>

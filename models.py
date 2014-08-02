@@ -336,7 +336,7 @@ class Task(Base):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(512))
     deadline = db.Column(db.DateTime)
-    deliverable = db.Column(db.LargeBinary)
+    deliverable = db.Column(db.String(256))
     delivered = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, default=False)
     points = db.Column(db.Integer)
@@ -583,7 +583,7 @@ class Infoblock(Base):
     content = db.Column(db.String(4200), nullable = False)
     template = db.Column(db.String(42420), nullable = False)
 
-     def __init__(self, width, order, content_type, template, \
+    def __init__(self, width, order, content_type, template, \
                     content=None, name=None):
         self.name = name
         self.width = width

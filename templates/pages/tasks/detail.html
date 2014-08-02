@@ -8,10 +8,26 @@
     <div class='col-md-4'>
         <p>Deadline: {{ str(task['deadline']) }}</p>
         <p>Deliverable: {{ str(task['deliverable'] }}</p>
-        {% if task['delivered'] == True %}
-        <span class='label label-success'>Delivered!</span>
-        {% else %}
-        <span class='label label-info'>Not Yet Delivered...</span>
-        {% end %}
+        <div class='col-md-2'>
+            {% if task['delivered'] == True %}
+                <span class='label label-success'>Delivered!</span>
+            {% elsif task['late'] == True %}
+                <span class='label label-danger'>Still Not Delivered :(</span>
+            {% else %}
+                <span class='label label-info'>Not Delivered(</span>
+            {% endif %}
+        </div>
+        <div class='col-md-2'>
+            {% if task['approved'] == True %}
+            <span class='label label-success'>Approved!</span>
+            {% else %}
+            <span class='label label-info'>Not Approved :(</span>
+            {% endif %}
+        </div>
+        {% if task[doing_member_id] == member[member_id] %}
+            <a type='button' class='button btn btn-block' href='{{ url_for(deliver_task, task["id"]) }}'>Deliver Task</a>
+        {% elsif task[giving_member_id] == member[member_id] %}
+            <a type='button' class='button btn btn-block' href='{{ url_for(approve_task, task["id"]) }}'>Deliver Task</a>
+        {% endif %}
     </div>
 </div>

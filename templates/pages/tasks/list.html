@@ -1,9 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <div class='col-md-12'>
+        {% for task in content['tasks'] %}
+            <div class='row'>
+                <div class='col-md-6'>
+                    <h6>{{ task['name' }}</h6>
+                    <p>Assigned to: {{ task['doing_member_name'] }}</p>
+                </div>
+                <div class='col-md-6'>
+                    <p>Due at: {{ task['deadline'] }}</p>
+                    <p>
+                        {% if task['delivered'] == True %}
+                        <span class='label label-success'>Delivered</span>
+                        {% elsif task['late'] == False %}
+                        <span class='label label-info'>Not Delivered</span>
+                        {% else %}
+                        <span class='label label-danger'>Still Not Delivered!</span>
+                        {% endif %}
 
-</body>
-</html>
+                        {% if task['approved'] == True %}
+                        <span class='label label-success'>Approved</span>
+                        {% else %}
+                        <span class='label label-info'>Not Approved</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

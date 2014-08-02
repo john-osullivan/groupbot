@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Something doesn't need to happen anymore?  Unhappen it -- you're the boss.</p>
+    <select id='task_id'>
+        {% for task in content["task_options"] %}
+            <option value='{{ task["id"] }}'>{{ task['name'}} - {{ task['doing_member_name'] }}</option>
+        {% endfor %}
+    </select>
+    <input type='submit' value='Delete Task'>
+</div>
