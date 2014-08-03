@@ -2,19 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/add.html" afterPath="$PROJECT_DIR$/templates/pages/members/add.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/delete.html" afterPath="$PROJECT_DIR$/templates/pages/members/delete.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/detail.html" afterPath="$PROJECT_DIR$/templates/pages/members/detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/edit.html" afterPath="$PROJECT_DIR$/templates/pages/members/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/list.html" afterPath="$PROJECT_DIR$/templates/pages/members/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models.py" afterPath="$PROJECT_DIR$/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/home.html" afterPath="$PROJECT_DIR$/templates/pages/home.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406939667018" ignored="false" />
+    <file path="/Dummy.txt" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1407073813277" ignored="false" />
     <file path="/main.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1404937697817" ignored="false" />
     <file path="/dashboard.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1404937982208" ignored="false" />
-    <file path="/home.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406763706167" ignored="false" />
+    <file path="/home.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1407074663572" ignored="false" />
     <file path="/infopage.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1405410023047" ignored="false" />
     <file path="/infopage_style.css" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406674235941" ignored="false" />
     <file path="/infoblock.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406678846897" ignored="false" />
@@ -48,7 +44,7 @@
       <file leaf-file-name="infopage.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/infopage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="0" selection-start="2408" selection-end="2408" vertical-scroll-proportion="-29.615385">
+            <state line="57" column="0" selection-start="2408" selection-end="2408" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -63,11 +59,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="add.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/members/add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="89" selection-start="492" selection-end="492" vertical-scroll-proportion="0.18411553">
+            <state line="9" column="89" selection-start="492" selection-end="492" vertical-scroll-proportion="-5.8846154">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="home.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/pages/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="44" selection-start="135" selection-end="135" vertical-scroll-proportion="0.083129585">
+              <folding>
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h1#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h2#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h2#1;n#div#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -75,7 +85,7 @@
       <file leaf-file-name="delete.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/members/delete.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -84,7 +94,7 @@
       <file leaf-file-name="detail.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/members/detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -93,7 +103,7 @@
       <file leaf-file-name="create.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/groups/create.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="36" vertical-scroll-proportion="-0.0">
+            <state line="0" column="0" selection-start="0" selection-end="36" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -102,7 +112,7 @@
       <file leaf-file-name="edit.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/members/edit.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -111,7 +121,7 @@
       <file leaf-file-name="list.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/pages/members/list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -138,7 +148,6 @@
         <option value="$PROJECT_DIR$/templates/pages/groups/detail.html" />
         <option value="$PROJECT_DIR$/templates/pages/groups/edit.html" />
         <option value="$PROJECT_DIR$/templates/pages/groups/list.html" />
-        <option value="$PROJECT_DIR$/templates/pages/home.html" />
         <option value="$PROJECT_DIR$/templates/pages/tasks/approve.html" />
         <option value="$PROJECT_DIR$/templates/pages/tasks/deliver.html" />
         <option value="$PROJECT_DIR$/templates/pages/tasks/create.html" />
@@ -151,6 +160,7 @@
         <option value="$PROJECT_DIR$/templates/pages/members/edit.html" />
         <option value="$PROJECT_DIR$/templates/pages/members/list.html" />
         <option value="$PROJECT_DIR$/templates/pages/members/add.html" />
+        <option value="$PROJECT_DIR$/templates/pages/home.html" />
       </list>
     </option>
   </component>
@@ -173,7 +183,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -184,153 +194,11 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="roles" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="members" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groups" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="events" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupify" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/pages/home.html" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
   </component>
@@ -466,60 +334,39 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/pages/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="43" selection-start="195" selection-end="195" vertical-scroll-proportion="0.13853317">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/groups/list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="11" selection-start="274" selection-end="274" vertical-scroll-proportion="0.1559633">
-          <folding />
-        </state>
+        <state line="8" column="11" selection-start="274" selection-end="274" vertical-scroll-proportion="0.1559633" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/tasks/detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="71" selection-start="608" selection-end="608" vertical-scroll-proportion="0.27293578">
-          <folding />
-        </state>
+        <state line="14" column="71" selection-start="608" selection-end="608" vertical-scroll-proportion="0.27293578" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/tasks/create.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="37" selection-end="402" vertical-scroll-proportion="0.019495413">
-          <folding />
-        </state>
+        <state line="1" column="0" selection-start="37" selection-end="402" vertical-scroll-proportion="0.019495413" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/tasks/delete.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="17" selection-start="352" selection-end="352" vertical-scroll-proportion="0.116972476">
-          <folding />
-        </state>
+        <state line="6" column="17" selection-start="352" selection-end="352" vertical-scroll-proportion="0.116972476" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/tasks/edit.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="8" selection-start="178" selection-end="178" vertical-scroll-proportion="0.07798165">
-          <folding />
-        </state>
+        <state line="4" column="8" selection-start="178" selection-end="178" vertical-scroll-proportion="0.07798165" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/tasks/list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="67" selection-start="1117" selection-end="1117" vertical-scroll-proportion="0.4483945">
-          <folding />
-        </state>
+        <state line="23" column="67" selection-start="1117" selection-end="1117" vertical-scroll-proportion="0.4483945" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/groups/detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/infopage_style.css">
@@ -566,15 +413,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/infopage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="0" selection-start="2408" selection-end="2408" vertical-scroll-proportion="-29.615385">
+        <state line="57" column="0" selection-start="2408" selection-end="2408" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/members/add.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="89" selection-start="492" selection-end="492" vertical-scroll-proportion="0.18411553">
+        <state line="9" column="89" selection-start="492" selection-end="492" vertical-scroll-proportion="-5.8846154">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="44" selection-start="135" selection-end="135" vertical-scroll-proportion="0.083129585">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h1#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h2#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h2#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
