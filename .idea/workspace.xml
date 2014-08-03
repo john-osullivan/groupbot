@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\approve.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\deliver.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/tasks/create.html" afterPath="$PROJECT_DIR$/templates/pages/tasks/create.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/tasks/delete.html" afterPath="$PROJECT_DIR$/templates/pages/tasks/delete.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/tasks/detail.html" afterPath="$PROJECT_DIR$/templates/pages/tasks/detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/tasks/edit.html" afterPath="$PROJECT_DIR$/templates/pages/tasks/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/tasks/list.html" afterPath="$PROJECT_DIR$/templates/pages/tasks/list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/add.html" afterPath="$PROJECT_DIR$/templates/pages/members/add.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/delete.html" afterPath="$PROJECT_DIR$/templates/pages/members/delete.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/detail.html" afterPath="$PROJECT_DIR$/templates/pages/members/detail.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/edit.html" afterPath="$PROJECT_DIR$/templates/pages/members/edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/members/list.html" afterPath="$PROJECT_DIR$/templates/pages/members/list.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models.py" afterPath="$PROJECT_DIR$/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,6 +25,7 @@
     <file path="/list.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406946550726" ignored="false" />
     <file path="/approve.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406940227946" ignored="false" />
     <file path="/deliver.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406940681179" ignored="false" />
+    <file path="/add.html" changelist="c0129e57-1b8c-4342-92d2-873a9713c491" time="1406965338816" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,10 +54,64 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="infopage_style.css" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="infopage_style.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/infopage_style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="14" selection-start="230" selection-end="230" vertical-scroll-proportion="0.24610245">
+            <state line="13" column="14" selection-start="230" selection-end="230" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="add.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/pages/members/add.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="89" selection-start="492" selection-end="492" vertical-scroll-proportion="0.18411553">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="delete.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/pages/members/delete.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="detail.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/pages/members/detail.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/pages/groups/create.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="36" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="edit.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/pages/members/edit.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/pages/members/list.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
               <folding />
             </state>
           </provider>
@@ -83,11 +135,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/templates/pages/infopage.html" />
-        <option value="$PROJECT_DIR$/static/css/infopage_style.css" />
-        <option value="$PROJECT_DIR$/templates/pages/infoblock.html" />
-        <option value="$PROJECT_DIR$/templates/pages/groups/delete.html" />
-        <option value="$PROJECT_DIR$/templates/pages/groups/create.html" />
         <option value="$PROJECT_DIR$/templates/pages/groups/detail.html" />
         <option value="$PROJECT_DIR$/templates/pages/groups/edit.html" />
         <option value="$PROJECT_DIR$/templates/pages/groups/list.html" />
@@ -99,14 +146,18 @@
         <option value="$PROJECT_DIR$/templates/pages/tasks/delete.html" />
         <option value="$PROJECT_DIR$/templates/pages/tasks/list.html" />
         <option value="$PROJECT_DIR$/templates/pages/tasks/detail.html" />
+        <option value="$PROJECT_DIR$/templates/pages/members/delete.html" />
+        <option value="$PROJECT_DIR$/templates/pages/members/detail.html" />
+        <option value="$PROJECT_DIR$/templates/pages/members/edit.html" />
+        <option value="$PROJECT_DIR$/templates/pages/members/list.html" />
+        <option value="$PROJECT_DIR$/templates/pages/members/add.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1098" />
+    <option name="x" value="960" />
+    <option name="width" value="960" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -333,13 +384,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
-    <editor active="false" />
+    <frame x="960" y="0" width="960" height="1080" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32937366" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4633632" sideWeight="0.67062634" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1555087" sideWeight="0.67062634" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -415,37 +466,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/pages/groups/edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="36" vertical-scroll-proportion="-0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/pages/groups/delete.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="36" vertical-scroll-proportion="-0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/pages/infoblock.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="77" selection-start="174" selection-end="174" vertical-scroll-proportion="0.058486238">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/pages/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="9" selection-start="1340" selection-end="1341" vertical-scroll-proportion="0.38990825">
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/pages/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="43" selection-start="195" selection-end="195" vertical-scroll-proportion="0.13853317">
@@ -456,20 +476,6 @@
     <entry file="file://$PROJECT_DIR$/templates/pages/groups/list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="11" selection-start="274" selection-end="274" vertical-scroll-proportion="0.1559633">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/pages/infopage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="0" selection-start="2408" selection-end="2408" vertical-scroll-proportion="-29.615385">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/pages/groups/create.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="58" selection-start="177" selection-end="177" vertical-scroll-proportion="-1.9615384">
           <folding />
         </state>
       </provider>
@@ -509,9 +515,65 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/groups/detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/infopage_style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="14" selection-start="230" selection-end="230" vertical-scroll-proportion="0.24610245">
+        <state line="13" column="14" selection-start="230" selection-end="230" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/members/delete.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/members/detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/groups/create.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="36" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/members/edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/members/list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="36" selection-start="36" selection-end="36" vertical-scroll-proportion="-0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/infopage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="0" selection-start="2408" selection-end="2408" vertical-scroll-proportion="-29.615385">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pages/members/add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="89" selection-start="492" selection-end="492" vertical-scroll-proportion="0.18411553">
           <folding />
         </state>
       </provider>

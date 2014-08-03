@@ -59,9 +59,11 @@ class User(Base):
     one-to-many db.relationship with the Membership table, allowing each user
     to be a part of many groups.
 
-    username = String(30), in-service name, unique and not nullable
+    username = String(30), in-service name, unique and not nullable.  It's supposed
+                        to act almost like a Twitter handle for the user.
     password = String(30), not nullable
-    name = String(120), meant for real-world name, not unique
+    first_name = String(25), first real-world name
+    last_name = String(25), last real-world name
     email = String(120), unique
     phone = Integer, unique
     bio = String(160), super short self-description
@@ -70,9 +72,10 @@ class User(Base):
     '''
 
     user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), unique=True, nullable=False)
+    code_name = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(30), nullable=False)
-    name = db.Column(db.String(40))
+    first_name = db.Column(db.String(25))
+    last_name = db.Column(db.String(25))
     email = db.Column(db.String(40), unique=True)
     phone = db.Column(db.Integer, unique=True)
     bio = db.Column(db.String(160))
@@ -81,10 +84,10 @@ class User(Base):
     memberships = db.relationship("Member", backref= 'user')
 
 
-    def __init__(self, username, password, name=None, email=None, phone=None, \
+    def __init__(self, code_name, password, name=None, email=None, phone=None, \
                             bio=None, photo=None, memberships=None):
         self.name = name
-        self.username = username
+        self.code_name = code_name
         self.password = password
         self.email = email
         self.phone = phone

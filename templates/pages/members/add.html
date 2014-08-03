@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Ahh, adding new members -- the best part of every group!  After all, what's a group without
+    the people who make it up?</p>
+    <p>Take your choice: type in the user's codename, or put in somebody's email.  If they don't have an account,
+    we'll shoot them an invitation!</p>
+    {{ form.code_names }}
+    {{ form.email_addresses }}
+    <a type='button' href="{{ url_for(add_member) }}">Add Member(s)!</a>
+</div>
