@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<p class='lead'>Time for an identity update?  Okay, let's make this happen.</p>
+<form action='/' method='POST'>
+    {{ form.code_name }}
+    {{ form.email }}
+    {{ form.name }}
+    {{ form.phone }}
+    {{ form.bio }}
+    {{ form.photo }}
+    <input type='submit' value='Update User Profile'>
+</form>

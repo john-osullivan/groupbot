@@ -1,9 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Oooh, this is a biggie!  Time to make this group some <strong>Roles</strong>.</p>
+    <p>Roles are used to make it easier to manage the different activities in your Group, as well as collect all the
+    information related to that Role in one place.  Each Role has its own page where all of its information is
+    collected.  The information could be anything from a description of the President's duties to a Treasurer's summary
+    of Group finances.</p>
+    <p>What makes Roles really convenient, however, is using them to Group people together.  Since many Members can
+    have one Role and each Member can also have many Roles, you can use them to easily manage your group.
+    For example, you could:</p>
+    <ul>
+        <li>Assign a Task to every Member with a given Role</li>
+        <li>Invite every Member with some Role to an Event</li>
+        <li>[IN DEVELOPMENT] Manage Permissions by saying which Roles can see which content</li>
+    </ul>
+    <p>With all that said, let's get started!</p>
+    <form action='/' method='POST'>
+        {{ form.name }}
+        {{ form.description }}
+        {{ form.member }}
+        <input type='submit' value='Create Role'>
+    </form>
+</div>        

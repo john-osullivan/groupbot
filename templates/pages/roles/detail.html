@@ -1,9 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <h5>{{ content['role_name'] }}</h5>
+    <div class='col-md-6'>
+        <h6>Description</h6>
+        <p>{{ content['role_description'] }}</p>
+    </div>
+    <div class='col-md-6'>
+        <h6>Members</h6>
+        <ul>
+            {% for member in content['role_members'] %}
+            <li><a href="{{url_for('view_member', member_id=member['id'])}}">{{ member['name'] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class='col-md-6'>
+        <h6>Events</h6>
+        <ul>
+            {% for event in content['role_events'] %}
+            <li><a href="{{url_for('view_event', event_id=event['id'])}}">{{ event['name'] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class='col-md-6'>
+        <h6>Tasks</h6>
+        <ul>
+        {% for task in content['role_tasks'] %}
+        <li><a href="{{url_for('view_task', task_id=task['id'])}}">{{ task['name'] }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>        

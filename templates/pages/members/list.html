@@ -1,1 +1,10 @@
 {% extends 'pages/infoblock.html' %}
+<div class='row'>
+    {% for member in content['members'] %}
+    <div class="col-md-4">
+        <h6>{{ member['user_name' }} <small>{{ member['code_name'] }}</small></h6>
+        <img href="{{ member['photo_url'] }}">
+        <p>{{ member['bio'] }}</p>
+    </div>
+    {% endfor %}
+</div>

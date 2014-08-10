@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+<p class='lead'>Y'know, it isn't an Event if nobody goes.  Quick, invite some friends!</p>
+<form action='/' method='POST'>
+    {{ form.event }}
+    {{ form.members }}
+    <input type='submit' value='Invite Members'>
+</form>
+</div>

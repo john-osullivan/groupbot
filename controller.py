@@ -2,8 +2,10 @@ from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
 from flask.ext.sqlalchemy import SQLAlchemy,Pagination
 from app import app
-from models import db_session, User, GroupPartnership, Group, Member, \
-                                member_roles, Role, member_tasks, Task
+from models import db_session, User, Group, Member, \
+                                Role, Task, Bond, \
+                                Event, User, Infopage,\
+                                Infoblock
 
 
 ##############################################
@@ -411,14 +413,12 @@ def create_task():
     if request.form['deadline'] != None: deadline = request.form['deadline'] else: deadline = None
     if request.form['description'] != None: description = request.form['description'] else: description = None
     if request.form['comments'] != None: comments = request.form['comments'] else: comments = None
-    if request.form['points'] != None: points = int(request.form['points']) else: points = None
 
     # Create the task and set its optional parameters
     new_task = Task(name, doer_member_id, giver_member_id, group_id)
     new_task.deadline = deadline
     new_task.description = description
     new_task.comments = comments
-    new_task.points = points
     new_task.parent = Task.query.get(parent_id)
 
     # Add and save our work.
@@ -446,7 +446,6 @@ def edit_task(task_id):
     if request.form['description'] != task.description: new_desc = request.form['description'] else: new_desc = task.description
     if request.form['doing_member'] != task.doing_member: new_doing_member = request.form['doing_member'] else: new_doing_member = task.doing_member
     if request.form['deadline'] != task.deadline: new_deadline = request.form['deadline'] else: new_deadline = task.deadline
-    if int(request.form['points']) != task.points: new_points = int(request.form['points']) else: new_points = task.points
     if request.form['comments'] != task.comments: new_comments = request.form['comments'] else: new_comments = task.comments
 
     # Modify the Task to fit our new values.
@@ -454,7 +453,6 @@ def edit_task(task_id):
     task.description = new_desc
     task.doing_member = new_doing_member
     task.deadline = new_deadline
-    task.points = new_points
     task.comments = new_comments
 
     # No need to add, since the object already exists in the database!
@@ -523,15 +521,13 @@ def approve_task(task_id):
     sure the person approving the task is one of the people who assigned it.
 
     OUTPUT
-    Changes the approved boolean of the task to True.  If Points are enabled,
-    the points are then awarded to the doer of the task.
+    Changes the approved boolean of the task to True.
     '''
     group = Group.query.get(request.POST['group_id'])
     approving_member = Group.query.get(request.POST['member_id'])
     task = Task.query.get(task_id)
     if (task.giving_id == approving_member.member_id):
         task.approved = True
-        task.doing_member.points += task.points
         db_session.commit()
         return True
     else:

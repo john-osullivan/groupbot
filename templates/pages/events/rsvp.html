@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+<p class='lead'>It's always nice to RSVP!</p>
+<form action='/' method='POST'>
+    {{ form.event }}
+    {{ form.attending }}
+    <input type='submit' value='RSVP'>
+</form>
+</div>        

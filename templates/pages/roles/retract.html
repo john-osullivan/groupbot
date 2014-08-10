@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+<p class='lead'>Okay, time to take somebody's Role away.</p>
+<p>Have at it!</p>
+<form action='/' method='POST'>
+    {{ form.role }}
+    {{ form.member }}
+    <input type='submit' value='Retract Role'>
+</form>
+</div>

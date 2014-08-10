@@ -1,1 +1,10 @@
 {% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Time to change something up?  Go for it -- you do you.</p>
+    <form action='/' method='POST'>
+        {{ form.preferred_name }}
+        {{ form.bio }}
+        {{ form.photo }}
+        <input type='submit' value='Edit Member Profile'>
+    </form>
+</div>

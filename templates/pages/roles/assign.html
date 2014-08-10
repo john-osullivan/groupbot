@@ -1,9 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+<p class='lead'>Okay, time to give out some Roles!</p>
+<p>Just a quick reminder, Roles can be assigned to multiple people.  Their job is to make it easier to manage large
+groups of people without having to refer to each of them individually.  Each Member can be assigned an unlimited number
+of Roles, so feel free to make them liberally.  With all that said, let's get started!</p>
+<form action='/' method='POST'>
+    {{ form.role }}
+    {{ form.member }}
+</form>
+</div>        

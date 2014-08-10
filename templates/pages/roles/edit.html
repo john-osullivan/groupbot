@@ -1,9 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <p class='lead'>Need to edit a Role?  Let's get started.</p>
+    <p>The name and description can both be edited from here.  You can also change which Members are holding
+    the Role by selecting/unselecting their names.</p>
+    <form action='/'>
+        {{ form.name }}
+        {{ form.description }}
+        {{ form.member }}
+        <input type='submit' value='Edit Role'>
+    </form>
+</div>        

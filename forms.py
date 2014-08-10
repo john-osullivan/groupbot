@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms import TextField, DateField, IntegerField, \
-        SelectField, PasswordField, FormField, RadioField
+        SelectField, PasswordField, FormField, RadioField, SelectMultipleField,\
+        DateTimeField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
@@ -10,12 +11,16 @@ class TelephoneForm(Form):
     area_code    = IntegerField('Area Code/Exchange', validators = [DataRequired()])
     number       = TextField('Number', validators = [DataRequired()])
 
+class RealNameForm(Form):
+    first_name = TextField('First Name', validators = [Length(min=2, max=32)])
+    last_name = TextField('Last Name', validators = [Length(min=2, max=32)])
+
 class RegisterForm(Form):
     username = TextField('Username', validators=[Length(min=6, max=30), DataRequired()])
-    password    = PasswordField('Password', validators = [DataRequired(), Length(min=6, max=40)])
-    confirm     = PasswordField('Repeat Password', [DataRequired(), EqualTo('password', message='Passwords must match')])
-    name        = TextField('Real/Display Name', validators = [Length(min=6, max=40)])
-    email       = TextField('Email', validators = [DataRequired(), Length(min=6, max=40)])
+    password = PasswordField('Password', validators = [DataRequired(), Length(min=6, max=40)])
+    confirm = PasswordField('Repeat Password', [DataRequired(), EqualTo('password', message='Passwords must match')])
+    name = FormField(RealNameForm)
+    email  = TextField('Email', validators = [DataRequired(), Length(min=6, max=40)])
     phone = FormField(TelephoneForm)
     bio = TextField('Bio', validators = [Length(min=1, max=160)])
   
@@ -25,9 +30,12 @@ class PasswordChangeForm(Form):
     confirm =   PasswordField('Confirm NewPassword', validators = [Length(min=6, max=40)])
 
 class UserEditForm(Form):
-    name        = TextField('Real/Display Name', validators = [Length(min=6, max=40)])
+    code_name = TextField('Codename', validators=[DataRequired()])
+    email = TextField('Email', validators=[DataRequired()])
+    name = FormField(RealNameForm)
     phone = FormField(TelephoneForm)
-    bio = TextField('Bio', validators = [Length(min=1, max=160)])
+    bio = TextAreaField('Bio', validators = [Length(min=1, max=160)])
+    photo = TextField('Photo URL')
 
 class EmailChangeForm(Form):
     email       = TextField('New Email', validators = [DataRequired(), Length(min=6, max=40)])
@@ -43,47 +51,62 @@ class GroupForm(Form):
     human_name = TextField('Group Display Name', validators=[DataRequired(), Length(min=6, max=80)])
     code_name = TextField('Group "Code Name"', validators=[DataRequired(), Length(min=6, max=80)])
     byline = TextField('Group By-Line', validators=[Length(min=6, max=160)])
-    description = TextField('Group Description', validators=[Length(min=40, max=2048)])
+    description = TextAreaField('Group Description', validators=[Length(min=40, max=2048)])
 
 class MemberEditForm(Form):
     preferred_name = TextField('Preferred Name', validators=[Length(min=6, max=80)])
+    bio = TextAreaField('Bio', validators=[Length(min=6, max=256)])
+    photo = TextField('Photo URL')
 
-class MemberChoiceForm(Form):
+class SingleMemberForm(Form):
     member = SelectField('Member', coerce=int, validators=[DataRequired()])
 
-class RoleChoiceForm(Form):
-    role = SelectField('Role', coerce=int, validators=[DataRequired()])
+class MultipleMemberForm(Form):
+    members = SelectMultipleField('Member(s)', coerce=int, validators=[DataRequired()])
+
+class MemberInviteForm(Form):
+    code_names = TextField('User Codename')
+    email_addresses = FieldList('User (or New User!) Email Address')
+
+class MultipleRoleForm(Form):
+    role = SelectMultipleField('Role', coerce=int, validators=[DataRequired()])
 
 class RoleForm(Form):
     name = TextField('Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Description', validators=[Length(min=40, max=2048)])
+    member = FormField(MultipleMemberForm)
 
 class RoleAssignForm(Form):
     role = FormField(RoleChoiceForm)
-    member = FormField(MemberChoiceForm)
- 
+    member = FormField(MultipleMemberForm)
+
 class TaskForm(Form):
     name = TextField('Task Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Task Description', validators=[Length(min=6, max=512)])
     doing_member = FormField(MemberChoiceForm)
     deadline = DateField('Deadline')
-    points = IntegerField('Point Value')
     comments = TextField('Comments', validators=[Length(min=6, max=256)])
+
+class TaskDeliverForm(Form):
+    task = SelectField('Task', validators=[DataRequired()])
+    signature = TextField('Signature', validators=[DataRequired()])
+    report = TextField('Message', validators=[Length(min=6, max=2048)])
+    deliverable = FileField('Deliverable')
 
 class EventForm(Form):
     name = TextField('Event Name', validators=[DataRequired(), Length(min=6, max=80)])
-    host_id = FormField(MemberChoiceForm, validators=[DataRequired()])
-    start_time = DateField('Starting Time', validators=[DataRequired()])
-    end_time = DateField('Ending Time')
+    hosts = FormField(MultipleMemberForm, validators=[DataRequired()])
+    start_time = DateTimeField('Starting Time', validators=[DataRequired()])
+    end_time = DateTimeField('Ending Time')
     location = TextField('Event Location', validators=[DataRequired(), Length(min=6, max=80)])
-    description = TextField('Event Description', validators=[Length(min=6, max=1024)])
+    description = TextAreaField('Event Description', validators=[Length(min=6, max=1024)])
 
 class EventChoiceForm(Form):
     event = SelectField('Event Name',coerce=int)
 
 class EventInviteForm(Form):
     event = FormField(EventChoiceForm)
-    member = FormField(MemberChoiceForm)
+    members = FormField(MultipleMemberForm)
 
 class EventRSVPForm(Form):
     event = FormField(EventChoiceForm)
@@ -91,22 +114,5 @@ class EventRSVPForm(Form):
 
 class EventAttendanceForm(Form):
     event = FormField(EventChoiceForm)
-    member = FormField(MemberChoiceForm)
-    attended = RadioField("Attended?", choices=[(True, 'Yes'), (False, 'No')])
-
-# This part right 'hurr is sketchy.  It was written before Infopages were the way
-# you looked at EVERYTHING, back when you created them for a thing.  Nowadays, this
-# will probably be built in to the source code and happen automatically -- not via
-# user form input.
-# class InfoPageSourceForm(Form):
-#     table_name = SelectField('Subject Type', validators=[DataRequired()])
-#     table_id = IntegerField('Subject ID', validators=[DataRequired()])
-
-# class InfoPageCreateForm(Form):
-#     page_source = FormField(InfoPageSourceForm)
-#     page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
-
-# class InfoPageEditForm(Form):
-#     page_name = TextField('InfoPage Name', validators=[DataRequired(), Length(min=6, max=80)])
-#     page_description = TextField('InfoPage Description', validators=[Length(min=16, max=256)])
-#     page_content = TextField('InfoPage Content', validators=[Length(min=64, max=2048)])
+    attended = FormField(MultipleMemberForm)
+    absent = FormField(MultipleMemberForm)

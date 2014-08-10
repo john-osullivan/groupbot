@@ -1,9 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+<p class='lead'>Oh, this is exciting -- time to make a new Event!</p>
+<form action='/' method='POST'>
+    {{ form.name }}
+    {{ form.hosts }}
+    {{ form.start_time }}
+    {{ form.end_time }}
+    {{ form.location }}
+    {{ form.description }}
+    <input type='submit' value='Create Event'>
+</form>
+</div>        

@@ -59,11 +59,11 @@ class User(Base):
     one-to-many db.relationship with the Membership table, allowing each user
     to be a part of many groups.
 
-    username = String(30), in-service name, unique and not nullable.  It's supposed
+    code_name = String(32), in-service name, unique and not nullable.  It's supposed
                         to act almost like a Twitter handle for the user.
-    password = String(30), not nullable
-    first_name = String(25), first real-world name
-    last_name = String(25), last real-world name
+    password = String(32), not nullable
+    first_name = String(32), first real-world name
+    last_name = String(32), last real-world name
     email = String(120), unique
     phone = Integer, unique
     bio = String(160), super short self-description
@@ -72,11 +72,11 @@ class User(Base):
     '''
 
     user_id = db.Column(db.Integer, primary_key=True)
-    code_name = db.Column(db.String(30), unique=True, nullable=False)
-    password = db.Column(db.String(30), nullable=False)
-    first_name = db.Column(db.String(25))
-    last_name = db.Column(db.String(25))
-    email = db.Column(db.String(40), unique=True)
+    code_name = db.Column(db.String(32), unique=True, nullable=False)
+    password = db.Column(db.String(32), nullable=False)
+    first_name = db.Column(db.String(32))
+    last_name = db.Column(db.String(32))
+    email = db.Column(db.String(40), unique=True, nullable=False)
     phone = db.Column(db.Integer, unique=True)
     bio = db.Column(db.String(160))
     photo = db.Column(db.LargeBinary)
@@ -197,7 +197,6 @@ class Member(Base):
     group_id = ForeignKey Integer to Group, many-to-one
     user_id = ForeignKey Integer to User, many-to-one
     preferred_name = String(80) - If the User wants to be known different in this context
-    points = Integer - If a points sytem is in use, this is their running total.
     roles = --> Role, many-to-many, established by member_roles table
     doing_tasks = --> Task, one-to-many, describes tasks assigned TO the member
     giving_tasks = --> Task, one-to-many, describes tasks assigned BY the member
@@ -207,18 +206,23 @@ class Member(Base):
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), default=None, index=True)
     
+    # Point of business: Refactor preferred_name into code_name.  It maintains
+    # convention and is also freaking awesome.  More contextual identity!  Always more!
     preferred_name = db.Column(db.String(80))
-    points = db.Column(Integer)
+    photo = db.Column(db.String(128))
+    bio = db.Column(db.String(256))
 
     roles = db.relationship('Role', backref='members')
     doing_tasks = db.relationship('Task', backref='members')
     giving_tasks = db.relationship('Task', backref='members')
 
-    def __init__(self, group_id, preferred_name=None, points=None, roles=None):
+    def __init__(self, group_id, preferred_name=None, bio=None, \
+                         roles=None, photo=None):
         self.group_id = group_id
         self.preferred_name = preferred_name
-        self.points = points
+        self.bio = bio
         self.roles = roles
+        self.photo = photo
 
     def __repr__(self):
         return "Member # of Group #: %s --- %s"%(self.member_id, self.group_id)
@@ -278,11 +282,17 @@ class Role(Base):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2048))
     
-    # Responsiblity organization of both those given to you and those you give out.
+    # Indexing to all of the Tasks assigned to & by this Role
     doing_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
     giving_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
     doing_tasks = db.relationship('Task', foreign_keys=[doing_task_id], backref='roles')
     giving_tasks = db.relationship('Task', foreign_keys=[giving_task_id], backref='roles')
+
+    # Indexing to all of the Events this Role created & is invited to
+    created_event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'))
+    invited_event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'))
+    created_events = db.relationship('Event', foreign_keys=[created_event_id], backref='roles')
+
 
     def __init__(self, group_id, name, member_id=None, description=None):
         self.group_id = group_id
@@ -312,18 +322,15 @@ class Task(Base):
     '''
     Tasks are the unit of gettings things done in the system.  They are meant to
     map to precisely two members: the member who assigned it and the member
-    who is doing it.  Tasks are hierarchical, so a task can have subtasks.  
-    All subtasks of a task should have their points values sum to no
-    greater than the parent task, but that constraint is not yet enforced in the
-    system.  A task given to every member in a role should actually 
-    create a large number of sub-tasks for each member to individually complete.
+    who is doing it.  Tasks are hierarchical, so a task can have subtasks.  A task
+    given to every member in a role should actually create a large number of 
+    sub-tasks for each member to individually complete.
 
     name = String(80) - Should just be a title
     description = String(512) - Fuller description of what should typically be done
     due_at = DateTime - The date/time at which this task is due.  To be used for reminders...
     delivered = Boolean - Whether the doer says they've finished the task
     approved = Boolean - Whether the giver says the task was fully satisfied
-    points = Integer - Number of  points the task is worth
     comments = String(256) - Field for comments as needed
     parent_id = ForeignKey Task, points to the parent of this task_id
     children = --> Task, one-to-many to sub-tasks
@@ -342,7 +349,6 @@ class Task(Base):
     deliverable = db.Column(db.String(256))
     delivered = db.Column(db.Boolean, default=False)
     approved = db.Column(db.Boolean, default=False)
-    points = db.Column(db.Integer)
     comments = db.Column(db.String(256))
 
     # Relations to establish one-to-many parent-child db.relationships.
@@ -356,11 +362,10 @@ class Task(Base):
     doer = db.relationship('Member', foreign_keys=[doing_id], secondary=member_tasks)
     giver = db.relationship('Member', foreign_keys=[giving_id], secondary=member_tasks)
 
-    def __init__(self, name, doer_id, giver_id, group_id, description=None, points=None, \
+    def __init__(self, name, doer_id, giver_id, group_id, description=None, \
                         comments=None):
         self.name = name
         self.description = description
-        self.points = points
         self.comments = comments
         self.doing_id = doer_id
         self.giving_id = giver_id
@@ -428,7 +433,7 @@ class Event(Base):
     description = db.Column(db.String(2000))
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
     start_time = db.Column(db.DateTime())
-    end_time = db.Column(db.DateTime())
+    end_time = db.Column(db.DateTime()) 
 
     # List of people invited to the event
     invited = db.relationship('Member', backref='events', secondary=event_invite_table)

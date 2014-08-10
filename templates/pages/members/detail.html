@@ -1,1 +1,62 @@
 {% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <h6>{{ content['user_name'] }} <small>{{ content['preferred_name'] }}</small></h6>
+    <div class='col-md-4'>
+        <h6>Roles</h6>
+        {% for role in content['roles'] %}
+        <div class='row'>
+            <strong>{{ role['name'] }}</strong>
+            <p>{{ role['description'] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class='col-md-4'>
+        <h6>Tasks</h6>
+        {% for task in content['tasks'] %}
+        <div class='row'>
+            <strong>{{ task['name'] }}</strong>
+            <div class='col-md-8'>
+                <p>{{ task['description'] }}</p>
+            </div>
+            <div class='col-md-4'>
+                <p>{{ task['deadline'] }}</p>
+                {% if task['delivered'] == True %}
+                    <span class='label label-success'>Delivered!</span>
+                {% elsif task['late'] == True %}
+                    <span class='label label-danger'>Still Not Delivered :(</span>
+                {% else %}
+                    <span class='label label-info'>Not Delivered(</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class='col-md-4'>
+        <h6>Events</h6>
+        {% for event in content['events'] %}
+        <div class='row'>
+            <strong>{{ event['name'] }}</strong>
+            <div class='col-md-8'>
+                <p>{{ event['description'] }}</p>
+            </div>
+            <div class='col-md-4'>
+                <p>Start: {{ event['start_time'] }} --> End: {{ event['end_time'] }}</p>
+                <span class='label label-info'>
+                    {% if event['rsvp'] == True %}
+                    Attending
+                    {% else %}
+                    Not Attending
+                    {% endif %}
+                </span>
+                {% if event['attended'] %}
+                    {% if event['attended'] == True %}
+                    <span class='label label-success'>Attended!</span>
+                    {% else %}
+                    <span class='label label-warning'>Didn't Attend :(</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

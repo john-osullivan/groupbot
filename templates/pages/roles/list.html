@@ -1,9 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+<p class='lead'>Here are all the Roles in the Group:</p>
+{% for role in content['roles'] %}
+    <div class='col-md-4'>
+        <h6><a href="{{url_for('view_role', role_id=role['id'])}}" >{{ role['name'] }}</a></h6>
+        <ul>
+        {% for member in role['members'] %}
+            <li><a href="{{ url_for('view_member', member_id=member['id'])}}">{{ member['name'] }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+</div>        

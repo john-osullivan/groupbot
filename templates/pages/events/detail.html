@@ -1,9 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    <h5>{{ content['event_name'] }}</h5>
+    <div class='col-md-8'>
+        <p>Start Time: {{ content['event_start_time'] }}</p>
+        <p>End Time: {{ content['event_end_time'] }}</p>
+        <p>Location: {{ content['event_location'] }}</p>
+        <p>{{ content['event_description'] }}</p>
+    </div>
+    <div class='col-md-4'>
+        <div class='row'>
+        {% if event['attendance'] %}
+            <div class='col-md-6'>
+                <h6>Attended</h6>
+                <ul>
+                {% for member in event['attendance']['attended'] %}
+                    <li><a href="{{ url_for('view_member', member_id=member['id']) }}">{{ member['name'] }}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class='col-md-6'>
+                <h6>Absent</h6>
+                <ul>
+                {% for member in event['attendance']['absent'] %}
+                    <li><a href="{{ url_for('view_member', member_id=member['id']) }}">{{ member['name'] }}</a></li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class='col-md-6'>
+                <h6>RSVP Yes</h6>
+                <ul>
+                    {% for member in event['rsvp']['yes'] %}
+                    <li><a href="{{ url_for('view_member', member_id=member['id']) }}">{{ member['name'] }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class='col-md-6'>
+                <h6>RSVP No</h6>
+                <ul>
+                    {% for member in event['rsvp']['no'] %}
+                    <li><a href="{{ url_for('view_member', member_id=member['id']) }}">{{ member['name'] }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class='col-md-12'>
+                <h6>Invited (No RSVP)</h6>
+                <ul>
+                    {% for member in event['rsvp']['none'] %}
+                    <li><a href="{{ url_for('view_member', member_id=member['id']) }}">{{ member['name'] }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</div>        

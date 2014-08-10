@@ -1,9 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'pages/infoblock.html' %}
+<div class='row'>
+    {% for event in content['events'] %}
+        <div class='col-md-4'>
+            <h5>{{ event['name'] }}</h5>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <p>Start: {{ event['start_time'] }}</p>
+                    <p>End: {{ event['end_time'] }}</p>
+                    <p>Location: {{ event['location'] }}</p>
+                </div>
+                <div class='col-md-6'>
+                    <p>Invited: {{ event['invited_count'] }}</p>
+                    <p>RSVP Yes: {{ event['yes_count'] }}</p>
+                    <p>RSVP No: {{ event['no_count'] }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>        
