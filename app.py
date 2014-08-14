@@ -4,6 +4,7 @@
 
 from flask import * # do not use '*'; actually input the dependencies.
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager
 import logging
 from logging import Formatter, FileHandler
 
@@ -14,6 +15,8 @@ from logging import Formatter, FileHandler
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 from forms import *
 from views import *

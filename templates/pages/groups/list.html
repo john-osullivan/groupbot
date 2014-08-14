@@ -1,5 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
 
+{% block infocontent %}
 {% for group in content['groups'] %}
 <div class='row'>
     <h6>{{ group['human_name'] }} <small>{{ group['code_name'] }}</small></h6>
@@ -7,3 +8,4 @@
     <p>{{ group['description'] }}</p>
 </div>
 {% endfor %}
+{% endblock %}

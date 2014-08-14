@@ -98,6 +98,18 @@ class User(Base):
     def __repr__(self):
         return "User #: %s"%(self.user_id)
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.user_id)
+
 class Bond(Base):
     __tablename__ = 'bonds'
     '''
@@ -120,7 +132,7 @@ class Bond(Base):
         self.groups.append(group2)
 
     def __repr__(self):
-        return "Bond #{0}".format(bond_id)
+        return "Bond #{0}".format(self.bond_id)
 
     # Validity here means a Bond containing two Groups.
     def is_valid_bond(self):
@@ -160,10 +172,10 @@ class Group(Base):
     byline = db.Column(db.String(160))
     description = db.Column(db.String(2048))
 
-    members = db.relationship('Member', backref='groups')
-    tasks = db.relationship('Task', backref='groups')
-    roles = db.relationship('Role', backref='groups')
-    events = db.relationship('Event', backref='groups')
+    members = db.relationship('Member', backref='group')
+    tasks = db.relationship('Task', backref='group')
+    roles = db.relationship('Role', backref='group')
+    events = db.relationship('Event', backref='group')
    
     # Relations to establish one-to-many parent-child db.relationships.
     # NOTE: Not currently being used, as all group connection is being
@@ -453,7 +465,7 @@ class Event(Base):
     host = db.relationship('Member', backref='events', secondary=event_host_table)
 
     def __init__(self, name, group_id, start_time=None, end_time=None, host_member_id=None,
-                 description=None):
+                 description=None, location=None):
         self.name = name
         self.description = description
         self.start_time=start_time
@@ -528,6 +540,7 @@ class Infopage(Base):
 
     infopage_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
+    end_view = db.Column(db.PickleType, nullable=False)
 
     # These two properties completely describe what the item in database 
     source_table = db.Column(db.String(80), nullable=False)
@@ -548,8 +561,9 @@ class Infopage(Base):
     main_infoblocks = db.relationship("Infoblock", secondary=main_infoblocks, backref="infopage")
     user_infoblocks = db.relationship("Infoblock", secondary=user_infoblocks, backref="infopage")
 
-    def __init__(self, name, source_table, source_id, description=None, content=None):
+    def __init__(self, name, end_view, source_table, source_id, description=None, content=None):
         self.name = name
+        self.end_view = end_view
         self.source_table = source_table
         self.source_id =source_id
         self.description = description
@@ -578,6 +592,7 @@ class Infoblock(Base):
 
     .name = String(80)
     .width = Integer, 1 <= n <= 3
+    .content_func = Python function, the name of the view function which builds the 'content' object.
     .infopage_id = Foreign Key to Infopage table
     .order = Integer, n >= 0
     .content_type = String(40)
@@ -585,15 +600,17 @@ class Infoblock(Base):
     '''
     infoblock_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    width = db.Column(db.Integer, nullable = False)
+    content_func = db.Column(db.PickleType(), nullable=False)
+    width = db.Column(db.Integer)
     order = db.Column(db.Integer, nullable = False)
-    content_type = db.Column(db.String(40), nullable = False)
-    content = db.Column(db.String(4200), nullable = False)
-    template = db.Column(db.String(42420), nullable = False)
+    content_type = db.Column(db.String(40), nullable=False)
+    content = db.Column(db.String(4200))
+    template = db.Column(db.String(42420), nullable=False)
 
-    def __init__(self, width, order, content_type, template, \
-                    content=None, name=None):
+    def __init__(self, order, content_func, content_type, template, \
+                    width=None,content=None, name=None):
         self.name = name
+        self.content_func = content_func
         self.width = width
         self.order = order
         self.template = template

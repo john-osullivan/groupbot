@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import TextField, DateField, IntegerField, \
         SelectField, PasswordField, FormField, RadioField, SelectMultipleField,\
-        DateTimeField
+        DateTimeField, TextAreaField, FileField, FieldList
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
@@ -41,7 +41,7 @@ class EmailChangeForm(Form):
     email       = TextField('New Email', validators = [DataRequired(), Length(min=6, max=40)])
 
 class LoginForm(Form):
-    name        = TextField('Username', [DataRequired()])
+    code_name        = TextField('Username (aka codename)', [DataRequired()])
     password    = PasswordField('Password', [DataRequired()])
 
 class ForgotForm(Form):
@@ -52,6 +52,9 @@ class GroupForm(Form):
     code_name = TextField('Group "Code Name"', validators=[DataRequired(), Length(min=6, max=80)])
     byline = TextField('Group By-Line', validators=[Length(min=6, max=160)])
     description = TextAreaField('Group Description', validators=[Length(min=40, max=2048)])
+
+class DeleteForm(Form):
+    delete = RadioField("Delete?", choices=[(True, "Yup, do it."), (False, "No, I didn't mean it!")])
 
 class MemberEditForm(Form):
     preferred_name = TextField('Preferred Name', validators=[Length(min=6, max=80)])
@@ -76,14 +79,17 @@ class RoleForm(Form):
     description = TextField('Description', validators=[Length(min=40, max=2048)])
     member = FormField(MultipleMemberForm)
 
+class SingleRoleForm(Form):
+    role = SelectField('Role', coerce=int, validators=[DataRequired()])
+
 class RoleAssignForm(Form):
-    role = FormField(RoleChoiceForm)
+    role = FormField(SingleRoleForm)
     member = FormField(MultipleMemberForm)
 
 class TaskForm(Form):
     name = TextField('Task Title', validators=[DataRequired(), Length(min=6, max=80)])
     description = TextField('Task Description', validators=[Length(min=6, max=512)])
-    doing_member = FormField(MemberChoiceForm)
+    doing_member = FormField(MultipleMemberForm)
     deadline = DateField('Deadline')
     comments = TextField('Comments', validators=[Length(min=6, max=256)])
 

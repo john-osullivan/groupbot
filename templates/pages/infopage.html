@@ -2,10 +2,10 @@
 {% block title %}{% thing.name %}{% endblock %}
 {% block content %}
 <div class='col-lg-3' id='info-nav'>
-    <h4 id='parent-page-name'> {{ infonav['parent'] }} </h4>
+    <a href="{{ url_for(infonav['parent']['view'] }}"><h4 id='parent-page-name'> {{ infonav['parent']['name'] }} </h4></a>
     <ul class="nav nav-pills nav-stacked">
         {% for page in infonav['pages'] %}
-
+            <!-- This control loop here is just for active vs. inactive page.  Pretty inefficient. -->
             {% if page['name'] == infopage['name'] %}
                 {% if page['children'] is defined %}
                     <li class='active dropdown'>
@@ -14,35 +14,43 @@
                         </a>
                         <ul class='dropdown-menu' role='menu'>
                             {% for pagechild in page['children'] %}
-                                <li><a href='{{ url_for(pagechild["end_view"] }}'>{{ pagechild['name'] }}</a></li>
+                                {% if pagechild['args'] is defined %}
+                                <li><a href="{{ url_for(pagechild['view'], **pagechild['args']) }}">{{ pagechild['name'] }}</a></li>
+                                {% else %}
+                                <li><a href="{{ url_for(pagechild['view']) }}">{{ pagechild['name'] }}</a></li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>
                 {% else %}
-                    <li class="active"><a href="#">{{ page['name'] }}</a></li>
+                    <li class="active"><a href="{{ url_for(page['view']) }}">{{ page['name'] }}</a></li>
                 {% end %}
 
             {% else %}
                 {% if page['children'] is defined %}
                     <li class='dropdown'>
-                        <a class='dropdown-toggle' data-toggle='dropdown' href='{{ url_for("page[end_view] }}'>
+                        <a class='dropdown-toggle' data-toggle='dropdown' href='{{ url_for(page["view"]) }}'>
                             {{ page['name'] }} <span class='caret'></span>
                         </a>
                         <ul class='dropdown-menu' role='menu'>
                             {% for pagechild in page['children'] %}
-                                <li><a href="{{ url_for(pagechild['end_view'] }}">{{ pagechild['name'] }}</a></li>
+                                {% if pagechild['args'] is defined %}
+                                <li><a href="{{ url_for(pagechild['view'], **pagechild['args']) }}">{{ pagechild['name'] }}</a></li>
+                                {% else %}
+                                <li><a href="{{ url_for(pagechild['view']) }}">{{ pagechild['name'] }}</a></li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>
                 {% else %}
-                    <li><a href="{{ url_for(pagechild['end_view']) }">{{ page['name'] }}</a></li>
+                    <li><a href="{{ url_for(page['view']) }">{{ page['name'] }}</a></li>
             {% endif %}
         {% endfor %}
     </ul>
 </div>
 
 <div class='col-lg-9' id='info-blockspace'>
-    <h3>{{ infopage['name'] }}</h3>
+    <!-- <h3>{{ infopage['name'] }}</h3>
     <p>{{ infopage['description'] }}</p>
     <br>
     {% for infoblock in infopage['main_infoblocks'] %}
@@ -50,7 +58,9 @@
     {% endfor %}
     {% for infoblock in infopage['user_infoblocks'] %}
         {% set template = 'infoblock.html' %} {% include template %}
-    {% endfor %}
+    {% endfor %} -->
+    {% block infocontent %}
+    {% endblock %}
 </div>
 
 
