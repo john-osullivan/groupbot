@@ -4,7 +4,7 @@ from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
 from flask.ext.sqlalchemy import SQLAlchemy,Pagination
 from app import app
-from views import login_required
+from flask.ext.login import login_required
 from models import db_session, User, Bond, Group, Member, \
                                 member_roles, Role, member_tasks, Task, \
                                 Event, Infopage, Infoblock

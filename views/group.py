@@ -2,13 +2,10 @@ __author__ = 'John'
 
 from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
-from flask.ext.sqlalchemy import SQLAlchemy,Pagination
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 from app import app
-from views import login_required, build_infonav
-from models import db_session, User, Bond, Group, Member, \
-                                member_roles, Role, member_tasks, Task, \
-                                Event, Infopage, Infoblock
+from views import build_infonav
+from models import Group, Task, Event
 import helper
 import forms
 import controllers
@@ -107,9 +104,9 @@ def group_detail(group_code_name):
     # With all that said and done, return that motherfucker.
     return render_template('templates/pages/groups/detail.html', content=content, infonav=infonav)
 
-@app.route('/group/<group_code_name>/edit')
-def group_edit(group_code_name):
-    current_group = Group.query.filter_by(group_code_name=group_code_name).firs()
+@app.route('/group/<group_codename>/edit')
+def group_edit(group_codename):
+    current_group = Group.query.filter_by(group_code_name=group_codename).firs()
     form = forms.GroupForm()
     form.human_name = current_group.human_name
     form.code_name = current_group.code_name
@@ -117,10 +114,10 @@ def group_edit(group_code_name):
     form.description = current_group.description
 
     if form.validate_on_submit():
-        successful_edit = controllers.group.edit_group(group_code_name, request)
-        if successful_edit == True:
+        successful_edit = controllers.group.edit_group(group_codename, request)
+        if successful_edit:
             flash("You successfully edited {}!".format(current_group.code_name), 'success')
-            return redirect(url_for(group_detail, group_code_name=group_code_name))
+            return redirect(url_for(group_detail, group_code_name=group_codename))
     else:
         return render_template('templates/pages/groups/edit.html', form=form)
 
@@ -131,7 +128,7 @@ def group_delete(group_code_name):
     if form.validate_on_submit():
         if form.delete == True:
             successful_delete = controllers.group.delete_group(group_code_name)
-            if successful_delete == True:
+            if successful_delete:
                 flash['You successfully deleted {}.'.format(group_code_name)]
                 return redirect(url_for(group_list))
             else:

@@ -72,7 +72,7 @@ class User(Base):
     '''
 
     user_id = db.Column(db.Integer, primary_key=True)
-    code_name = db.Column(db.String(32), unique=True, nullable=False)
+    codename = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(32), nullable=False)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))
@@ -87,7 +87,7 @@ class User(Base):
     def __init__(self, code_name, password, name=None, email=None, phone=None, \
                             bio=None, photo=None, memberships=None):
         self.name = name
-        self.code_name = code_name
+        self.codename = code_name
         self.password = password
         self.email = email
         self.phone = phone

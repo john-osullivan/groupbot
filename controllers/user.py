@@ -26,19 +26,15 @@ def create_user(request):
     display_name = request.form['name'] if request.form['name'] else display_name = None
     phone = request.form['phone'] if request.form['phone'] else phone = None
     bio = request.form['bio'] if request.form['bio'] else bio = None
-    newUser = User(username = request.form['username'], password = request.form['password'],\
+    bio = request.form['photo'] if request.form['photo'] else photo = None
+    newUser = User(username = request.form['codename'], password = request.form['password'],\
                                 name=display_name, email=request.form['email'], phone=phone,\
-                                bio=bio)
+                                bio=bio, photo=photo)
     db_session.add(newUser)
     db_session.commit()
-    flash("You're a user of Groupify now, {0}!".format(str(request.form['username'])))
     return True
 
-def view_user(username, request):
-    '''
-    '''
-
-def delete_user(username, request):
+def delete_user(user_id):
     '''
     INPUT
     User_ID of the account to be deleted.
@@ -46,15 +42,13 @@ def delete_user(username, request):
     OUTPUT
     Removes the user's row from the database, purging all of their memberships.
     '''
-    user_id = request.POST['user_id']
     user = User.query.get(int(user_id))
-    username = str(user.username)
+    codename = str(user.code_name)
     db_session.delete(user)
     db_session.commit()
-    flash("We're sad to see you go, {0} :(".format(username))
     return True
 
-def edit_user(username, request):
+def edit_user(user_id, request):
     '''
     INPUT
     A PasswordChangeForm, EmailChangeForm, or UserInfoChangeForm,
@@ -64,7 +58,6 @@ def edit_user(username, request):
     Modifies the user's row in the database as specified by whichever form
     was submitted
     '''
-    user_id = request.POST['user_id']
     user = User.query.get(int(user_id))
     if request.form['username']:
         username = request.form['username']

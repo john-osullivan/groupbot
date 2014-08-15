@@ -1,5 +1,11 @@
-{% extends 'pages/infoblock.html' %}
-<p class='lead'>Are you POSITIVE you want to delete your account?  We'll be sad to see you go!</p>
-<p>No, seriously -- we'll be all torn up about it, maybe even write a sad poem or two.</p>
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
+<p class='lead'>Are you POSITIVE you want to delete your account, {{ content['codename'}}?  We'll be sad to see you go!</p>
+<p>No, seriously -- we'll be all torn up about it, maybe even write a sad poem or two...</p>
 <p>If it has to happen, though, we understand.</p>
-<button action='/' class='btn btn-danger'>I'm Leaving, Delete the Account.</button>
+<form action="/" method="POST">
+    {{ form.delete }}
+    <input type="submit" value="I've made my choice.">
+</form>
+{% endblock %}

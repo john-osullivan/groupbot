@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <p class='lead'>Time for an identity update?  Okay, let's make this happen.</p>
 <form action='/' method='POST'>
     {{ form.code_name }}
@@ -9,3 +11,4 @@
     {{ form.photo }}
     <input type='submit' value='Update User Profile'>
 </form>
+{% endblock %}

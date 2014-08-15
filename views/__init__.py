@@ -14,18 +14,6 @@ from forms import *
 
 __all__ = ['user', 'group', 'role', 'task', 'event', 'member']
 
-# Login required decorator.
-def login_required(test):
-    @wraps(test)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return test(*args, **kwargs)
-        else:
-            flash('You need to login first.')
-            return redirect(url_for('login'))
-    return wrap
-
-
 
 ###############################################
 #---------------------------------------------#
@@ -65,73 +53,6 @@ def forgot():
 # Standard Infopage view functions
 #---------------------------------------------#
 ###############################################
-# def build_infonav(infopage):
-#     '''
-#     This function builds the object required to populate the nav on every page.
-#     To do so, it goes up one level to the parent page and then gets all of the
-#     children name and view functions going two levels down.  This means our
-#     active page is open and all the others can also be opened without reloading.
-#
-#     :param infopage:
-#     :return infonav:
-#     '''
-#     infonav = {}
-#
-#     # First, grab the info for the parent page
-#     parent = infopage.parent
-#     parent_name = parent.name
-#     parent_endview = parent.end_view
-#     infonav['parent'] = {'name':parent_name, 'end_view':parent_endview}
-#
-#     # Now the info for each of the current page's peers
-#     infonav['pages'] = []
-#     for page in parent.children:
-#         page_listing = {}
-#         page_listing['name'] = page.name
-#         page_listing['end_view'] = page.end_view
-#
-#         # Make sure to go another layer deep if you need to.
-#         if page.children != None:
-#             page_listing['children'] = [{'name':child.name, 'end_view':child.end_view} for child in page.children]
-#         infonav['pages'].append(page_listing)
-#
-#     return infonav
-#
-# def build_infopage(infopage):
-#     '''
-#     This function goes through the effort of building up the convoluted, general-ass
-#     object that constitutes each and every one of our pages.  Specifically, it:
-#     1) Grabs the info specific to the active page
-#     2) Grabs the info for each infoblock using its content_func attribute
-#
-#     :param infopage:
-#     :return:
-#     '''
-#     infonav = build_infonav(infopage)
-#     info = {}
-#     info['name'] = infopage.name
-#     info['description'] = infopage.description
-#     thing = class_table[]
-#
-#     return render_template('pages/infopage.html', infonav=infonav, infopage=info)
-
-
-
-###############################################
-#---------------------------------------------#
-# Error Handlers
-#---------------------------------------------#
-###############################################
-
-@app.errorhandler(500)
-def internal_error(error):
-    #db_session.rollback()
-    return render_template('errors/500.html'), 500
-
-@app.errorhandler(404)
-def internal_error(error):
-    return render_template('errors/404.html'), 404
-
 def build_infonav(level, current_group=None, member=None):
     '''
     This function produces the information required to construct the (now simplified) navbar.  The level
@@ -205,3 +126,38 @@ def build_infonav(level, current_group=None, member=None):
 
 
     return infonav
+#
+# def build_infopage(infopage):
+#     '''
+#     This function goes through the effort of building up the convoluted, general-ass
+#     object that constitutes each and every one of our pages.  Specifically, it:
+#     1) Grabs the info specific to the active page
+#     2) Grabs the info for each infoblock using its content_func attribute
+#
+#     :param infopage:
+#     :return:
+#     '''
+#     infonav = build_infonav(infopage)
+#     info = {}
+#     info['name'] = infopage.name
+#     info['description'] = infopage.description
+#     thing = class_table[]
+#
+#     return render_template('pages/infopage.html', infonav=infonav, infopage=info)
+
+
+
+###############################################
+#---------------------------------------------#
+# Error Handlers
+#---------------------------------------------#
+###############################################
+
+@app.errorhandler(500)
+def internal_error(error):
+    #db_session.rollback()
+    return render_template('errors/500.html'), 500
+
+@app.errorhandler(404)
+def internal_error(error):
+    return render_template('errors/404.html'), 404

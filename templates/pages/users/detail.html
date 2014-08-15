@@ -1,8 +1,10 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     <h5>{{ content['code_name'] }}</h5>
     <div class='col-md-8'>
-        <p class='lead'>Name: {{ content['real_name'] }}</p>
+        <p class='lead'>Name: {{ content['realname'] }}</p>
         <p>Email: {{ content['email'] }}</p>
         <p>Bio: {{ content['bio'] }}</p>
     </div>
@@ -10,5 +12,5 @@
         {% if content['photo_url'] %} <img src='{{ content["photo_url"] }}' >{% endif %}
     </div>
 </div>
-
+{% endblock %}
 

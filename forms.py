@@ -15,13 +15,14 @@ class RealNameForm(Form):
     first_name = TextField('First Name', validators = [Length(min=2, max=32)])
     last_name = TextField('Last Name', validators = [Length(min=2, max=32)])
 
-class RegisterForm(Form):
-    username = TextField('Username', validators=[Length(min=6, max=30), DataRequired()])
+class UserCreateForm(Form):
+    name = FormField(RealNameForm)
+    codename = TextField('Codename', validators=[Length(min=6, max=30), DataRequired()])
     password = PasswordField('Password', validators = [DataRequired(), Length(min=6, max=40)])
     confirm = PasswordField('Repeat Password', [DataRequired(), EqualTo('password', message='Passwords must match')])
-    name = FormField(RealNameForm)
     email  = TextField('Email', validators = [DataRequired(), Length(min=6, max=40)])
     phone = FormField(TelephoneForm)
+    photo = FileField('Photo URL')
     bio = TextField('Bio', validators = [Length(min=1, max=160)])
   
 class PasswordChangeForm(Form):

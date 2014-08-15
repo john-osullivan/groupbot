@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/groupify.iml" filepath="$PROJECT_DIR$/.idea/groupify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/groupbot.iml" filepath="$PROJECT_DIR$/.idea/groupbot.iml" />
     </modules>
   </component>
 </project>

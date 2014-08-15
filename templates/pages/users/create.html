@@ -1,0 +1,21 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}GroupBot - New User{% endblock %}
+
+{% block content %}
+<div class="row">
+<p class="lead">Oh my goodness, this is so exciting!  A new account!  We can't wait to make your life a little easier.</p>
+<p>Just fill out this form right here and we'll get you started.</p>
+<form action="/" method="POST">
+    {{ form.name }}
+    {{ form.codename }}
+    {{ form.password }}
+    {{ form.confirm }}
+    {{ form.email }}
+    {{ form.phone }}
+    {{ form.photo }}
+    {{ form.bio }}
+    <input type="submit" value="Create New Account">
+</form>
+</div>
+{% endblock %}

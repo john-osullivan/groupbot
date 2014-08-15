@@ -1,5 +1,5 @@
 {% extends 'layouts/main.html' %}
-{% block title %}{% thing.name %}{% endblock %}
+{% block title %}GroupBot - {{ infonav['parent']['name'] }}{% endblock %}
 {% block content %}
 <div class='col-lg-3' id='info-nav'>
     <a href="{{ url_for(infonav['parent']['view'] }}"><h4 id='parent-page-name'> {{ infonav['parent']['name'] }} </h4></a>

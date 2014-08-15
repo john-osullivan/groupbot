@@ -19,6 +19,7 @@ def member_list(group_code_name, member_code_name):
     :param member_code_name:
     :return:
     '''
+    
     return render_template('templates/pages/members/list')
 
 @app.route('/group/<group_code_name>/members/<member_code_name>')
