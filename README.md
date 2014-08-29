@@ -169,12 +169,18 @@ The role's page holds its title, description, the responsibilities required of a
 ## Future Features
 There are buckets of future functionality planned, including exhaustive Role-based Permissions, automated Task reminders, Google Drive/Docs integration, Facebook event integration, and more.
 
+- People are essentially getting Events and Tasks as notification type things, along with all the other
+  cool shit that's coming. Discussions and meetings are the two biggest things that'd flesh this out.
+  Style points for plug and play GroupMe + Google Groups mirroring functionality...
 - THINGS: We need to have a single Table which lists every other entry in the database so we can uniquely identify them and determine what Permissions a specific Member should have on it.  
 - We need Task and Event creation templating.  The Task creation screen should let you make a duplicate of a Task and only changing specific fields really easily, then automatically make the individual Tasks for each Member.  This would work best if it integrated with a Google Drive spreadsheet.
 - PERMISSIONS: Everything is listed in a Table so we can determine what each Member's Permission is for that Thing. The potential permissions are should they be able to SEE/EDIT/CREATE/DELETE a InfoPage, Event, Task, whathaveyou.  Ideally, we want a piece of code which gets a Thing, Member, and action type, and we get back a boolean of whether or not it's authorized.
 - There should be mulitple ways to "deliver" a deliverable, ranging from writing some text, signing your virtual name, uploading a photo or file, etc.  Expanding this really broadens the number of usecases for a Task.
 - VOTES: There needs to be a built-in idea of a vote which goes to every Member and has a minimum satisfaction margin that is a variable property.  This should be able to flip easily between being a one minute vote to table a motion, or one week vote to decide between two option for an event.
-- DISCUSS: We want a forum-style implementation that uses reddit voting combined with tagging to filter and sort the Discussion board into a legitimately useful place to talk shit with your Groups.
+- DISCUSS (older): We want a forum-style implementation that uses reddit voting combined with tagging to filter and sort the Discussion board into a legitimately useful place to talk shit with your Groups.
+- DISCUSS (newer): This idea is more functional, getting something hammered out that works with what everyone's already using.
+- Alternate DISCUSS: One easy tie-in implementation is to simply make a Google Group for each actual Group, enabling an email address for each separate Group someone has (conditional settings, brah).
+- Small-scale DISCUSS: People also need text groups, always.  Different setups, whatever the fuck.  The group should be able to have up to a certain number of GroupMes and then start charging (because I'm sure the API will eventually).  Each one is a "pinned thread" on the votable bulletin board.  The email threads move, these don't.
 - POINTS: Groups have currencies.  There's always some way to measure how much someone is doing, and we need to represent that.  There should be potential Points attached to Tasks, and those Points should be able to be called whatever the Group wants.  Points needs to be able to have a refresh period determined, a Point at which they're tallied and collection begins once more.
 - A reminder system which lets users assigning tasks specify a time for email and text message reminders to the person who has to do the task.
 - Group templates!  Users should be able to say whether they're making a club, fraternity, sports team, project group, company, etc.

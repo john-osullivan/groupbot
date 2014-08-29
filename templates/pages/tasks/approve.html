@@ -1,0 +1,18 @@
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
+<div class="row">
+<p class="lead">Oh snap, this is awesome! Time to approve somebody's Task.</p>
+<p>In the future, you will be able to approve and deliver individual deliverables turned in by specific
+Members, but for now the whole Task can be either unapproved or approved.  This is where you make it so!</p>
+<br>
+<h4>Task Name: {{ content['task_name' }}</h4>
+<p>Deliverable: {{ content['deliverable'] }}</p>
+<p>Deadline: {{ content['deadline'] }}</p>
+<form action="/" method="POST">
+    Are you absolutely positive this Task is ready to be approved?  If so, sign your real name.
+    {{ form.signature }}
+    <input type="submit" value="Yup, I'm sure of it.">
+</form>
+</div>
+{% endblock %}

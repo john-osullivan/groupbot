@@ -1,0 +1,22 @@
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
+<div class="row">
+    <p class="lead">Hey, good job on getting your stuff done!</p>
+    <p>You can deliver your Tasks here, the approving Members in the Group will automatically see that
+    it's been delivered.  For now, all you can do is sign your name to say you did it (Scout's Honor!).
+    In the future, however, there will be support for text/file upload deliverables, as well as multiple
+    deliverables for a single Task.</p>
+    <p>Until then, however, we just check that you sign with your real name (as stored in your User account).
+        Here you go:</p>
+    <br>
+    <h4>{{ content['task_name'] }}</h4>
+    <p>Deliverable: {{ content['deliverable'] }}</p>
+    <p>Deadline: {{ content['deadline'] }}</p>
+    <form action="/" method="POST">
+        Do you <strong>swear</strong> you delivered the task?
+        {{ form.signature }}
+        <input type="submit" value="I pinky promise!">
+    </form>
+</div>
+{% endblock %}

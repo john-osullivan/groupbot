@@ -1,32 +1,35 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
-    <h5>{{ content['role_name'] }}</h5>
+    <h5>{{ content['name'] }}</h5>
     <div class='col-md-6'>
         <h6>Description</h6>
-        <p>{{ content['role_description'] }}</p>
+        <p>{{ content['description'] }}</p>
     </div>
     <div class='col-md-6'>
         <h6>Members</h6>
         <ul>
-            {% for member in content['role_members'] %}
-            <li><a href="{{url_for('view_member', member_id=member['id'])}}">{{ member['name'] }}</a></li>
+            {% for member in content['members'] %}
+            <li><a href="{{url_for(views.member.member_detail, member_id=member['id'])}}">{{ member['name'] }}</a></li>
             {% endfor %}
         </ul>
     </div>
     <div class='col-md-6'>
         <h6>Events</h6>
         <ul>
-            {% for event in content['role_events'] %}
-            <li><a href="{{url_for('view_event', event_id=event['id'])}}">{{ event['name'] }}</a></li>
+            {% for event in content['events'] %}
+            <li><a href="{{url_for(views.event.event_detail, event_id=event['id'])}}">{{ event['name'] }}</a></li>
             {% endfor %}
         </ul>
     </div>
     <div class='col-md-6'>
         <h6>Tasks</h6>
         <ul>
-        {% for task in content['role_tasks'] %}
-        <li><a href="{{url_for('view_task', task_id=task['id'])}}">{{ task['name'] }}</a></li>
+        {% for task in content['tasks'] %}
+        <li><a href="{{url_for(views.task.task_detail, task_id=task['id'])}}">{{ task['name'] }}</a></li>
         {% endfor %}
         </ul>
     </div>
-</div>        
+</div>
+{% endblock %}

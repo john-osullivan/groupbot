@@ -1,12 +1,12 @@
 {% extends 'pages/infoblock.html' %}
 <div class='row'>
     <p class='lead'>Need to edit a Role?  Let's get started.</p>
-    <p>The name and description can both be edited from here.  You can also change which Members are holding
-    the Role by selecting/unselecting their names.</p>
-    <form action='/'>
+    <p>This page lets you change the name and description of an existing Role.  You can also add
+    or remove group Members from it using that "select multiple" field right thurr.</p>
+    <form action='/' method="POST">
         {{ form.name }}
         {{ form.description }}
-        {{ form.member }}
+        {{ form.members }}
         <input type='submit' value='Edit Role'>
     </form>
 </div>        

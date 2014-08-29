@@ -1,13 +1,17 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
 <p class='lead'>Oh, this is exciting -- time to make a new Event!</p>
 <form action='/' method='POST'>
     {{ form.name }}
-    {{ form.hosts }}
+    {{ form.host_members }}
+    {{ form.host_roles }}
     {{ form.start_time }}
     {{ form.end_time }}
     {{ form.location }}
     {{ form.description }}
     <input type='submit' value='Create Event'>
 </form>
-</div>        
+</div>
+{% endblock %}

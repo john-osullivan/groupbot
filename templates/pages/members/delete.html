@@ -1,19 +1,26 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class="row">
 <h6>Delete Member</h6>
     <div class="col-md-8">
         <p class="lead">
-        {% if content['member_id'] == member['id'] %}
+        {% if content['member_id'] == current_member.member_id %}
         Are you sure you want to delete your Membership from the Group?
         {% else %}
         Are you sure you want to delete this Member from the Group?  REALLY sure?
         {% endif %}
         </p>
-        <p>All of its associated information will get deleted with it, so be careful...</p>
+        <p>All of the associated information will get deleted with it, so be careful...</p>
     </div>
     <div class="col-md-4">
-        Signature: <input type="text" name="signature">
-    <a href=" {{ url_for('delete_member') }}" type="button" class="btn btn-block btn-danger">Delete Member</a>
+        <form action='/' method='POST'>
+            To make sure you're mean it, could you please sign this form?
+            {{ form.signature }}
+            {{ form.delete }}
+            <input type="submit" value="Yup, I'm sure.">
+        </form>
     </div>
 
 </div>
+{% endblock %}

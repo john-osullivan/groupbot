@@ -1,20 +1,39 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
-    <h6>{{ content['user_name'] }} <small>{{ content['preferred_name'] }}</small></h6>
-    <div class='col-md-4'>
-        <h6>Roles</h6>
-        {% for role in content['roles'] %}
-        <div class='row'>
-            <strong>{{ role['name'] }}</strong>
-            <p>{{ role['description'] }}</p>
-        </div>
-        {% endfor %}
+    <div class="col-md-6">
+        <h4>{{ content['realname'] }} <small>{{ content['codename'] }}</small></h4>
+        {% if current_user.user_id == content['user_id'] %}
+            <a href="{{ url_for(views.member.member_edit, group_codename=content['group_name'], member_codename=content['codename']) }}">
+                <button class="btn btn-info">Edit</button>
+            </a>
+            <a href="{{ url_for(views.member.member_delete, group_codename=content['group_name'], member_codename=content['codename']) }}">
+                <button class="btn btn-info">Delete</button>
+            </a>
+        {% endif %}
+        <p>{{ content['bio'] }}</p>
+        <img src="{{ content['photo'] }}">
     </div>
-    <div class='col-md-4'>
+    <div class='col-md-6'>
+        <h6>Roles</h6>
+        <ul>
+        {% for role in content['roles'] %}
+            <a href="url_for( views.role.role_detail, group_codename=content['group_name'], role_id=role['role_id'] )">
+            <li>{{ role['name'] }}</li>
+            </a>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class='col-md-6'>
         <h6>Tasks</h6>
         {% for task in content['tasks'] %}
         <div class='row'>
+            <a href="{{ url_for( views.task.task_detail, group_codename=content['group_name'], task_id=task['task_id'] )}}">
             <strong>{{ task['name'] }}</strong>
+            </a>
             <div class='col-md-8'>
                 <p>{{ task['description'] }}</p>
             </div>
@@ -31,11 +50,13 @@
         </div>
         {% endfor %}
     </div>
-    <div class='col-md-4'>
+    <div class='col-md-6'>
         <h6>Events</h6>
         {% for event in content['events'] %}
         <div class='row'>
+            <a href="url_for( views.event.event_detail, group_codename=content['group_name'], event_id=event['event_id'] )">
             <strong>{{ event['name'] }}</strong>
+            </a>
             <div class='col-md-8'>
                 <p>{{ event['description'] }}</p>
             </div>
@@ -60,3 +81,4 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}

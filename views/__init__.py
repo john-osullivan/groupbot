@@ -38,11 +38,6 @@ def login():
         return redirect(url_for(group.group_list))
     return render_template('forms/login.html', form = form)
 
-@app.route('/register')
-def register():
-    form = RegisterForm(request.form)
-    return render_template('forms/register.html', form = form)
-
 @app.route('/forgot')
 def forgot():
     form = ForgotForm(request.form)
@@ -50,7 +45,7 @@ def forgot():
 
 ###############################################
 #---------------------------------------------#
-# Standard Infopage view functions
+# Standard Infopage view functions, essentially View helpers.
 #---------------------------------------------#
 ###############################################
 def build_infonav(level, current_group=None, member=None):
@@ -90,17 +85,17 @@ def build_infonav(level, current_group=None, member=None):
             # Assuming it's defined, get the parent listing set up
             infonav['parent'] = {'name': current_group.code_name,
                                  'view': group.group_detail,
-                                 'args':{'group_id':current_group.group_id}}
+                                 'args': {'group_id': current_group.group_id}}
 
             # Now the fun part.  First, add the links for Members and Roles
             infonav['pages'] = []
             infonav['pages'].append({
-                'name':'Members',
-                'view':member.member_list
+                'name': 'Members',
+                'view': member.member_list
             })
             infonav['pages'].append({
-                'name':'Roles',
-                'view':role.role_list
+                'name': 'Roles',
+                'view': role.role_list
             })
 
             # Now, make the objects required to populate Tasks and its children
@@ -126,7 +121,73 @@ def build_infonav(level, current_group=None, member=None):
 
 
     return infonav
-#
+
+def get_group_and_nav(group_codename):
+    '''
+    Given a group_codename (aka every page but User), this builds up the infonav and gets the
+    Group object.  Talk about a helper method.
+    '''
+    this_group = Group.query.filter_by(codename=group_codename).first()
+    infonav = build_infonav('group', current_group=this_group)
+    return (this_group, infonav)
+
+def get_context(user_codename=None, group_codename=None, member_codename=None, role_id=None, event_id=None, task_id=None, ):
+    '''
+    Now, this thing should be the be-all end-all to just get the relevant information.  It can
+    accept any number of arguments within [group_codename, member_codename, role_id, task_id, event_id].
+    It then returns the associated objects.  "Associated objects" also always includes the appropriate
+    infonav object.  If there's a group_codename, it goes on the Group level.  If there isn't, it goes
+    on the User level.  Either way, this ALWAYS returns an infonav.  Otherwise, the number of arguments
+    it returns is based on the number of arguments you give it.  Namely, you're going to get a number of
+    responses equal to the number of arguments, plus one more for that infonav.
+
+    GIANT DESIGN CAVEAT:
+    The way it's written, when this function is called with tuple unpacking, you have to write the tuple
+    with the arguments in the same order as they're written in the method signature.  I'll work on
+    coming up with something better, but for now this works.  It logically processes through the codenames
+    and then the ids in order of functional importance... I guess.  That's what I thought when I was
+    writing it.  The order is:
+
+    (user_codename, group_codename, member_codename, role_id, event_id, task_id)
+    '''
+
+    # Okay, HERE'S THE PLAN.  We just check if each argument is non-None and then add that to the back
+    # of a list of objects.  At the end of everything, cast it to a tuple and pass it back.
+
+    returning_records = []
+
+    if user_codename is not None:
+        returning_records.append(build_infonav('user'))
+        returning_records.append(User.query.filter_by(codename=user_codename).first())
+
+    elif group_codename is not None:
+        infonav = build_infonav('group', current_group=group_codename)
+        this_group = Group.query.filter_by(codename=group_codename).first()
+        returning_records.append(infonav)
+        returning_records.append(this_group)
+
+    # Sanity check -- after checking for a User or Group, the list should be TWO parts long.
+    if len(returning_records) != 2:
+        raise Exception("We should've made the infonav by now in get_context() but we haven't!")
+
+    # Moving on, do the same shit for every other datatype -- in the right order, of course.
+    # On second thought...  We should only get one of these at a time.  It should actually just
+    # be an elif.  After all, look at the URl schema -- it's group/subthing, not group/subthing/subthing.
+    if member_codename is not None:
+        this_member = Member.query.filter_by(group_id=this_group.group_id, codename=member_codename).first()
+        returning_records.append(this_member)
+
+    elif role_id is not None:
+        returning_records.append(Role.query.get(role_id))
+
+    elif event_id is not None:
+        returning_records.append(Event.query.get(event_id))
+
+    elif task_id is not None:
+        returning_records.append(Task.query.get(task_id))
+
+    return tuple(returning_records)
+
 # def build_infopage(infopage):
 #     '''
 #     This function goes through the effort of building up the convoluted, general-ass
@@ -145,7 +206,31 @@ def build_infonav(level, current_group=None, member=None):
 #
 #     return render_template('pages/infopage.html', infonav=infonav, infopage=info)
 
+def get_group_and_member(group_codename, member_codename):
+    this_group = Group.query.filter_by(codename = group_codename)
+    this_member = Member.query.filter_by(group_id = this_group.group_id, codename = member_codename)
+    return (this_group, this_member)
 
+def get_current_member(group_codename, current_user):
+    current_group = Group.query.filter_by(codename=group_codename).first()
+    return Member.query.filter_by(group_id=current_group.group_id, user_id=current_user.user_id).first()
+
+def group_and_member_from_user_and_groupname(user_id, group_codename):
+    this_group = Group.query.filter_by(codename=group_codename).first()
+    this_member = Member.query.filter_by(group_id=this_group.group_id, user_id=user_id).first()
+    return (this_group, this_member)
+
+def get_select_list_for_members(member_list):
+    '''
+    Takes in a SQLAlchemy Query object containing Members, returns a list of (member_codename, member_realname)
+    pairs to be used in a select_field.
+
+    :param member_list:
+    :return select_list:
+    '''
+    select_list = [(each_member.get_identity()['codename'], each_member.get_identity()['realname'])
+                              for each_member in member_list]
+    return select_list
 
 ###############################################
 #---------------------------------------------#

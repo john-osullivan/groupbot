@@ -1,9 +1,13 @@
 {% extends 'pages/infoblock.html' %}
 <div class='row'>
 <p class='lead'>Y'know, it isn't an Event if nobody goes.  Quick, invite some friends!</p>
+<p>Heads up, here are the rules on how the Roles work for giving Member invitations.  You can manually
+change the invited Members, but every time you change the Roles all the invitations will be reset to fit
+with that.  That means people who suddenly have an Invite will receive one, and those who suddenly don't
+will no longer have one.</p>
 <form action='/' method='POST'>
-    {{ form.event }}
-    {{ form.members }}
-    <input type='submit' value='Invite Members'>
+    {{ form.invited_roles }}
+    {{ form.invited_members }}
+    <input type='submit' value='Update Invitations'>
 </form>
 </div>

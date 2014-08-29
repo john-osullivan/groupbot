@@ -2,7 +2,7 @@
 <div class='row'>
     {% for event in content['events'] %}
         <div class='col-md-4'>
-            <h5>{{ event['name'] }}</h5>
+            <h4>{{ event['name'] }}</h4>
             <div class='row'>
                 <div class='col-md-6'>
                     <p>Start: {{ event['start_time'] }}</p>
@@ -11,8 +11,13 @@
                 </div>
                 <div class='col-md-6'>
                     <p>Invited: {{ event['invited_count'] }}</p>
+                    {% if event['happened'] == False %}
                     <p>RSVP Yes: {{ event['yes_count'] }}</p>
                     <p>RSVP No: {{ event['no_count'] }}</p>
+                    {% else %}
+                    <p>Attended: {{ event['attended_count'] }}</p>
+                    <p>Missed: {{ event['missed_count'] }}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

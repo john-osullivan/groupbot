@@ -1,33 +1,81 @@
 {% extends 'pages/infoblock.html' %}
 <div class='row'>
     <div class='col-md-8'>
-        <h6>{{ task['name'] }}</h6>
-        <p>{{ task['description'] }}</p>
-        <p>{{ task['comments'] }}</p>
+        <h6>{{ content['name'] }}</h6>
+        {% if content['is_delivering'] %}
+            <a type='button' class='button btn btn-block' href="{{ url_for(views.task.deliver_task, group_codename=content['groupname'], task_id=content['id']) }}">
+                Deliver Task
+            </a>
+        {% endif %}
+        {% if content['is_approving'] %}
+            <a type='button' class='button btn btn-block btn-primary' href="{{ url_for(views.task.approve_task, group_codename=content['groupname'], task_id=content['id']) }}">
+                Approve Task
+            </a>
+            <a type="button" class="button btn btn-block btn-danger" href="{{ url_for(views.task.delete_task, group_codename=content['groupname'], task_id=content['id']) }}">
+                Delete Task
+            </a>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-6">
+                <p>Delivering Roles:</p>
+                <ul>
+                    {% for delivering_role in content['delivering_roles'] %}
+                    <li><a href="{{ url_for(views.role.role_detail, group_codename=content['groupname'], role_id=delivering_role['id']) }}">
+                        {{ delivering_role['name'] }}
+                    </a></li>
+                    {% endfor %}
+                </ul>
+                <p>Delivering Members:</p>
+                <ul>
+                    {% for delivering_member in content['delivering_members'] %}
+                    <li><a href="{{ url_for(views.member.member_detail, group_codename=content['groupname'], member_codename=delivering_member['codename']) }}">
+                        {{ delivering_member['realname'] }}
+                    </a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p>Approving Roles:</p>
+                <ul>
+                    {% for approving_role in content['approving_roles'] %}
+                    <li><a href="{{ url_for(views.role.role_detail, group_codename=content['groupname'], role_id=approving_role['id']) }}">
+                        {{ approving_role['name'] }}
+                    </a></li>
+                    {% endfor %}
+                </ul>
+                <p>Approving Members:</p>
+                <ul>
+                    {% for approving_member in content['approving_members'] %}
+                    <li><a href="{{ url_for(views.member.member_detail, group_codename=content['groupname'], member_codename=approving_member['codename']) }}">
+                        {{ approving_member['realname'] }}
+                    </a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <p>{{ content['description'] }}</p>
+        <p>{{ content['comments'] }}</p>
     </div>
     <div class='col-md-4'>
-        <p>Deadline: {{ str(task['deadline']) }}</p>
-        <p>Deliverable: {{ str(task['deliverable'] }}</p>
+
+        <p>Deadline: {{ str(content['deadline']) }}</p>
+        <p>Deliverable: {{ str(content['deliverable'] }}</p>
         <div class='col-md-2'>
-            {% if task['delivered'] == True %}
+            {% if content['delivered'] == True %}
                 <span class='label label-success'>Delivered!</span>
-            {% elsif task['late'] == True %}
+            {% elsif content['late'] == True %}
                 <span class='label label-danger'>Still Not Delivered :(</span>
             {% else %}
                 <span class='label label-info'>Not Delivered(</span>
             {% endif %}
         </div>
         <div class='col-md-2'>
-            {% if task['approved'] == True %}
+            {% if content['approved'] == True %}
             <span class='label label-success'>Approved!</span>
             {% else %}
             <span class='label label-info'>Not Approved :(</span>
             {% endif %}
         </div>
-        {% if task[doing_member_id] == member[member_id] %}
-            <a type='button' class='button btn btn-block' href='{{ url_for(deliver_task, task["id"]) }}'>Deliver Task</a>
-        {% elsif task[giving_member_id] == member[member_id] %}
-            <a type='button' class='button btn btn-block' href='{{ url_for(approve_task, task["id"]) }}'>Deliver Task</a>
-        {% endif %}
+
     </div>
 </div>

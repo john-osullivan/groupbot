@@ -1,10 +1,19 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
+<h2>Members</h2>
+<a href="{{ url_for(views.member.member_add, group_codename=content['group_name']) }}">
+    <button class="btn btn-default">Add More Members!</button>
+</a>
 <div class='row'>
     {% for member in content['members'] %}
     <div class="col-md-4">
-        <h6>{{ member['user_name' }} <small>{{ member['code_name'] }}</small></h6>
+        <a href="{{ url_for(views.member.member_detail, group_codename=content['group_name'], member_codename=member['codename'])) }}">
+        <h5>{{ member['realname'] }} <small>{{ member['codename'] }}</small></h5>
+        </a>
         <img href="{{ member['photo_url'] }}">
         <p>{{ member['bio'] }}</p>
     </div>
     {% endfor %}
 </div>
+{% endblock %}

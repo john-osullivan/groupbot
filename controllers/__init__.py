@@ -14,9 +14,9 @@ __all__ = ['group', 'user', 'member', 'role', 'task', 'event']
 #----------------------------------------------------------------------------#
 # Helper Methods (that span across many functions).
 #----------------------------------------------------------------------------#
-def get_group_member(request):
-    group = Group.query.get(request.POST['group_id'])
-    member = Member.query.get(request.POST['member_id'])
+def get_group_member(groupname, membername):
+    group = Group.query.filter_by(codename=groupname).first()
+    member = Member.query.filter_by(codename=membername, group_id=group.group_id).first()
     return (group, member)
 
 ##############################################

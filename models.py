@@ -168,7 +168,7 @@ class Group(Base):
 
     group_id = db.Column(db.Integer, primary_key=True)
     human_name = db.Column(db.String(80), nullable=False)
-    code_name = db.Column(db.String(80), unique=True, nullable=False)
+    codename = db.Column(db.String(80), unique=True, nullable=False)
     byline = db.Column(db.String(160))
     description = db.Column(db.String(2048))
 
@@ -183,10 +183,10 @@ class Group(Base):
     parent_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
     children = db.relationship('Group', backref='parent')
 
-    def __init__(self, human_name, code_name, byline=None, description=None, members=None,\
+    def __init__(self, human_name, codename, byline=None, description=None, members=None,\
                         parent_id=None, children=None):
         self.human_name = human_name
-        self.code_name = code_name
+        self.codename = codename
         self.byline = byline
         self.description = description
         self.members = members
@@ -215,23 +215,19 @@ class Member(Base):
     '''
 
     member_id = db.Column(db.Integer, primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), default=None, index=True)
-    
-    # Point of business: Refactor preferred_name into code_name.  It maintains
-    # convention and is also freaking awesome.  More contextual identity!  Always more!
-    preferred_name = db.Column(db.String(80))
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), default=None, index=True, nullable=False)
+    codename = db.Column(db.String(80), nullable=False)
     photo = db.Column(db.String(128))
     bio = db.Column(db.String(256))
 
     roles = db.relationship('Role', backref='members')
-    doing_tasks = db.relationship('Task', backref='members')
-    giving_tasks = db.relationship('Task', backref='members')
 
-    def __init__(self, group_id, preferred_name=None, bio=None, \
+    def __init__(self, group_id, user_id, codename, bio=None, \
                          roles=None, photo=None):
         self.group_id = group_id
-        self.preferred_name = preferred_name
+        self.user_id = user_id
+        self.codename = codename
         self.bio = bio
         self.roles = roles
         self.photo = photo
@@ -239,6 +235,22 @@ class Member(Base):
     def __repr__(self):
         return "Member # of Group #: %s --- %s"%(self.member_id, self.group_id)
 
+    def get_realname(self):
+        user = User.query.get(self.user_id)
+        return user.first_name + " " + user.last_name
+
+    def get_identity(self):
+        '''
+        Returns a dictionary with the Member's realname
+        '''
+        return {'realname':self.get_realname(), 'id':self.member_id, 'codename':self.codename}
+
+    def get_by_codename(self,codename,groupname):
+        '''
+
+        '''
+        this_group = Group.query.filter_by(codename=groupname).first()
+        return Member.query.filter_by(codename=codename, group_id=this_group.group_id).first()
 '''
 Handles the many-to-many db.relationship between members and roles, allowing for
 a role to have performed by multiple members or have one member perform 
@@ -295,16 +307,17 @@ class Role(Base):
     description = db.Column(db.String(2048))
     
     # Indexing to all of the Tasks assigned to & by this Role
-    doing_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
-    giving_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
-    doing_tasks = db.relationship('Task', foreign_keys=[doing_task_id], backref='roles')
-    giving_tasks = db.relationship('Task', foreign_keys=[giving_task_id], backref='roles')
+    delivering_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    approving_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
+    delivering_tasks = db.relationship('Task', foreign_keys=[delivering_task_id], backref='delivering_roles')
+    approving_tasks = db.relationship('Task', foreign_keys=[approving_task_id], backref='approving_roles')
 
-    # Indexing to all of the Events this Role created & is invited to
-    created_event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'))
+    # Indexing to all of the Events this Role is hosting or invited to.
     invited_event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'))
-    created_events = db.relationship('Event', foreign_keys=[created_event_id], backref='roles')
+    invited_events = db.relationship('Event', foreign_keys=[invited_event_id], backref='invited_roles')
 
+    hosting_event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'))
+    hosting_events = db.relationship('Event', foreign_keys=[hosting_event_id], backref='hosting_roles')
 
     def __init__(self, group_id, name, member_id=None, description=None):
         self.group_id = group_id
@@ -315,6 +328,10 @@ class Role(Base):
     def __repr__(self):
         return "Role #(%s) of Group #(%s) held by Member #(%s)"%(self.role_id, self.group_id, self.member_id)
 
+    def update_member_tasks(self):
+        '''
+        Same story as update_member_invites, except to work for Tasks.
+        '''
 '''
 Table which handles the db.relationship between members and tasks.  Our goal is to have
 two members associated with each task, one who is giving it and one who is doing it.  The
@@ -327,6 +344,30 @@ member_tasks = db.Table(
     db.Column('given_member_id', Integer, ForeignKey('members.member_id')),
     db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
     )
+
+member_delivering_tasks = db.Table(
+    'member_delivering_tasks', Base.metadata,
+    db.Column('delivering_member_id', Integer, ForeignKey('members.member_id')),
+    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+)
+
+member_approving_tasks = db.Table(
+    'member_approving_tasks', Base.metadata,
+    db.Column('approving_member_id', Integer, ForeignKey('members.member_id')),
+    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+)
+
+role_delivering_tasks = db.Table(
+    'role_delivering_tasks', Base.metadata,
+    db.Column('delivering_role_id', Integer, ForeignKey('roles.role_id')),
+    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+)
+
+role_approving_tasks = db.Table(
+    'role_approving_tasks', Base.metadata,
+    db.Column('approving_role_id', Integer, ForeignKey('roles.role_id')),
+    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+)
 
 class Task(Base):
     __tablename__ = 'tasks'
@@ -368,26 +409,68 @@ class Task(Base):
     children = db.relationship('Task', backref='parent')
 
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
-    doing_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
-    giving_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
- 
-    doer = db.relationship('Member', foreign_keys=[doing_id], secondary=member_tasks)
-    giver = db.relationship('Member', foreign_keys=[giving_id], secondary=member_tasks)
 
-    def __init__(self, name, doer_id, giver_id, group_id, description=None, \
-                        comments=None):
+    delivering_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
+    approving_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
+ 
+    delivering_members = db.relationship('Member', foreign_keys=[delivering_member_id], secondary=member_delivering_tasks,
+                                         backref='delivering_tasks')
+    approving_members = db.relationship('Member', foreign_keys=[approving_member_id], secondary=member_approving_tasks,
+                                        backref='approving_tasks')
+
+    delivering_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
+    approving_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
+
+    delivering_roles = db.relationship('Role', foreign_keys=[delivering_role_id], secondary=role_delivering_tasks,
+                                       backref='delivering_tasks')
+    approving_roles = db.relationship('Role', foreign_keys=[approving_role_id], secondary=role_approving_tasks,
+                                      backref='approving_tasks')
+
+    def __init__(self, name, group_id, description=None, deadline=None, deliverable=None,
+                 comments=None):
         self.name = name
-        self.description = description
-        self.comments = comments
-        self.doing_id = doer_id
-        self.giving_id = giver_id
         self.group_id = group_id
+        self.description = description
+        self.deliverable = deliverable
+        self.comments = comments
         self.delivered = False
-        self.deliverable = None
         self.approved = False
 
     def __repr__(self):
-        return "Task #(%s) of Group #(%s) held by Member #(%s)"%(self.task_id, self.group_id, self.doing_id)
+        return "Task #(%s) of Group #(%s) held by Member #(%s)"%(self.task_id, self.group_id, self.delivering_member_id)
+
+    def is_late(self):
+        return ((DateTime.now() > self.deadline) and (self.delivered == False))
+
+    def is_delivering(self, member):
+        return member in self.delivering_members
+
+    def is_approving(self, member):
+        return member in self.approving_members
+
+    def update_deliverers_by_roles(self):
+        '''
+        Updates all the Members in the .delivering_members relation based upon which Members have delivering_roles.
+        '''
+        if self.delivering_roles is not None:
+            for each_member in self.group.members:
+                delivering = True if len(set(self.delivering_roles) & set(each_member.roles)) > 0 else False
+                if delivering and each_member not in self.delivering_members:
+                    self.delivering_members.append(each_member)
+                elif not delivering and each_member in self.delivering_members:
+                    self.delivering_members.remove(each_member)
+
+    def update_approvers_by_roles(self):
+        '''
+        Updates all the Members in the .approving_members relation based on which Members have approving_roles.
+        '''
+        if self.approving_roles is not None:
+            for each_member in self.group.members:
+                approving = True if len(set(self.approving_roles) & set(each_member.roles)) > 0 else False
+                if approving and each_member not in self.approving_members:
+                    self.approving_members.append(each_member)
+                elif not approving and each_member in self.approving_members:
+                    self.approving_members.remove(each_member)
 
 
 event_host_table = db.Table('event_hosts', Base.metadata,
@@ -410,12 +493,7 @@ event_rsvp_no_table = db.Table('event_rsvp_no', Base.metadata,
     db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
 )
 
-event_attend_yes_table = db.Table('event_attend_yes', Base.metadata,
-    db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
-    db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
-)
-
-event_attend_no_table = db.Table('event_attend_no', Base.metadata,
+event_attend_table = db.Table('event_attend_yes', Base.metadata,
     db.Column('event_id', db.Integer, db.ForeignKey('events.event_id')),
     db.Column('member_id', db.Integer, db.ForeignKey('members.member_id'))
 )
@@ -441,42 +519,150 @@ class Event(Base):
 
     # A couple of parameters defining the different unique characteristics of an event type
     event_id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
+
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2000))
-    group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
     start_time = db.Column(db.DateTime())
-    end_time = db.Column(db.DateTime()) 
-
-    # List of people invited to the event
-    invited = db.relationship('Member', backref='events', secondary=event_invite_table)
-
-    # People's responses to the event will be recorded here
-    rsvp_yes = db.relationship('Member', backref='events', secondary=event_rsvp_yes_table)
-    rsvp_no = db.relationship('Member', backref='events', secondary=event_rsvp_no_table)
-
-    # List of people who attended and those who didn't, not always used
-    attended_yes = db.relationship('Member', backref='events', secondary=event_attend_yes_table)
-    attended_no = db.relationship('Member', backref='events', secondary=event_attend_no_table)
-    
-    # See if there is a way to format location similarly to datetime, until then its a String
+    end_time = db.Column(db.DateTime())
+    # TODO: Look for a "Geo" data-type to use for location.
     location = db.Column(db.String(200))
 
-    # Hosts are people who also have creator access
-    host = db.relationship('Member', backref='events', secondary=event_host_table)
+    # Boolean settings: these change how the Event is managed.
+    visible_to_uninvited = db.Column(db.Boolean, default=True)
+    invited_can_invite = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name, group_id, start_time=None, end_time=None, host_member_id=None,
-                 description=None, location=None):
+    # ALL OF THE FOREIGN KEYS TO THE MEMBER TABLE.  SO MANY MUHFUCKIN' RELATIONSHIPS.
+    ## List of people invited to the event
+    invited_members = db.relationship('Member', backref='invited_events', secondary=event_invite_table)
+
+    ## People's responses to the event will be recorded here
+    rsvp_yes = db.relationship('Member', backref='rsvp_yes_events', secondary=event_rsvp_yes_table)
+    rsvp_no = db.relationship('Member', backref='rsvp_no_events', secondary=event_rsvp_no_table)
+
+    ## List of people who attended the event.  We don't need to explicitly represent the list of those
+    ## who didn't, since it's just the "other side" of this list.  It can be generated on-the-fly.
+    attended = db.relationship('Member', backref='attended_events', secondary=event_attend_table)
+
+    ## Hosts are people who also have creator access
+    hosting_members = db.relationship('Member', backref='events', secondary=event_host_table)
+
+    def __init__(self, name=name, group_id=group_id, start_time=None, end_time=None, host_member_id=None,
+                 description=None, location=None, visible_to_uninvited=True,
+                 invited_can_invite=False):
         self.name = name
         self.description = description
         self.start_time=start_time
         self.end_time=end_time
         self.location=location
+        self.visible_to_uninvited = visible_to_uninvited
+        self.invited_can_invite = invited_can_invite
         Group.query.get(group_id).events.append(self)
-        if host_member_id != None: self.host.append(Member.query.get(host_member_id))
-
+        if host_member_id is not None: self.host.append(Member.query.get(host_member_id))
+        if visible_to_uninvited is not None: self.visible_to_uninvited = visible_to_uninvited
+        if invited_can_invite is not None: self.invited_can_invite = invited_can_invite
 
     def __repr__(self):
         return "Event #(%s) created by Member #(%s)"%(self.event_id, self.creator_id)
+
+    def already_happened(self):
+        return DateTime.now() > self.start_time
+
+    def attended_by(self, member):
+        return member in self.attended
+
+    def attendance_taken(self):
+        return self.attended is not None
+
+    def get_noshows(self):
+        no_shows = [each_member for each_member in self.invited_members if not self.attended_by(each_member)]
+        return no_shows
+
+    def is_invited(self, member):
+        return member in self.invited_members
+
+    def is_host(self, member):
+        return member in self.hosting_members
+
+    def no_rsvp(self, member):
+        if (member in self.invited_members) and (member not in self.rsvp_yes) and (member not in self.rsvp_no):
+            return True
+
+    def can_invite(self, member):
+        if self.invited_can_invite and member in self.invited_members:
+            return True
+        elif member in self.hosting_members:
+            return True
+        else:
+            return False
+
+    def member_can_see(self, member):
+        '''
+        This function makes it easy for the view to figure out if a given Member should be able to see
+        that an Event is happening.  Logically, it first checks if the Event is visible Group-wide
+        (aka has a True value in self.visible_to_uninvited).  If it *isn't* visible Group-wide, it
+        checks if the member is hosting it or invited to it.  If one of those conditions is True, it
+        returns True.  Otherwise, FALSE.
+        '''
+        if self.visible_to_uninvited:
+            return True
+        elif (member in self.host) or (member in self.invited_members):
+            return True
+        else:
+            return False
+
+    def update_invited_by_roles(self):
+        # Run a check through every possible Member in the Group.  Should they be invited based on their Roles?
+        for each_member in Group.query.get(self.group_id).members:
+
+            # Assume they aren't invited until they are.
+            invited = False
+            for each_role in each_member.roles:
+
+                # Once we know they're invited, flip the Boolean and stop iterating.
+                if each_role in self.invited_roles:
+                    invited = True
+                    break
+
+            # If invited is true, make sure their invited_events property includes this one
+            if invited and each_member not in self.invited_members:
+                self.invited_members.append(each_member)
+                db_session.add(each_member)
+            elif not invited and each_member in self.invited_members:
+                self.invited_members.remove(each_member)
+                db_session.add(each_member)
+
+        # With all the Members that should be invited invited and all those that shouldn't be not,
+        # commit the db_session and return the event.
+        db_session.commit()
+
+    def update_hosts_by_roles(self):
+        '''
+        We perform this by going through every Member, checking if they have one of the Roles that will
+        make them an Event host, and then adding them or removing them based on the results of that.
+        '''
+
+        for each_member in Group.query.get(self.group_id).members:
+
+            # Initially assume they're not hosting.
+            hosting = False
+            for each_role in self.hosting_roles:
+
+                # Unless the turn out to have one of the hosting Roles, then say they are and break.
+                if each_role in each_member.roles:
+                    hosting = True
+                    break
+
+            # If it turns out they are but the system doesn't reflect that, make them a host.
+            if hosting and each_member not in self.hosting_members:
+                self.hosting_members.append(each_member)
+
+            # If they aren't but it still thinks they are, fix that.
+            elif not hosting and each_member in self.hosting_members:
+                self.hosting_members.remove(each_member)
+
+        # Just save our work and we're done.
+        db_session.commit()
 
 ###############################################
 #---------------------------------------------#

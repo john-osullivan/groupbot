@@ -1,10 +1,11 @@
-{% extends 'pages/infoblock.html' %}
+4{% extends 'pages/infoblock.html' %}
 <div class='row'>
     <p class='lead'>Whoa, wait a second.  This isn't right!  Let's fix it.</p>
     <form method='POST' action='/'>
         {{ form.name }}
         {{ form.description }}
         {{ form.doing_member }}
+        {{ form.deliverable }}
         {{ form.deadline }}
         {{ form.comments }}
         <input type='submit' value='Edit Task'>

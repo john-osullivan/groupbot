@@ -1,10 +1,13 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     <p class='lead'>Time to change something up?  Go for it -- you do you.</p>
     <form action='/' method='POST'>
-        {{ form.preferred_name }}
+        {{ form.codename }}
         {{ form.bio }}
         {{ form.photo }}
         <input type='submit' value='Edit Member Profile'>
     </form>
 </div>
+{% endblock %}

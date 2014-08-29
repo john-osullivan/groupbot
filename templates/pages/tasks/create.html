@@ -1,12 +1,27 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     <p class='lead'>Okay, things to do.  Tasks to give out.  Stuff to get DONE.  LET'S DO THIS.</p>
     <form method='POST' action='/'>
+        <div class="col-md-12">
         {{ form.name }}
         {{ form.description }}
-        {{ form.doing_member }}
         {{ form.deadline }}
+        </div>
+        <div class="col-md-6">
+        {{ form.delivering_members }}
+        {{ form.delivering_roles }}
+        </div>
+        <div class="col-md-6">
+        {{ form.approving_members }}
+        {{ form.approving_roles }}
+        </div>
+        <div class="col-md-12">
+        {{ form.deliverable }}
         {{ form.comments }}
         <input type='submit' value='Create Task'>
+        </div>
     </form>
 </div>
+{% endblock %}

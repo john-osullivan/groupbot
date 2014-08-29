@@ -1,0 +1,71 @@
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
+<div class='row'>
+    <h3>{{ content['event']['name'] }} <small>Attendance</small></h3>
+    {% if content['attendance_taken'] == False %}
+        {% if content['is_host'] == True %}
+        <p class="lead">Okay, time to take attendance.  Just tell the magic attendance books, they'll remember.</p>
+        <form action='/' method='POST'>
+            Members in Attendance: {{ form.attended }}
+            <input type='submit' value='Save Attendance'>
+        </form>
+        {% else %}
+        <p class="lead">Yikes!  Either nobody has taken attendance for this meeting yet, or nobody showed up!</p>
+        <p>Either way, we have nothing to show you.  How about a silly little drawing instead?</p>
+        <img src="../../../static/img/png/groupbot - under construction.png">
+        {% endif %}
+
+    {% else %}
+
+        {% if content['is_host'] == True %}
+            <p class='lead'>Want to update the magic attendance books or take a look at them?  Here they are.</p>
+            <form action='/' method='POST'>
+                Members in Attendance: {{ form.attended }}
+                <input type='submit' value='Save Attendance'>
+            </form>
+        {% else %}
+            <p class="lead">Hmm, who went to that...  Oh yeah, just check the magic attendance books!</p>
+        {% endif %}
+
+        <p>Here's what we last heard about the attendance to
+            <a href="{{ url_for(views.event.detail, group_codename=content['groupname'],
+                event_id=content['event']['id']) }}">
+                {{ content['event']['name'] }}
+            </a>:
+        </p>
+        <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Member Name</th>
+                <th>Member Codename</th>
+                <th>Attended?</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for each_record in content['attendance_record'] %}
+                <tr>
+                    <td>{{ each_record['realname'] }}</td>
+                    <td>
+                        <a href="{{ url_for(views.member.member_detail, group_codename=content['groupname'],
+                                    member_codename=each_record['codename'] }}">
+                        {{ each_record['codename'] }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if each_record['attended'] == True %}
+                        <span class="label label-success">Attended!</span>
+                        {% else %}
+                        <span class="label label-warning">Absent...</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    {% endif %}
+
+</div>
+{% block infocontent %}
