@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
 <p class='lead'>Y'know, it isn't an Event if nobody goes.  Quick, invite some friends!</p>
 <p>Heads up, here are the rules on how the Roles work for giving Member invitations.  You can manually
@@ -11,3 +13,4 @@ will no longer have one.</p>
     <input type='submit' value='Update Invitations'>
 </form>
 </div>
+{% endblock %}

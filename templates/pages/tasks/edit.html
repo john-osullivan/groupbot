@@ -1,4 +1,6 @@
-4{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     <p class='lead'>Whoa, wait a second.  This isn't right!  Let's fix it.</p>
     <form method='POST' action='/'>
@@ -11,3 +13,4 @@
         <input type='submit' value='Edit Task'>
     </form>
 </div>
+{% endblock %}

@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     {% for event in content['events'] %}
         <div class='col-md-4'>
@@ -22,4 +24,5 @@
             </div>
         </div>
     {% endfor %}
-</div>        
+</div>
+{% endblock %}

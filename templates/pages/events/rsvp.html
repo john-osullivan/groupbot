@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
 <p class='lead'>It's always nice to RSVP!</p>
 <form action='/' method='POST'>
@@ -6,4 +8,5 @@
     {{ form.attending }}
     <input type='submit' value='RSVP'>
 </form>
-</div>        
+</div>
+{% endblock %}

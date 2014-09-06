@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     <p class='lead'>Need to edit a Role?  Let's get started.</p>
     <p>This page lets you change the name and description of an existing Role.  You can also add
@@ -9,4 +11,5 @@
         {{ form.members }}
         <input type='submit' value='Edit Role'>
     </form>
-</div>        
+</div>
+{% endblock %}

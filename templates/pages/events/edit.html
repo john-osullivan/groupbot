@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
 <p class='lead'>Oh, need to edit an Event?  No biggie -- let's do it.</p>
     <form action='/' method='POST'>
@@ -10,4 +12,5 @@
         {{ form.description }}
         <input type='submit' value='Update Event'>
     </form>
-</div>        
+</div>
+{% endblock %}

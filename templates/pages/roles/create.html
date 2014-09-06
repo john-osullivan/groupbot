@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
     <p class='lead'>Oooh, this is a biggie!  Time to make this group some <strong>Roles</strong>.</p>
     <p>Roles are used to make it easier to manage the different activities in your Group, as well as collect all the
@@ -20,4 +22,5 @@
         {{ form.members }}
         <input type='submit' value='Create Role'>
     </form>
-</div>        
+</div>
+{% endblock %}

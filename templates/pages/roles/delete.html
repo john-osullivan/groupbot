@@ -1,4 +1,6 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infopage.html' %}
+
+{% block infocontent %}
 <div class='row'>
 <p class='lead'>Oh jeez -- are you <strong>sure</strong> you want to delete this Role?</p>
 <p>It'll be gone forever, you know.  There no "Ctrl+Z"-ing this one!</p>
@@ -6,4 +8,5 @@
     {{ form.delete }}
     <input type="submit" value="Yup, I've made my choice.">
 </form>
-</div>        
+</div>
+{% endblock %}

@@ -1,7 +1,10 @@
-{% extends 'pages/infoblock.html' %}
+{% extends 'pages/infocontent.html' %}
+
+{% block infocontent %}
 <p class='lead'>Are you sure you want to delete {{ content['group_code_name'] }}?</p>
 <p>It'll be gone <mark>FOREVER!</mark></p>
 <form action="/" method="POST">
     {{ form.delete }}
     <input type="submit" value="I've made my choice.">
 </form>
+{% endblock %}
