@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Procfile" afterPath="$PROJECT_DIR$/Procfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/events/attendance.html" afterPath="$PROJECT_DIR$/templates/pages/events/attendance.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.py" afterPath="$PROJECT_DIR$/config.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/groups/create.html" afterPath="$PROJECT_DIR$/templates/pages/groups/create.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/roles/create.html" afterPath="$PROJECT_DIR$/templates/pages/roles/create.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/groups/delete.html" afterPath="$PROJECT_DIR$/templates/pages/groups/delete.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/roles/delete.html" afterPath="$PROJECT_DIR$/templates/pages/roles/delete.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/events/edit.html" afterPath="$PROJECT_DIR$/templates/pages/events/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/groups/edit.html" afterPath="$PROJECT_DIR$/templates/pages/groups/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/roles/edit.html" afterPath="$PROJECT_DIR$/templates/pages/roles/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/tasks/edit.html" afterPath="$PROJECT_DIR$/templates/pages/tasks/edit.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/groupbot.iml" afterPath="$PROJECT_DIR$/.idea/groupbot.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/events/invite.html" afterPath="$PROJECT_DIR$/templates/pages/events/invite.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/events/list.html" afterPath="$PROJECT_DIR$/templates/pages/events/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/pages/events/rsvp.html" afterPath="$PROJECT_DIR$/templates/pages/events/rsvp.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="" />
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
