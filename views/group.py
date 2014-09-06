@@ -4,7 +4,7 @@ from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
 from flask.ext.login import current_user, login_required
 from app import app
-from views import build_infonav
+import views
 from models import Group, Task, Event
 import helper
 import forms
@@ -41,7 +41,7 @@ def group_list():
                       'description':group.description})
 
     # Lastly, pass in the "infonav" object used to build the sidebar navigation.
-    infonav = build_infonav('user')
+    infonav = views.build_infonav('user')
     return render_template('templates/pages/groups/list.html', content=content, infonav=infonav)
 
 
@@ -61,7 +61,7 @@ def group_detail(group_code_name):
     content['group_name'] = group.human_name
     content['group_byline'] = group.byline
     content['group_code_name'] = group.code_name
-    infonav = build_infonav('group', current_group=group)
+    infonav = views.build_infonav('group', current_group=group)
 
     # Now, get all the information and endpoints required to build up the Tasks component of the view
     tasks = group.tasks.order_by(Task.deadline).limit(5)

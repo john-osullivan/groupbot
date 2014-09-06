@@ -18,8 +18,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from forms import *
-from views import *
 from models import *
 
 # Automatically tear down SQLAlchemy.
