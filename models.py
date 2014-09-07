@@ -265,7 +265,7 @@ class Role(Base):
     # Position information
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2048))
-    
+
     # Indexing to all of the Tasks assigned to & by this Role
     delivering_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
     approving_task_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
@@ -364,21 +364,15 @@ class Task(Base):
 
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
 
-    delivering_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
-    approving_member_id = db.Column(db.Integer, db.ForeignKey('members.member_id'), nullable=False)
- 
-    delivering_members = db.relationship('Member', foreign_keys=[delivering_member_id], secondary=member_delivering_tasks,
-                                         backref='delivering_tasks')
-    approving_members = db.relationship('Member', foreign_keys=[approving_member_id], secondary=member_approving_tasks,
-                                        backref='approving_tasks')
+    delivering_members = db.relationship('Member', secondary=member_delivering_tasks, backref='delivering_tasks',
+                                         post_update=True)
+    approving_members = db.relationship('Member', secondary=member_approving_tasks, backref='approving_tasks',
+                                        post_update=True)
 
-    delivering_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
-    approving_role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
-
-    delivering_roles = db.relationship('Role', foreign_keys=[delivering_role_id], secondary=role_delivering_tasks,
-                                       backref='delivering_tasks')
-    approving_roles = db.relationship('Role', foreign_keys=[approving_role_id], secondary=role_approving_tasks,
-                                      backref='approving_tasks')
+    delivering_roles = db.relationship('Role', secondary=role_delivering_tasks,backref='delivering_tasks',
+                                       post_update=True)
+    approving_roles = db.relationship('Role', secondary=role_approving_tasks,backref='approving_tasks',
+                                      post_update=True)
 
     def __init__(self, name, group_id, description=None, deadline=None, deliverable=None,
                  comments=None):
@@ -497,24 +491,24 @@ class Event(Base):
     invited_can_invite = db.Column(db.Boolean, default=False)
 
     # The ROLE relationships!
-    hosting_roles = db.relationship('Role', backref='hosting_events', secondary=role_host_table)
+    hosting_roles = db.relationship('Role', backref='hosting_events', secondary=role_host_table, post_update=True)
 
-    invited_roles = db.relationship('Event', backref='invited_events', secondary=role_invite_table)
+    invited_roles = db.relationship('Event', backref='invited_events', secondary=role_invite_table, post_update=True)
 
     ## ALL OF THE FOREIGN KEYS TO THE MEMBER TABLE.  SO MANY MUHFUCKIN' RELATIONSHIPS.
     ## Hosts are the Members with the ability to edit the Event and take attendance.
-    hosting_members = db.relationship('Member', backref='hosting_events', secondary=member_host_table)
+    hosting_members = db.relationship('Member', backref='hosting_events', secondary=member_host_table, post_update=True)
 
     ## List of people invited to the event
-    invited_members = db.relationship('Member', backref='invited_events', secondary=member_invite_table)
+    invited_members = db.relationship('Member', backref='invited_events', secondary=member_invite_table, post_update=True)
 
     ## People's responses to the event will be recorded here
-    rsvp_yes = db.relationship('Member', backref='rsvp_yes_events', secondary=member_rsvp_yes_table)
-    rsvp_no = db.relationship('Member', backref='rsvp_no_events', secondary=member_rsvp_no_table)
+    rsvp_yes = db.relationship('Member', backref='rsvp_yes_events', secondary=member_rsvp_yes_table, post_update=True)
+    rsvp_no = db.relationship('Member', backref='rsvp_no_events', secondary=member_rsvp_no_table, post_update=True)
 
     ## List of people who attended the event.  We don't need to explicitly represent the list of those
     ## who didn't, since it's just the "other side" of this list.  It can be generated on-the-fly.
-    attended = db.relationship('Member', backref='attended_events', secondary=member_attend_table)
+    attended = db.relationship('Member', backref='attended_events', secondary=member_attend_table, post_update=True)
 
     def __init__(self, name=name, group_id=group_id, start_time=None, end_time=None, host_member_id=None,
                  description=None, location=None, visible_to_uninvited=True,
