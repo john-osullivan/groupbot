@@ -1,4 +1,4 @@
 __author__ = 'John'
 
-from app import app
+from groupbot import app
 app.run(debug = True)

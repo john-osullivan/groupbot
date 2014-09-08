@@ -1,0 +1,24 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class='jumbotron' id='frontpage-intro' style="margin-top: 2%">
+    <div class="row">
+    <h1 style='text-align: center; margin-bottom:5%'>GroupBot</h1>
+    <img src='../static/img/png/groupbot - pleased to meet ya.png' style='margin-left:30%;margin-right:auto'>
+    <h2 style='text-align:center;'>GroupBot is an automagical group coordinator.  It makes managing large groups of
+    people easy, letting you focus on what matters.  Why don't you find out how?</h2>
+    <div class="col-md-6">
+        <a href="{{ url_for('views.user.user_create) }}"><button type="button" class="btn btn-info">
+            Sign Up!
+        </button></a>
+    </div>
+    <div class="col-md-6">
+        <a href="{{ url_for('login') }}"><button type="button" class="btn btn-primary">
+            Log In
+        </button></a>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
