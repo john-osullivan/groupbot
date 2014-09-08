@@ -84,10 +84,11 @@ class User(Base):
     memberships = db.relationship("Member", backref= 'user')
 
 
-    def __init__(self, code_name, password, name=None, email=None, phone=None, \
-                            bio=None, photo=None, memberships=None):
-        self.name = name
-        self.codename = code_name
+    def __init__(self, codename, password, first_name=first_name, last_name=last_name, email=None,
+                 phone=None, bio=None, photo=None, memberships=None):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.codename = codename
         self.password = password
         self.email = email
         self.phone = phone

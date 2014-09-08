@@ -41,7 +41,7 @@ def group_list():
 
     # Lastly, pass in the "infonav" object used to build the sidebar navigation.
     infonav = groupbot.views.build_infonav('user')
-    return render_template('templates/pages/groups/list.html', content=content, infonav=infonav)
+    return render_template('pages/groups/list.html', content=content, infonav=infonav)
 
 
 @app.route('/group/<group_code_name>')
@@ -101,7 +101,7 @@ def group_detail(group_code_name):
     content['members'] = members_view
 
     # With all that said and done, return that motherfucker.
-    return render_template('templates/pages/groups/detail.html', content=content, infonav=infonav)
+    return render_template('pages/groups/detail.html', content=content, infonav=infonav)
 
 @app.route('/group/<group_codename>/edit')
 def group_edit(group_codename):
@@ -118,7 +118,7 @@ def group_edit(group_codename):
             flash("You successfully edited {}!".format(current_group.code_name), 'success')
             return redirect(url_for(group_detail, group_code_name=group_codename))
     else:
-        return render_template('templates/pages/groups/edit.html', form=form)
+        return render_template('pages/groups/edit.html', form=form)
 
 @app.route('/group/<group_code_name>/delete')
 def group_delete(group_code_name):
@@ -133,4 +133,4 @@ def group_delete(group_code_name):
             else:
                 return redirect(url_for(group_detail, group_code_name=group_code_name))
     else:
-        return render_template('templates/pages/groups/delete.html', content=content)
+        return render_template('pages/groups/delete.html', content=content)

@@ -76,7 +76,7 @@ def event_create(group_codename):
 
         # If nobody's submitted yet, just show 'em the page with the nav and form.
         if not form.validate_on_submit():
-            return render_template('templates/pages/events/create.html', infonav=infonav, form=form)
+            return render_template('pages/events/create.html', infonav=infonav, form=form)
 
         # If somebody has, call the controller function, flash the appropriate message, and move the Member along.
         else:
@@ -139,7 +139,7 @@ def event_detail(group_codename, event_id):
         content['rsvp']['none'] = [each_member.get_identity() for each_member in this_event.no_rsvp()]
 
         # With all that done, return the page for the Member to see!
-        return render_template('templates/pages/events/detail.html', infonav=infonav, content=content)
+        return render_template('pages/events/detail.html', infonav=infonav, content=content)
 
     # WHOA -- this person can't see that event!  Send 'em back to the Events page.
     else:
@@ -200,7 +200,7 @@ def event_edit(group_codename, event_id):
                 return redirect(url_for(gbot.views.event.event_edit, group_codename=group_codename, event_id=event_id))
 
         # With that done, if nothing's been submitted, we're good to return the form!
-        return render_template('templates/pages/events/edit.html', infonav=infonav, form=form)
+        return render_template('pages/events/edit.html', infonav=infonav, form=form)
     # Well I'll be damned, they're trying to edit this Event when they're not a host!  PUNT!
     else:
         flash("Uhh, you're not supposed to be there.  Editing an Event that you aren't hosting -- tomfoolery!", "error")
@@ -244,7 +244,7 @@ def event_delete(group_codename, event_id):
 
         # If the form hasn't been submitted yet, though, then just show 'em the page.
         else:
-            return render_template('templates/pages/events/delete.html', infonav=infonav, form=form, content=content)
+            return render_template('pages/events/delete.html', infonav=infonav, form=form, content=content)
 
 @app.route('/group/<group_codename>/events/<int:event_id>/invite')
 def event_invite(group_codename, event_id):
@@ -277,7 +277,7 @@ def event_invite(group_codename, event_id):
                                         for each_member in this_group.members]
         form.invited_members.default = [each_member.codename for each_member in this_event.invited_members]
         form.invited_members.process()
-    return render_template('templates/pages/events/invite.html', infonav=infonav, form=form)
+    return render_template('pages/events/invite.html', infonav=infonav, form=form)
 
 @app.route('/group/<group_codename>/events/<event_id>/rsvp')
 def event_rsvp(group_codename, event_id):
@@ -323,7 +323,7 @@ def event_rsvp(group_codename, event_id):
                 return redirect(url_for(gbot.views.event.event_rsvp, group_codename=group_codename, event_id=event_id))
 
         # If the RSVP hasn't been made yet, just show 'em the form.
-        return render_template('templates/pages/events/rsvp.html', infonav=infonav, form=form)
+        return render_template('pages/events/rsvp.html', infonav=infonav, form=form)
 
     # If the current_member isn't actually invited, bounce 'em out to the Event list for weirdness.
     else:
@@ -392,12 +392,12 @@ def event_attendance(group_codename, event_id):
 
             # With the form modified, just process it and return the template with everything we've made.
             form.attended.process()
-            return render_template('templates/pages/events/attendance.html', infonav=infonav, content=content,
+            return render_template('pages/events/attendance.html', infonav=infonav, content=content,
                                    form=form)
 
     # If the Member isn't a host, but the Attendance is visible or they're invited, show 'em what we'd already made.
     elif (this_event.is_invited(current_member)) or (this_event.visible_to_uninvited):
-        return render_template('templates/pages/events/attendance.html', infonav=infonav, content=content)
+        return render_template('pages/events/attendance.html', infonav=infonav, content=content)
 
     # If they don't have any reason to check this Attendance, get 'em out of there!
     else:

@@ -2,200 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/img/.gitkeep" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/font/FontAwesome.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/ico/apple-touch-icon-114-precomposed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/ico/apple-touch-icon-144-precomposed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/ico/apple-touch-icon-57-precomposed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/ico/apple-touch-icon-72-precomposed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/ico/favicon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/font/fontawesome-webfont.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/font/fontawesome-webfont.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/font/fontawesome-webfont.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/img/ai/groupbot - pleased to meet ya.ai" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/img/png/groupbot - pleased to meet ya.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/img/ai/groupbot - under construction.ai" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/img/png/groupbot - under construction.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/errors/404.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/errors/500.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/helper/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/about.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/members/add.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/approve.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/attendance.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/bootstrap-3.0.0.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/js/libs/bootstrap-3.0.0.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/bootstrap-theme-3.0.0.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/bootstrap-theme-3.0.0.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/create.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/groups/create.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/roles/create.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/create.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/users/create.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/dashboard.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db_populate.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/groups/delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/members/delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/roles/delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/users/delete.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/deliver.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/detail.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/groups/detail.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/members/detail.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/roles/detail.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/detail.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/users/detail.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/edit.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/groups/edit.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/members/edit.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/roles/edit.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/edit.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/users/edit.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/event.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/event.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/font-awesome-3.2.1.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/font/fontawesome-webfont.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/forms/forgot.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/layouts/form.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/forms.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/group.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/group.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/infoblock.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/infopage.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/infopage_style.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/invite.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/js/libs/jquery-1.10.2.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/layout.forms.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/layout.main.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/groups/list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/members/list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/roles/list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/tasks/list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/forms/login.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/main.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/layouts/main.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/main.quickfix.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/css/main.responsive.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/member.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/member.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/models.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/js/libs/modernizr-2.6.2.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/js/plugins.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/forms/register.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/js/libs/respond-1.3.0.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/role.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/role.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/templates/pages/events/rsvp.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/static/js/script.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/task.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/task.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/controllers/user.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/groupbot/views/user.py" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\app.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\event.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\group.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\member.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\role.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\task.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\controllers\user.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\forms.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\helper\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\models.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\bootstrap-3.0.0.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\bootstrap-theme-3.0.0.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\bootstrap-theme-3.0.0.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\font-awesome-3.2.1.min.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\infopage_style.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\layout.forms.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\layout.main.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\main.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\main.quickfix.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\css\main.responsive.css" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\font\FontAwesome.otf" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\font\fontawesome-webfont.eot" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\font\fontawesome-webfont.svg" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\font\fontawesome-webfont.ttf" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\font\fontawesome-webfont.woff" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\ico\apple-touch-icon-114-precomposed.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\ico\apple-touch-icon-144-precomposed.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\ico\apple-touch-icon-57-precomposed.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\ico\apple-touch-icon-72-precomposed.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\ico\favicon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\img\.gitkeep" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\img\ai\groupbot - pleased to meet ya.ai" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\img\ai\groupbot - under construction.ai" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\img\png\groupbot - pleased to meet ya.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\img\png\groupbot - under construction.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\js\libs\bootstrap-3.0.0.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\js\libs\jquery-1.10.2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\js\libs\modernizr-2.6.2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\js\libs\respond-1.3.0.min.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\js\plugins.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\static\js\script.js" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\errors\404.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\errors\500.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\forms\forgot.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\forms\login.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\forms\register.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\layouts\form.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\layouts\main.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\about.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\dashboard.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\attendance.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\create.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\detail.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\edit.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\invite.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\list.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\events\rsvp.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\groups\create.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\groups\delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\groups\detail.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\groups\edit.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\groups\list.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\home.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\infoblock.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\infopage.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\members\add.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\members\delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\members\detail.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\members\edit.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\members\list.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\roles\create.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\roles\delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\roles\detail.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\roles\edit.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\roles\list.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\approve.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\create.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\deliver.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\detail.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\edit.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\tasks\list.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\users\create.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\users\delete.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\users\detail.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\templates\pages\users\edit.html" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\event.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\group.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\member.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\role.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\task.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\John\Dropbox\independent_work\groupbot\views\user.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db_create.py" afterPath="$PROJECT_DIR$/db_create.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.py" afterPath="$PROJECT_DIR$/run.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/__init__.py" afterPath="$PROJECT_DIR$/groupbot/views/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db_populate.py" afterPath="$PROJECT_DIR$/db_populate.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/event.py" afterPath="$PROJECT_DIR$/groupbot/views/event.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/forms.py" afterPath="$PROJECT_DIR$/groupbot/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/group.py" afterPath="$PROJECT_DIR$/groupbot/views/group.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" afterPath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/forms/login.html" afterPath="$PROJECT_DIR$/groupbot/templates/forms/login.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/layouts/main.html" afterPath="$PROJECT_DIR$/groupbot/templates/layouts/main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/models.py" afterPath="$PROJECT_DIR$/groupbot/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/user.py" afterPath="$PROJECT_DIR$/groupbot/views/user.py" />
     </list>
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -223,59 +39,23 @@
           <file leaf-file-name="group.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/groupbot/views/group.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="2397">
-                  <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
-                  <folding />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2397">
+                  <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+                  <folding>
+                    <element signature="e#21#136#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="member.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/views/member.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="3417">
-                  <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="role.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/views/role.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="2889" max-vertical-offset="3570">
-                  <caret line="184" column="26" selection-start-line="184" selection-start-column="26" selection-end-line="184" selection-end-column="26" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="task.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/views/task.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="4641" max-vertical-offset="5763">
-                  <caret line="283" column="21" selection-start-line="283" selection-start-column="21" selection-end-line="303" selection-end-column="71" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="event.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/views/event.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="5557" max-vertical-offset="6987">
-                  <caret line="404" column="37" selection-start-line="404" selection-start-column="37" selection-end-line="404" selection-end-column="37" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="db_populate.py" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="db_populate.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/db_populate.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.5730337" vertical-offset="0" max-vertical-offset="890">
-                  <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-                  <folding />
+                <state vertical-scroll-proportion="0.0" vertical-offset="164" max-vertical-offset="1054">
+                  <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#20#30#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -283,33 +63,70 @@
           <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/groupbot/views/__init__.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="4386">
-                  <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="5130">
+                  <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
                   <folding>
-                    <element signature="e#20#59#0" expanded="true" />
+                    <element signature="e#20#65#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="create.html" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/templates/pages/users/create.html">
+          <file leaf-file-name="landing.html" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/groupbot/templates/pages/landing.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="442">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.33449075" vertical-offset="0" max-vertical-offset="864">
+                  <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+                  <folding>
+                    <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#h2#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#h2#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/groupbot/forms.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="731" max-vertical-offset="2533">
+                  <caret line="44" column="8" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#0#26#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="main.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/groupbot/templates/layouts/main.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-16.961538" vertical-offset="613" max-vertical-offset="2006">
+                  <caret line="62" column="48" selection-start-line="62" selection-start-column="48" selection-end-line="62" selection-end-column="48" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="landing.html" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/templates/pages/landing.html">
+          <file leaf-file-name="user.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/groupbot/views/user.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="510">
-                  <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1887">
+                  <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
                   <folding>
-                    <element signature="n#style#0;n#h2#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                    <element signature="e#21#136#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="event.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/groupbot/views/event.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="5961" max-vertical-offset="6851">
+                  <caret line="399" column="32" selection-start-line="399" selection-start-column="32" selection-end-line="399" selection-end-column="32" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -328,24 +145,24 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="user.py" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/groupbot/views/user.py">
+          <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/groupbot/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1904">
-                  <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
-                  <folding />
+                <state vertical-scroll-proportion="0.0" vertical-offset="2856" max-vertical-offset="13923">
+                  <caret line="148" column="50" selection-start-line="148" selection-start-column="50" selection-end-line="148" selection-end-column="50" />
+                  <folding>
+                    <element signature="e#0#36#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/groupbot/models.py">
+          <file leaf-file-name="login.html" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/groupbot/templates/forms/login.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="4.1599126" vertical-offset="724" max-vertical-offset="13906">
-                  <caret line="266" column="44" selection-start-line="266" selection-start-column="44" selection-end-line="266" selection-end-column="44" />
-                  <folding>
-                    <element signature="e#0#36#0" expanded="true" />
-                  </folding>
+                <state vertical-scroll-proportion="0.09582864" vertical-offset="0" max-vertical-offset="887">
+                  <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -370,9 +187,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/templates/pages/roles/detail.html" />
-        <option value="$PROJECT_DIR$/templates/pages/events/detail.html" />
-        <option value="$PROJECT_DIR$/templates/pages/events/delete.html" />
         <option value="$PROJECT_DIR$/templates/pages/events/create.html" />
         <option value="$PROJECT_DIR$/views/event.py" />
         <option value="$PROJECT_DIR$/controllers/event.py" />
@@ -410,17 +224,20 @@
         <option value="$PROJECT_DIR$/app/controllers/__init__.py" />
         <option value="$PROJECT_DIR$/app/views/__init__.py" />
         <option value="$PROJECT_DIR$/app/views/group.py" />
-        <option value="$PROJECT_DIR$/groupbot/views/user.py" />
-        <option value="$PROJECT_DIR$/groupbot/views/group.py" />
         <option value="$PROJECT_DIR$/groupbot/views/member.py" />
         <option value="$PROJECT_DIR$/groupbot/views/role.py" />
         <option value="$PROJECT_DIR$/groupbot/views/task.py" />
-        <option value="$PROJECT_DIR$/groupbot/views/event.py" />
         <option value="$PROJECT_DIR$/groupbot/db_populate.py" />
-        <option value="$PROJECT_DIR$/groupbot/models.py" />
+        <option value="$PROJECT_DIR$/groupbot/views/user.py" />
+        <option value="$PROJECT_DIR$/groupbot/views/group.py" />
+        <option value="$PROJECT_DIR$/groupbot/views/event.py" />
         <option value="$PROJECT_DIR$/groupbot/views/__init__.py" />
-        <option value="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
+        <option value="$PROJECT_DIR$/groupbot/forms.py" />
+        <option value="$PROJECT_DIR$/groupbot/models.py" />
         <option value="$PROJECT_DIR$/db_populate.py" />
+        <option value="$PROJECT_DIR$/groupbot/templates/layouts/main.html" />
+        <option value="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
+        <option value="$PROJECT_DIR$/groupbot/templates/forms/login.html" />
       </list>
     </option>
   </component>
@@ -505,72 +322,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="groupbot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="users" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -911,7 +662,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="2397">
           <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
-          <folding />
+          <folding>
+            <element signature="e#21#136#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -951,7 +704,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="544">
           <caret line="23" column="22" selection-start-line="23" selection-start-column="22" selection-end-line="23" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#20#30#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1030,71 +785,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/member.py">
+    <entry file="file://$PROJECT_DIR$/groupbot/views/task.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="3417">
-          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.152809" vertical-offset="4505" max-vertical-offset="5627">
+          <caret line="281" column="68" selection-start-line="281" selection-start-column="68" selection-end-line="281" selection-end-column="68" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/groupbot/views/role.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2889" max-vertical-offset="3570">
+        <state vertical-scroll-proportion="0.694382" vertical-offset="2340" max-vertical-offset="3400">
           <caret line="184" column="26" selection-start-line="184" selection-start-column="26" selection-end-line="184" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/task.py">
+    <entry file="file://$PROJECT_DIR$/groupbot/views/member.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4641" max-vertical-offset="5763">
-          <caret line="283" column="21" selection-start-line="283" selection-start-column="21" selection-end-line="303" selection-end-column="71" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="3417">
+          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5557" max-vertical-offset="6987">
-          <caret line="404" column="37" selection-start-line="404" selection-start-column="37" selection-end-line="404" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/group.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="2397">
-          <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="4386">
-          <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-          <folding>
-            <element signature="e#20#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/user.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="1904">
-          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/templates/pages/landing.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="510">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#h2#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1106,21 +817,108 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/templates/pages/events/rsvp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="903">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/views/user.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1887">
+          <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+          <folding>
+            <element signature="e#21#136#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/views/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5961" max-vertical-offset="6851">
+          <caret line="399" column="32" selection-start-line="399" selection-start-column="32" selection-end-line="399" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/views/group.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2397">
+          <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
+          <folding>
+            <element signature="e#21#136#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/views/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="5130">
+          <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
+          <folding>
+            <element signature="e#20#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="731" max-vertical-offset="2533">
+          <caret line="44" column="8" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/db_populate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5730337" vertical-offset="0" max-vertical-offset="890">
-          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="164" max-vertical-offset="1054">
+          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
+          <folding>
+            <element signature="e#20#30#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/groupbot/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.1599126" vertical-offset="724" max-vertical-offset="13906">
-          <caret line="266" column="44" selection-start-line="266" selection-start-column="44" selection-end-line="266" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2856" max-vertical-offset="13923">
+          <caret line="148" column="50" selection-start-line="148" selection-start-column="50" selection-end-line="148" selection-end-column="50" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/templates/layouts/main.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.961538" vertical-offset="613" max-vertical-offset="2006">
+          <caret line="62" column="48" selection-start-line="62" selection-start-column="48" selection-end-line="62" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/templates/pages/landing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33449075" vertical-offset="0" max-vertical-offset="864">
+          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+          <folding>
+            <element signature="n#style#0;n#h1#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h2#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h2#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/templates/forms/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09582864" vertical-offset="0" max-vertical-offset="887">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

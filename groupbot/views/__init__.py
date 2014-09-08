@@ -1,5 +1,5 @@
 __author__ = 'John'
-import group, member, role, task, event
+import user, group, member, role, task, event
 import groupbot.helper
 from groupbot.models import Task, Event
 from flask.ext.login import current_user, login_user, logout_user
@@ -14,16 +14,43 @@ from groupbot import forms
 __all__ = ['user', 'group', 'role', 'task', 'event', 'member']
 
 
+# Context Processor: Puts in basic keywords to views so that anything works
+@app.context_processor
+def inject_groupbot():
+    return dict(views=groupbot.views,
+                list_routes = list_routes)
+
 ###############################################
 #---------------------------------------------#
 # Controllers.
 #---------------------------------------------#
 ###############################################
+def list_routes():
+    import urllib
+    output = []
+    for rule in app.url_map.iter_rules():
+
+        print rule
+        print "Endoint: " + str(rule.endpoint)
+        print ""
+        # options = {}
+        # for arg in rule.arguments:
+        #     options[arg] = "[{0}]".format(arg)
+        #
+        # methods = ','.join(rule.methods)
+        # url = url_for(rule.endpoint, **options)
+        # line = urllib.unquote("{:50s} {:20s} {}".format(rule.endpoint, methods, url))
+        # output.append(line)
+
+    for line in sorted(output):
+        print line
+
 
 @app.route('/')
-def index():
+def home():
     if current_user.is_anonymous():
         # This person isn't logged in, show them the landing page
+        list_routes()
         return render_template('pages/landing.html')
     else:
         # Hey, this is just a good user trying to get at the site!  Show 'em

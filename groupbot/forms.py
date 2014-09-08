@@ -42,7 +42,7 @@ class EmailChangeForm(Form):
     email       = StringField('New Email', validators = [DataRequired(), Length(min=6, max=40)])
 
 class LoginForm(Form):
-    code_name        = StringField('Username (aka codename)', [DataRequired()])
+    codename        = StringField('Username (aka codename)', [DataRequired()])
     password    = PasswordField('Password', [DataRequired()])
 
 class ForgotForm(Form):
