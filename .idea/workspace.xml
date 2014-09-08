@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/__init__.py" afterPath="$PROJECT_DIR$/groupbot/views/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db_populate.py" afterPath="$PROJECT_DIR$/db_populate.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/event.py" afterPath="$PROJECT_DIR$/groupbot/views/event.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/forms.py" afterPath="$PROJECT_DIR$/groupbot/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/group.py" afterPath="$PROJECT_DIR$/groupbot/views/group.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" afterPath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/forms/login.html" afterPath="$PROJECT_DIR$/groupbot/templates/forms/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/layouts/main.html" afterPath="$PROJECT_DIR$/groupbot/templates/layouts/main.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/models.py" afterPath="$PROJECT_DIR$/groupbot/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/user.py" afterPath="$PROJECT_DIR$/groupbot/views/user.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Procfile" afterPath="$PROJECT_DIR$/Procfile" />
     </list>
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -157,11 +148,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="login.html" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="login.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/groupbot/templates/forms/login.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.09582864" vertical-offset="0" max-vertical-offset="887">
+                <state vertical-scroll-proportion="-3.2692308" vertical-offset="0" max-vertical-offset="306">
                   <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Procfile" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Procfile">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="926">
+                  <caret line="0" column="22" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
                   <folding />
                 </state>
               </provider>
@@ -212,7 +213,6 @@
         <option value="$PROJECT_DIR$/templates/pages/groups/create.html" />
         <option value="$PROJECT_DIR$/templates/pages/groups/delete.html" />
         <option value="$PROJECT_DIR$/templates/pages/roles/delete.html" />
-        <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/run.py" />
         <option value="$PROJECT_DIR$/../../School/6.170/johno_proj0/projzero.js" />
         <option value="$PROJECT_DIR$/models.py" />
@@ -238,6 +238,7 @@
         <option value="$PROJECT_DIR$/groupbot/templates/layouts/main.html" />
         <option value="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
         <option value="$PROJECT_DIR$/groupbot/templates/forms/login.html" />
+        <option value="$PROJECT_DIR$/Procfile" />
       </list>
     </option>
   </component>
@@ -754,14 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Procfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="926">
-          <caret line="0" column="40" selection-start-line="0" selection-start-column="40" selection-end-line="0" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../School/6.170/johno_proj0/projzero.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.20194384" vertical-offset="0" max-vertical-offset="3009">
@@ -916,8 +909,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/groupbot/templates/forms/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09582864" vertical-offset="0" max-vertical-offset="887">
+        <state vertical-scroll-proportion="-3.2692308" vertical-offset="0" max-vertical-offset="306">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Procfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="926">
+          <caret line="0" column="22" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
           <folding />
         </state>
       </provider>
