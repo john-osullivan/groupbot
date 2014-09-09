@@ -22,3 +22,5 @@ SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL','postgresql://johnosulli
 
 # This tells SQLAlchemy-Migrate where to put its junk.
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+
+SERVER_NAME = int(os.environ.get('PORT', 5000))
