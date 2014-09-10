@@ -4,7 +4,9 @@ from sqlalchemy import create_engine
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
 from groupbot import db
-import os.path
+
+# This script kills the database and then creates it again.  Purely for development, still haven't
+# really implemented database migrations.
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Base.metadata.drop_all(bind=engine)

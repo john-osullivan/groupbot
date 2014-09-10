@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.py" afterPath="$PROJECT_DIR$/config.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db_create.py" afterPath="$PROJECT_DIR$/db_create.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db_populate.py" afterPath="$PROJECT_DIR$/db_populate.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/models.py" afterPath="$PROJECT_DIR$/groupbot/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/static/csv/role_data.csv" afterPath="$PROJECT_DIR$/groupbot/static/csv/role_data.csv" />
     </list>
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,11 +39,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="db_populate.py" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="db_populate.py" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/db_populate.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2346">
-                  <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+                <state vertical-scroll-proportion="0.71348315" vertical-offset="1456" max-vertical-offset="2346">
+                  <caret line="123" column="30" selection-start-line="123" selection-start-column="30" selection-end-line="123" selection-end-column="30" />
                   <folding>
                     <element signature="e#20#30#0" expanded="true" />
                   </folding>
@@ -63,10 +61,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="config.py" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="config.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/config.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.38202247" vertical-offset="0" max-vertical-offset="890">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
                   <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
                   <folding />
                 </state>
@@ -147,11 +145,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="db_create.py" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="db_create.py" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/db_create.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.22343922" vertical-offset="0" max-vertical-offset="913">
-                  <caret line="12" column="0" selection-start-line="12" selection-start-column="2" selection-end-line="16" selection-end-column="113" />
+                <state vertical-scroll-proportion="0.14895947" vertical-offset="0" max-vertical-offset="913">
+                  <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
                   <folding>
                     <element signature="e#0#34#0" expanded="true" />
                   </folding>
@@ -259,9 +257,9 @@
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/groupbot/views/__init__.py" />
         <option value="$PROJECT_DIR$/groupbot/models.py" />
-        <option value="$PROJECT_DIR$/db_populate.py" />
         <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/db_create.py" />
+        <option value="$PROJECT_DIR$/db_populate.py" />
       </list>
     </option>
   </component>
@@ -1044,19 +1042,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db_populate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2346">
-          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
-          <folding>
-            <element signature="e#20#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38202247" vertical-offset="0" max-vertical-offset="890">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
           <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
           <folding />
         </state>
@@ -1074,10 +1062,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/db_create.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22343922" vertical-offset="0" max-vertical-offset="913">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="2" selection-end-line="16" selection-end-column="113" />
+        <state vertical-scroll-proportion="0.14895947" vertical-offset="0" max-vertical-offset="913">
+          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db_populate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.71348315" vertical-offset="1456" max-vertical-offset="2346">
+          <caret line="123" column="30" selection-start-line="123" selection-start-column="30" selection-end-line="123" selection-end-column="30" />
+          <folding>
+            <element signature="e#20#30#0" expanded="true" />
           </folding>
         </state>
       </provider>

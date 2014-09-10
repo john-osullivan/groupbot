@@ -119,9 +119,9 @@ def populate_database(test=True):
 
     print "Okay, let's get started with populating the database!\n"
     tdc = create_tdc()
-    users = add_users('static/csv/user_data.csv')
+    users = add_users('groupbot/static/csv/user_data.csv')
     add_members(tdc, users)
-    build_roles(tdc, 'static/csv/role_data.csv')
+    build_roles(tdc, 'groupbot/static/csv/role_data.csv')
 
     if test:
         print "Okay, since this was just a test, I'm gonna delete all the shit I just made."
