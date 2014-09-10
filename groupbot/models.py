@@ -154,18 +154,16 @@ class Group(Base):
     # NOTE: Not currently being used, as all group connection is being
     # handled by partnerships.
     parent_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
-    children = db.relationship('Group', backref='parent')
+    children = db.relationship('Group', backref='parent', remote_side=[group_id])
 
-    def __init__(self, human_name, codename, byline=None, description=None, members=None,\
-                        parent_id=None, children=None):
+    def __init__(self, human_name, codename, byline=None, description=None, members=[],\
+                 parent_id=None):
         self.human_name = human_name
         self.codename = codename
         self.byline = byline
         self.description = description
         self.members = members
         self.parent_id = parent_id
-        self.children = children
-        self.roles = None
 
     def __repr__(self):
         return "Group #: %s --  Group Name: %s" % (self.group_id, self.name)
@@ -194,15 +192,11 @@ class Member(Base):
     photo = db.Column(db.String(128))
     bio = db.Column(db.String(256))
 
-    roles = db.relationship('Role', backref='members')
-
-    def __init__(self, group_id, user_id, codename, bio=None, \
-                         roles=None, photo=None):
+    def __init__(self, group_id, user_id, codename, bio=None, photo=None):
         self.group_id = group_id
         self.user_id = user_id
         self.codename = codename
         self.bio = bio
-        self.roles = roles
         self.photo = photo
 
     def __repr__(self):
@@ -261,7 +255,7 @@ class Role(Base):
     # Bookkeping ids
     role_id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), index=True, nullable=False)
-    members = db.relationship('Member', secondary=member_roles)
+    members = db.relationship('Member', secondary=member_roles, backref='roles')
 
     # Position information
     name = db.Column(db.String(80), nullable=False)
@@ -354,7 +348,7 @@ class Task(Base):
 
     # Relations to establish one-to-many parent-child db.relationships.
     parent_id = db.Column(db.Integer, db.ForeignKey('tasks.task_id'))
-    children = db.relationship('Task', backref='parent')
+    children = db.relationship('Task', backref='parent', remote_side=[task_id])
 
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), nullable=False, index=True)
 
