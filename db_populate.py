@@ -33,7 +33,7 @@ def add_users(user_csv):
         for each_user in user_data:
 
             # Get the info from the row and use it to make a fresh User
-            (codename, password, first_name, last_name, email, phone) = each_user
+            (codename, password, first_name, last_name, email, phone, bio, photo) = each_user
             new_user = User(codename=codename, password=password, first_name=first_name,
                             last_name=last_name, email=email, phone=phone)
 

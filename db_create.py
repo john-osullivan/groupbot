@@ -1,5 +1,4 @@
-from migrate.versioning import api
-from groupbot.models import Base
+from groupbot.models import Base, db_DropEverything
 from sqlalchemy import create_engine
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
@@ -9,7 +8,7 @@ from groupbot import db
 # really implemented database migrations.
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
-Base.metadata.drop_all(bind=engine)
+db_DropEverything(db)
 Base.metadata.create_all(bind=engine)
 db.create_all()
 # if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
