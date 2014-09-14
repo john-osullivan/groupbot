@@ -127,7 +127,15 @@ def populate_database(test=True):
         print "Okay, since this was just a test, I'm gonna delete all the shit I just made."
         clean_up()
     else:
-        print "This was for real!  You just created " + len(NEW_OBJECTS) + " new things in the database."
+        print "This was for real!  You just created " + str(len(NEW_OBJECTS)) + " new things in the database."
+
+def empty_database():
+    for each_model in [Role, Member, Group, User]:
+        print "Deleting all our " + str(each_model)
+        each_model.query.delete()
+    db_session.commit()
 
 if __name__ == '__main__':
+    print "Before we get started, we should clear everything out."
+    empty_database()
     populate_database()

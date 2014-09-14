@@ -21,7 +21,7 @@ def user_create():
         except Exception as e:
             flash("Dang, that didn't work because: " + str(e))
             return redirect(url_for(user_create()))
-    return render_template('templates/pages/users/create.html', form=form)
+    return render_template('pages/users/create.html', form=form)
 
 @app.route('/user/<user_codename>/detail')
 def user_detail(user_codename):
@@ -33,7 +33,7 @@ def user_detail(user_codename):
         'bio':user.bio,
         'photo_url':user.photo
     }
-    return render_template('templates/pages/users/detail.html', content=content, infonav=infonav)
+    return render_template('pages/users/detail.html', content=content, infonav=infonav)
 
 @app.route('/user/<user_codename>/edit')
 def user_edit(user_codename):
@@ -65,7 +65,7 @@ def user_edit(user_codename):
                 return redirect(url_for(user_edit(user_codename)))
 
         # Assuming they haven't submitted the form yet, show 'em the form.
-        return render_template('templates/pages/users/edit.html', form=form)
+        return render_template('pages/users/edit.html', form=form)
 
     # Otherwise, deny 'em access.
     else:
@@ -97,7 +97,7 @@ def user_delete(user_codename):
 
 
         # Of course, if they haven't actually submitted it yet, just show 'em the darn page!
-        return render_template('templates/pages/users/delete.html', content=content, form=form)
+        return render_template('pages/users/delete.html', content=content, form=form)
 
     # If you're trying to see the delete page for someone else's profile, get outta here
     else:

@@ -22,7 +22,7 @@ if os.environ.get('DATABASE_URL') is not None:
     print "Trying to connect to Heroku database!"
 
 SQLALCHEMY_BINDS = {
-    'dev': 'postgresql://postgres:Rawrqed123@localhost/groupbot_database'
+    'dev': 'postgresql://postgres:Rawrqed123@localhost/groupbot_data'
 }
 
 SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', SQLALCHEMY_BINDS['dev'])
@@ -30,4 +30,4 @@ SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', SQLALCHEMY_BINDS['dev']
 # This tells SQLAlchemy-Migrate where to put its junk.
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
-SERVER_NAME = int(os.environ.get('PORT', 5000))
+# SERVER_NAME = os.environ.get('PORT', 'localhost')

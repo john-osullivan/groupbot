@@ -8,8 +8,8 @@ from groupbot import db
 # really implemented database migrations.
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
-drop_shit()
-# Base.metadata.drop_all(bind=engine)
+# drop_shit()
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 db.create_all()
 # if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):

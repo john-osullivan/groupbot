@@ -39,18 +39,18 @@ def drop_shit():
     metadata = Base.metadata
     conn = db.engine.connect()
     metadata.reflect(bind=engine)
-    db.drop_all(bind=[engine])
-    # print "About to try and drop all foreign keys"
-    # for table in metadata.tables.values():
-    #     for each_key in table.constraints:
-    #         print each_key
-    #         conn.execute(DropConstraint(each_key))
-    #
-    # print "About to try and drop all tables"
-    # for table in metadata.tables.values():
-    #     print table.name
-    #     print table.foreign_keys
-    #     conn.execute(DropTable(table))
+    # db.drop_all(bind=[engine])
+    print "About to try and drop all foreign keys"
+    for table in metadata.tables.values():
+        for each_key in table.constraints:
+            print each_key
+            conn.execute(DropConstraint(each_key))
+
+    print "About to try and drop all tables"
+    for table in metadata.tables.values():
+        print table.name
+        print table.foreign_keys
+        conn.execute(DropTable(table))
 
     print "Here are all our leftover tables"
     print metadata.tables.keys()
@@ -122,13 +122,13 @@ class User(Base):
     memberships = -> Members, one-to-many, portal to all actual group management
     '''
 
-    user_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.BigInteger, primary_key=True)
     codename = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(32), nullable=False)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))
     email = db.Column(db.String(40), unique=True, nullable=False)
-    phone = db.Column(db.Integer, unique=True)
+    phone = db.Column(db.String(15), unique=True)
     bio = db.Column(db.String(160))
     photo = db.Column(db.LargeBinary)
 
@@ -136,19 +136,19 @@ class User(Base):
 
 
     def __init__(self, codename, password, first_name=first_name, last_name=last_name, email=None,
-                 phone=None, bio=None, photo=None, memberships=None):
+                 phone=None, bio=None, photo=None):
         self.first_name = first_name
         self.last_name = last_name
         self.codename = codename
         self.password = password
         self.email = email
-        self.phone = phone
+        if (phone is not None) and phone != "":
+            self.phone = int(phone)
         self.bio = bio
         self.photo = photo
-        self.memberships = memberships
 
     def __repr__(self):
-        return "User #: %s"%(self.user_id)
+        return "User #{0}".format(self.user_id)
 
     def is_authenticated(self):
         return True
@@ -207,17 +207,16 @@ class Group(Base):
     parent_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
     children = db.relationship('Group', backref='parent', remote_side=[group_id])
 
-    def __init__(self, human_name, codename, byline=None, description=None, members=[],\
+    def __init__(self, human_name, codename, byline=None, description=None,\
                  parent_id=None):
         self.human_name = human_name
         self.codename = codename
         self.byline = byline
         self.description = description
-        self.members = members
         self.parent_id = parent_id
 
     def __repr__(self):
-        return "Group #: %s --  Group Name: %s" % (self.group_id, self.name)
+        return "Group #: {0} --  Group Name: {1}".format(self.group_id, self.codename)
 
 
 class Member(Base):
@@ -251,7 +250,7 @@ class Member(Base):
         self.photo = photo
 
     def __repr__(self):
-        return "Member # of Group #: %s --- %s"%(self.member_id, self.group_id)
+        return "Member #{0} of Group #{1}".format(self.member_id, self.group_id)
 
     def get_realname(self):
         user = User.query.get(self.user_id)
@@ -312,14 +311,13 @@ class Role(Base):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(2048))
 
-    def __init__(self, group_id, name, member_id=None, description=None):
+    def __init__(self, group_id, name, description=None):
         self.group_id = group_id
-        self.member_id = member_id
         self.name = name
         self.description = description
 
     def __repr__(self):
-        return "Role #(%s) of Group #(%s) held by Member #(%s)"%(self.role_id, self.group_id, self.member_id)
+        return "Role #(0) of Group #{1}".format(self.role_id, self.group_id)
 
     def update_member_tasks(self):
         '''
@@ -549,7 +547,7 @@ class Event(Base):
     ## who didn't, since it's just the "other side" of this list.  It can be generated on-the-fly.
     attended = db.relationship('Member', backref='attended_events', secondary=member_attend_table, post_update=True)
 
-    def __init__(self, name=name, group_id=group_id, start_time=None, end_time=None, host_member_id=None,
+    def __init__(self, name=name, group_id=group_id, start_time=None, end_time=None,
                  description=None, location=None, visible_to_uninvited=True,
                  invited_can_invite=False):
         self.name = name
@@ -560,7 +558,6 @@ class Event(Base):
         self.visible_to_uninvited = visible_to_uninvited
         self.invited_can_invite = invited_can_invite
         Group.query.get(group_id).events.append(self)
-        if host_member_id is not None: self.host.append(Member.query.get(host_member_id))
         if visible_to_uninvited is not None: self.visible_to_uninvited = visible_to_uninvited
         if invited_can_invite is not None: self.invited_can_invite = invited_can_invite
 

@@ -5,7 +5,6 @@ from flask import Flask, request, session, g, redirect, url_for,\
 from flask.ext.login import current_user
 from groupbot import app
 import groupbot as gbot
-import groupbot.views
 import groupbot.forms
 import groupbot.controllers as controllers
 from groupbot.models import User, Group, Member, Role, Task, Event

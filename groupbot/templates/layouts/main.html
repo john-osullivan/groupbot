@@ -1,4 +1,5 @@
 <!doctype html>
+<html>
 <head>
 <meta charset="utf-8">
 <title>{% block title %}{% endblock %}</title>
@@ -10,27 +11,27 @@
 <!-- /meta -->
 
 <!-- styles -->
-<link type="text/css" rel="stylesheet" href="/static/css/font-awesome-3.2.1.min.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-3.0.0.min.css">
-<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-theme-3.0.0.min.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/layout.main.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.responsive.css" />
-<link type="text/css" rel="stylesheet" href="/static/css/main.quickfix.css" />
+<link type="text/css" rel="stylesheet" href="../../static/css/font-awesome-3.2.1.min.css" />
+<link type="text/css" rel="stylesheet" href="../../static/css/bootstrap-3.0.0.min.css">
+<link type="text/css" rel="stylesheet" href="../../static/css/bootstrap-theme-3.0.0.min.css" />
+<link type="text/css" rel="stylesheet" href="../../static/css/layout.main.css" />
+<link type="text/css" rel="stylesheet" href="../../static/css/main.css" />
+<link type="text/css" rel="stylesheet" href="../../static/css/main.responsive.css" />
+<link type="text/css" rel="stylesheet" href="../../static/css/main.quickfix.css" />
 <!-- /styles -->
 
 <!-- favicons -->
-<link rel="shortcut icon" href="/static/ico/favicon.png">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="/static/ico/favicon.png">
+<link rel="shortcut icon" href="../../static/ico/favicon.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../static/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../static/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../static/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="../../static/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="../../static/ico/favicon.png">
 <!-- /favicons -->
 
 <!-- scripts -->
-<script src="/static/js/libs/modernizr-2.6.2.min.js"></script>
-<!--[if lt IE 9]><script src="/static/js/libs/respond-1.3.0.min.js"></script><![endif]-->
+<script src="../../static/js/libs/modernizr-2.6.2.min.js"></script>
+<!--[if lt IE 9]><script src="../../static/js/libs/respond-1.3.0.min.js"></script><![endif]-->
 <!-- /scripts -->
 
 </head>
@@ -56,7 +57,7 @@
                 <li class="active"><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
               {% else %}
-                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
                 <li class="active"><a href="{{ url_for('about') }}">About</a></li>
             {% endif %}
           </ul>
@@ -96,10 +97,10 @@
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="/static/js/libs/jquery-1.10.2.min.js"><\/script>')</script>
-  <script defer src="/static/js/libs/bootstrap-3.0.0.min.js"></script>
-  <script defer src="/static/js/plugins.js"></script>
-  <script defer src="/static/js/script.js"></script>
+  <script>window.jQuery || document.write('<script src="../../static/js/libs/jquery-1.10.2.min.js"><\/script>')</script>
+  <script defer src="../../static/js/libs/bootstrap-3.0.0.min.js"></script>
+  <script defer src="../../static/js/plugins.js"></script>
+  <script defer src="../../static/js/script.js"></script>
   <!-- Google Analytics - Change UA-XXXXX-X to be your site's ID -->
   <script>
   window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
