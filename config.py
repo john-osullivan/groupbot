@@ -21,7 +21,11 @@ SECRET_KEY = 'my precious'
 if os.environ.get('DATABASE_URL') is not None:
     print "Trying to connect to Heroku database!"
 
-SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL','postgresql://johnosullivan:Rawrqed234@localhost/groupify_test')
+SQLALCHEMY_BINDS = {
+    'dev': 'postgresql://postgres:Rawrqed123@localhost/groupbot_database'
+}
+
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', SQLALCHEMY_BINDS['dev'])
 
 # This tells SQLAlchemy-Migrate where to put its junk.
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')

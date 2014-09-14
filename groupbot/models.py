@@ -3,6 +3,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from sqlalchemy.engine import reflection
+from sqlalchemy.schema import DropConstraint, DropTable
 from groupbot import db
 import os
 from config import SQLALCHEMY_DATABASE_URI
@@ -34,12 +35,25 @@ def is_table(table_string):
     print inspector.get_table_names
     return table_string in inspector.get_table_names()
 
-# Helper function to validate if a table and ID pair point to a valid object
-# in the database.  This validates both the table string and the object.  Currently
-# still a method stub.
-def is_real_thing(table, thing_id):
-    if is_table(table):
-        return tablename_to_class(table).query.get(thing_id) != None
+def drop_shit():
+    metadata = Base.metadata
+    conn = db.engine.connect()
+    metadata.reflect(bind=engine)
+    db.drop_all(bind=[engine])
+    # print "About to try and drop all foreign keys"
+    # for table in metadata.tables.values():
+    #     for each_key in table.constraints:
+    #         print each_key
+    #         conn.execute(DropConstraint(each_key))
+    #
+    # print "About to try and drop all tables"
+    # for table in metadata.tables.values():
+    #     print table.name
+    #     print table.foreign_keys
+    #     conn.execute(DropTable(table))
+
+    print "Here are all our leftover tables"
+    print metadata.tables.keys()
 
 def db_DropEverything(db):
     # From http://www.sqlalchemy.org/trac/wiki/UsageRecipes/DropEverything
