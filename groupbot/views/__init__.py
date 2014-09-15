@@ -46,6 +46,7 @@ def list_routes():
 
 @app.route('/')
 def index():
+    print "Hit the index function"
     if current_user.is_anonymous():
         # This person isn't logged in, show them the landing page
         list_routes()

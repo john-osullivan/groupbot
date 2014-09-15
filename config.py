@@ -31,4 +31,4 @@ SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', SQLALCHEMY_BINDS['dev']
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 # SERVER_NAME = os.environ.get('PORT', 'localhost')
-SERVER_NAME = os.environ.get('PORT', '5000')
+# SERVER_NAME = os.environ.get('PORT', '5000')
