@@ -19,7 +19,7 @@ SECRET_KEY = 'my precious'
 # By using environ.get here, it checks for a 'DATABASE_URL' value and then automatically used the second
 # thing if it doesn't find anything.
 if os.environ.get('DATABASE_URL') is not None:
-    print "Trying to connect to Heroku database!"
+    print "Connecting to Heroku at " + os.environ.get('DATABASE_URL')
 
 SQLALCHEMY_BINDS = {
     'dev': 'postgresql://postgres:Rawrqed123@localhost/groupbot_data'
@@ -31,4 +31,4 @@ SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', SQLALCHEMY_BINDS['dev']
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 # SERVER_NAME = os.environ.get('PORT', 'localhost')
-#SERVER_NAME = os.environ.get('PORT', 'localhost')
+SERVER_NAME = os.environ.get('PORT', '5000')
