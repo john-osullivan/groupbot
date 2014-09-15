@@ -2,9 +2,10 @@
 # Imports.
 #----------------------------------------------------------------------------#
 
-from flask import * # do not use '*'; actually input the dependencies.
+from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
+from flask.ext.migrate import Migrate
 import logging
 from logging import Formatter, FileHandler
 
@@ -15,6 +16,7 @@ from logging import Formatter, FileHandler
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
