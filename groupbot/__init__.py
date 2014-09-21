@@ -6,6 +6,7 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.migrate import Migrate
+from flask.ext.heroku import Heroku
 import logging
 from logging import Formatter, FileHandler
 
@@ -19,6 +20,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
+heroku = Heroku(app)
 
 import views, models, controllers
 
