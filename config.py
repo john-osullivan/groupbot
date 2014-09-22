@@ -22,7 +22,7 @@ if os.environ.get('DATABASE_URL') is not None:
     print "Connecting to Heroku at " + os.environ.get('DATABASE_URL')
 
 SQLALCHEMY_BINDS = {
-    'default': os.environ['DATABASE_URL'],
+    'default': os.environ.get('DATABASE_URL'),
     'dev': 'postgresql://postgres:Rawrqed123@localhost/groupbot_data'
 }
 

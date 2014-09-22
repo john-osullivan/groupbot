@@ -317,7 +317,7 @@ class Role(Base):
         self.description = description
 
     def __repr__(self):
-        return "Role #(0) of Group #{1}".format(self.role_id, self.group_id)
+        return "Role #{0} of Group #{1}".format(self.role_id, self.group_id)
 
     def update_member_tasks(self):
         '''

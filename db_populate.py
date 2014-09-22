@@ -131,7 +131,7 @@ def populate_database(test=True):
 
 def empty_database():
     for each_model in [Role, Member, Group, User]:
-        print "Deleting all our " + str(each_model)
+        print "Deleting all our " + str(each_model.__table__) + "..."
         each_model.query.delete()
     db_session.commit()
 

@@ -10,7 +10,7 @@ MarkupSafe==0.23
 SQLAlchemy==0.9.7
 Tempita==0.5.3dev
 WTForms==2.0.1
-Werkzeug==0.9.6
+Werkzeug==0.8.3
 alembic==0.6.7
 decorator==3.4.0
 flask-heroku==0.1.9
