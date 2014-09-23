@@ -16,6 +16,7 @@ from logging import Formatter, FileHandler
 
 app = Flask(__name__)
 app.config.from_object('config')
+print "app.config: ", app.config
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager()
