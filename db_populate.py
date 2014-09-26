@@ -138,4 +138,4 @@ def empty_database():
 if __name__ == '__main__':
     print "Before we get started, we should clear everything out."
     empty_database()
-    populate_database()
+    populate_database(test=False)
