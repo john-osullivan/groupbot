@@ -16,13 +16,14 @@ class RealNameForm(Form):
     last_name = StringField('Last Name', validators = [Length(min=2, max=32)])
 
 class UserCreateForm(Form):
-    name = FormField(RealNameForm)
+    first_name = StringField('First Name', validators = [Length(min=2, max=32)])
+    last_name = StringField('Last Name', validators = [Length(min=2, max=32)])
     codename = StringField('Codename', validators=[Length(min=6, max=30), DataRequired()])
     password = PasswordField('Password', validators = [DataRequired(), Length(min=6, max=40)])
     confirm = PasswordField('Repeat Password', [DataRequired(), EqualTo('password', message='Passwords must match')])
     email  = StringField('Email', validators = [DataRequired(), Length(min=6, max=40)])
-    phone = FormField(TelephoneForm)
-    photo = FileField('Photo URL')
+    phone = StringField('Phone Number')
+    photo = StringField('Profile Photo URL')
     bio = StringField('Bio', validators = [Length(min=1, max=160)])
   
 class PasswordChangeForm(Form):

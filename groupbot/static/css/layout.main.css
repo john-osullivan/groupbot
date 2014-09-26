@@ -25,6 +25,10 @@ body {
 }
 
 
+#content-block{
+    padding:5%;
+}
+
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */

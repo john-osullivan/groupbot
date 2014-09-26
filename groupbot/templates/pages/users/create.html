@@ -5,19 +5,24 @@
 {% block content %}
 <div class="row">
 <p class="lead">Oh my goodness, this is so exciting!  A new account!  We can't wait to make your life a little easier.</p>
-<p>Just fill out this form right here and we'll get you started.</p>
-<form action="/" method="POST">
-    {{ form.name }}
-    {{ form.codename }}
-    {{ form.password }}
-    {{ form.confirm }}
-    {{ form.email }}
-    {{ form.phone }}
-    <br>
-    {{ form.photo }}
-    <br>
-    Bio: {{ form.bio }}
-    <input type="submit" value="Create New Account">
-</form>
+<div class="col-md-6">
+
+    <p>Just fill out this form right here and we'll get you started.</p>
+</div>
+<div class="col-md-6">
+    <form action="/" method="POST">
+        {{ form.first_name(class_ = 'form-control first-input', placeholder = form.first_name.label.text, required=true, autofocus=true) }}
+        {{ form.last_name(class_ = 'form-control', placeholder = form.last_name.label.text, required=true, autofocus=true) }}
+        {{ form.codename(class_ = 'form-control', placeholder = form.codename.label.text, required=true) }}
+        {{ form.password(class_ = 'form-control', placeholder = form.password.label.text, required=true) }}
+        {{ form.confirm(class_ = 'form-control', placeholder = form.confirm.label.text, required=true) }}
+        {{ form.email(class_ = 'form-control', placeholder = form.email.label.text, required=true) }}
+        {{ form.phone(class_ = 'form-control', placeholder = form.phone.label.text) }}
+        {{ form.photo(class_ = 'form-control', placeholder = form.photo.label.text) }}
+        {{ form.bio(class_ = 'form-control', placeholder = form.bio.label.text) }}
+        <br>
+        <input type="submit" value="Create New Account" class="btn btn-lg btn-primary btn-block">
+    </form>
+</div>
 </div>
 {% endblock %}
