@@ -1,17 +1,20 @@
 from flask_wtf import Form
 from wtforms import StringField, DateField, IntegerField, \
         SelectField, PasswordField, FormField, RadioField, SelectMultipleField,\
-        DateTimeField, TextAreaField, FileField, FieldList
+        DateTimeField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
 
-class TelephoneForm(Form):
+class FormPiece(Form):
+    csrf = False
+
+class TelephoneForm(FormPiece):
     country_code = IntegerField('Country Code', validators = [DataRequired()])
     area_code = IntegerField('Area Code/Exchange', validators = [DataRequired()])
     number = StringField('Number', validators = [DataRequired()])
 
-class RealNameForm(Form):
+class RealNameForm(FormPiece):
     first_name = StringField('First Name', validators = [Length(min=2, max=32)])
     last_name = StringField('Last Name', validators = [Length(min=2, max=32)])
 
@@ -70,17 +73,17 @@ class MemberEditForm(Form):
     bio = TextAreaField('Bio', validators=[Length(min=6, max=256)])
     photo = StringField('Photo URL')
 
-class SingleMemberForm(Form):
+class SingleMemberForm(FormPiece):
     member = SelectField('Member', coerce=int, validators=[DataRequired()])
 
-class MultipleMemberForm(Form):
+class MultipleMemberForm(FormPiece):
     members = SelectMultipleField('Member(s)', coerce=int, validators=[DataRequired()])
 
 class MemberInviteForm(Form):
     user_codename = StringField('User Codename')
-    user_email = FieldList('User (or New User!) Email Address')
+    user_email = StringField('User (or new user!) Email')
 
-class MultipleRoleForm(Form):
+class MultipleRoleForm(FormPiece):
     roles = SelectMultipleField('Role', coerce=int, validators=[DataRequired()])
 
 class RoleForm(Form):

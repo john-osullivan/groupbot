@@ -10,7 +10,7 @@ import groupbot.helper as helper
 import groupbot.forms as forms
 import groupbot.controllers as controllers
 
-@app.route('/group/create')
+@app.route('/group/create', methods=['GET', 'POST'])
 def group_create():
     form = forms.GroupForm()
     if form.validate_on_submit():
@@ -103,7 +103,7 @@ def group_detail(group_code_name):
     # With all that said and done, return that motherfucker.
     return render_template('pages/groups/detail.html', content=content, infonav=infonav)
 
-@app.route('/group/<group_codename>/edit')
+@app.route('/group/<group_codename>/edit', methods=['GET', 'POST'])
 def group_edit(group_codename):
     current_group = Group.query.filter_by(group_code_name=group_codename).firs()
     form = forms.GroupForm()
@@ -115,12 +115,12 @@ def group_edit(group_codename):
     if form.validate_on_submit():
         successful_edit = controllers.group.edit_group(group_codename, request)
         if successful_edit:
-            flash("You successfully edited {}!".format(current_group.code_name), 'success')
+            flash("You successfully edited {0}!".format(current_group.code_name), 'success')
             return redirect(url_for(group_detail, group_code_name=group_codename))
     else:
         return render_template('pages/groups/edit.html', form=form)
 
-@app.route('/group/<group_code_name>/delete')
+@app.route('/group/<group_code_name>/delete', methods=['GET', 'POST'])
 def group_delete(group_code_name):
     content = {'group_code_name':group_code_name}
     form = forms.DeleteForm()
@@ -128,7 +128,7 @@ def group_delete(group_code_name):
         if form.delete == True:
             successful_delete = controllers.group.delete_group(group_code_name)
             if successful_delete:
-                flash['You successfully deleted {}.'.format(group_code_name)]
+                flash('You successfully deleted {0}.'.format(group_code_name))
                 return redirect(url_for(group_list))
             else:
                 return redirect(url_for(group_detail, group_code_name=group_code_name))

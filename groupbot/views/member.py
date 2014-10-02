@@ -9,7 +9,7 @@ from groupbot.models import Member, Group, Role, User
 import groupbot.forms as forms
 import groupbot.controllers as controllers
 
-@app.route('/group/<group_codename>/members/add')
+@app.route('/group/<group_codename>/members/add', methods=['GET', 'POST'])
 def member_add(group_codename):
     '''
     This is the view where people can invite other users into the Group.  After all, the Group's
@@ -23,7 +23,7 @@ def member_add(group_codename):
     infonav = gbot.views.build_infonav('group', current_group=this_group)
     form = forms.MemberInviteForm()
 
-    # If the form's been submitted,
+    # If the form's been submitted, check and see if the
 
     return render_template('templates/pages/members/add.html', form=form, infonav=infonav)
 
@@ -111,7 +111,7 @@ def member_detail(group_codename, member_codename):
     # With all that said and done, we're good to return and show the page.
     return render_template('templates/pages/members/detail.html', content=content, infonav=infonav)
 
-@app.route('/group/<group_codename>/members/<member_codename>/edit')
+@app.route('/group/<group_codename>/members/<member_codename>/edit', methods=['GET', 'POST'])
 def member_edit(group_codename, member_codename):
     '''
     This page lets you modify the information specific to a Member.  Namely, the codename
@@ -155,7 +155,7 @@ def member_edit(group_codename, member_codename):
         return redirect(url_for(gbot.views.group.group_list()))
 
 
-@app.route('/group/<group_codename>/members/<member_codename>/delete')
+@app.route('/group/<group_codename>/members/<member_codename>/delete', methods=['GET', 'POST'])
 def member_delete(group_codename, member_codename):
     this_group = Group.query.filter_by(codename = group_codename).first()
     this_member = Member.query.filter_by(group_id = this_group.group_id, codename=member_codename).first()

@@ -10,7 +10,7 @@ from groupbot.models import db_session, User, Group, Member, \
                                 Event
 import groupbot.forms as forms
 
-@app.route('/user/create')
+@app.route('/user/create', methods=['GET', 'POST'])
 def user_create():
     form = forms.UserCreateForm()
     if form.validate_on_submit():
@@ -35,7 +35,7 @@ def user_detail(user_codename):
     }
     return render_template('pages/users/detail.html', content=content, infonav=infonav)
 
-@app.route('/user/<user_codename>/edit')
+@app.route('/user/<user_codename>/edit', methods=['GET', 'POST'])
 def user_edit(user_codename):
 
     # First, make sure the user is editing their own profile.
@@ -72,7 +72,7 @@ def user_edit(user_codename):
         flash("You can't edit that page, it's not yours!")
         return redirect(url_for(gbot.views.group.group_list))
 
-@app.route('/user/<user_codename>/delete')
+@app.route('/user/<user_codename>/delete', methods=['GET', 'POST'])
 def user_delete(user_codename):
 
     # First, make sure the User is trying to delete their own profile.  No fucking other people over.

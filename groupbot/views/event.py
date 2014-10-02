@@ -145,7 +145,7 @@ def event_detail(group_codename, event_id):
         flash("Eh, not to be a jerk, but you're technically not allowed to see that.  Sorry!", "error")
         return redirect(url_for(gbot.views.event.event_list, group_codename=group_codename))
 
-@app.route('/group/<group_codename>/events/<int:event_id>/edit')
+@app.route('/group/<group_codename>/events/<int:event_id>/edit', methods=['GET', 'POST'])
 def event_edit(group_codename, event_id):
     '''
     This view lets the host of an event (AND ONLY THE HOST) change the name, hosts, description, location,
@@ -206,7 +206,7 @@ def event_edit(group_codename, event_id):
         return redirect(url_for(gbot.views.event.event_detail, group_codename=group_codename, event_id=event_id))
 
 
-@app.route('/group/<group_codename>/events/<int:event_id>/delete')
+@app.route('/group/<group_codename>/events/<int:event_id>/delete', methods=['GET', 'POST'])
 def event_delete(group_codename, event_id):
     '''
     This page essentially confirms whether or not the current_member (who must be a host) REALLY wants to
@@ -245,7 +245,7 @@ def event_delete(group_codename, event_id):
         else:
             return render_template('pages/events/delete.html', infonav=infonav, form=form, content=content)
 
-@app.route('/group/<group_codename>/events/<int:event_id>/invite')
+@app.route('/group/<group_codename>/events/<int:event_id>/invite', methods=['GET', 'POST'])
 def event_invite(group_codename, event_id):
     '''
     This displays the form to invite Group Members and Roles, as well as calling the controller functions
@@ -278,7 +278,7 @@ def event_invite(group_codename, event_id):
         form.invited_members.process()
     return render_template('pages/events/invite.html', infonav=infonav, form=form)
 
-@app.route('/group/<group_codename>/events/<event_id>/rsvp')
+@app.route('/group/<group_codename>/events/<event_id>/rsvp', methods=['GET', 'POST'])
 def event_rsvp(group_codename, event_id):
     '''
     This page displays the form to let invited Members RSVP to the Event.
@@ -329,7 +329,7 @@ def event_rsvp(group_codename, event_id):
         flash("Uh, you're not invited to that.  You can't RSVP!", "error")
         return redirect(url_for(gbot.views.event.event_list, group_codename=group_codename))
 
-@app.route('/group/<group_codename>/events/<event_id>/attendance')
+@app.route('/group/<group_codename>/events/<event_id>/attendance', methods=['GET', 'POST'])
 def event_attendance(group_codename, event_id):
     '''
     This page displays the form to let any of the Event's hosts (AND ONLY THOSE HOSTS) take attendance.

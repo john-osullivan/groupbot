@@ -12,7 +12,7 @@ import groupbot.forms
 import groupbot.controllers
 import groupbot.views
 
-@app.route('/group/<group_codename>/roles/create')
+@app.route('/group/<group_codename>/roles/create', methods=['GET', 'POST'])
 def role_create(group_codename):
     '''
     This is the view where a Member of a Group can create a new Role.
@@ -110,7 +110,7 @@ def role_detail(group_codename, role_id):
 
     return render_template('templates/pages/roles/detail.html', infonav=infonav, content=content)
 
-@app.route('/group/<group_codename>/roles/<role_id>/edit')
+@app.route('/group/<group_codename>/roles/<role_id>/edit', methods=['GET', 'POST'])
 def role_edit(group_codename, role_id):
     '''
     This view lets Members edit the Roles in their Groups.  Specifically, it lets them update
@@ -159,7 +159,7 @@ def role_edit(group_codename, role_id):
         flash("WHOA.  You're not even part of this Group, man.  What're you doing editing its Roles?", "error")
         return redirect(url_for(gbot.views.group.group_list, infonav=infonav))
 
-@app.route('/group/<group_codename>/roles/<role_id>/delete')
+@app.route('/group/<group_codename>/roles0/<role_id>/delete', methods=['GET', 'POST'])
 def role_delete(group_codename, role_id):
     '''
     Simple enough, this is just the confirmation page to delete a Role.  Are they SURE they wanna delete that?
