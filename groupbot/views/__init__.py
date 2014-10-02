@@ -61,7 +61,7 @@ def about():
     print "Well, it's TRYING to show me the about page..."
     return render_template('pages/about.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm(request.form)
     if form.validate_on_submit():

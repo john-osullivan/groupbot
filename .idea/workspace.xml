@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0129e57-1b8c-4342-92d2-873a9713c491" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/event.py" afterPath="$PROJECT_DIR$/groupbot/views/event.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/forms.py" afterPath="$PROJECT_DIR$/groupbot/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/group.py" afterPath="$PROJECT_DIR$/groupbot/views/group.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" afterPath="$PROJECT_DIR$/groupbot/templates/pages/landing.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/member.py" afterPath="$PROJECT_DIR$/groupbot/views/member.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/role.py" afterPath="$PROJECT_DIR$/groupbot/views/role.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/user.py" afterPath="$PROJECT_DIR$/groupbot/views/user.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/groupbot/views/__init__.py" afterPath="$PROJECT_DIR$/groupbot/views/__init__.py" />
     </list>
     <ignored path="groupify.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,11 +27,21 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf>
-          <file leaf-file-name="db_populate.py" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="db_populate.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/db_populate.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.8662921" vertical-offset="1575" max-vertical-offset="2465">
+                <state vertical-scroll-proportion="0.0" vertical-offset="1575" max-vertical-offset="2465">
                   <caret line="139" column="20" selection-start-line="139" selection-start-column="20" selection-end-line="139" selection-end-column="20" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="__init__.py" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/groupbot/views/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-2.5786517" vertical-offset="3417" max-vertical-offset="4743">
+                  <caret line="72" column="21" selection-start-line="72" selection-start-column="21" selection-end-line="72" selection-end-column="21" />
                   <folding />
                 </state>
               </provider>
@@ -211,7 +214,6 @@
         <option value="$PROJECT_DIR$/groupbot/db_populate.py" />
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/db_create.py" />
-        <option value="$PROJECT_DIR$/groupbot/views/__init__.py" />
         <option value="$PROJECT_DIR$/venv/Lib/site-packages/wtforms/fields/simple.py" />
         <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
@@ -231,6 +233,7 @@
         <option value="$PROJECT_DIR$/groupbot/forms.py" />
         <option value="$PROJECT_DIR$/groupbot/views/group.py" />
         <option value="$PROJECT_DIR$/groupbot/views/event.py" />
+        <option value="$PROJECT_DIR$/groupbot/views/__init__.py" />
       </list>
     </option>
   </component>
@@ -864,13 +867,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/groupbot/views/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22173913" vertical-offset="510" max-vertical-offset="4743">
-          <caret line="48" column="34" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
@@ -1012,8 +1008,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/db_populate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8662921" vertical-offset="1575" max-vertical-offset="2465">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1575" max-vertical-offset="2465">
           <caret line="139" column="20" selection-start-line="139" selection-start-column="20" selection-end-line="139" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/groupbot/views/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5786517" vertical-offset="3417" max-vertical-offset="4743">
+          <caret line="72" column="21" selection-start-line="72" selection-start-column="21" selection-end-line="72" selection-end-column="21" />
           <folding />
         </state>
       </provider>
