@@ -22,7 +22,7 @@ class UserCreateForm(Form):
     first_name = StringField('First Name', validators = [Length(min=2, max=32)])
     last_name = StringField('Last Name', validators = [Length(min=2, max=32)])
     codename = StringField('Codename', validators=[Length(min=6, max=30), DataRequired()])
-    password = PasswordField('Password', validators = [DataRequired(), Length(min=6, max=40)])
+    password = PasswordField('Password', validators = [DataRequired()])
     confirm = PasswordField('Repeat Password', [DataRequired(), EqualTo('password', message='Passwords must match')])
     email  = StringField('Email', validators = [DataRequired(), Length(min=6, max=40)])
     phone = StringField('Phone Number')
