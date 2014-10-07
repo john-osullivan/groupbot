@@ -16,7 +16,7 @@ def user_create():
     if form.validate_on_submit():
         try:
             gbot.controllers.user.create_user(request)
-            flash("You just created an account called {}!  Glad to have you, thanks for joining.".format(form.codename))
+            flash("You just created an account called {0}!  Glad to have you, thanks for joining.".format(form.codename))
             return redirect(url_for(gbot.views.login()))
         except Exception as e:
             flash("Dang, that didn't work because: " + str(e))
