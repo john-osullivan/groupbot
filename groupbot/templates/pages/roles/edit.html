@@ -6,6 +6,7 @@
     <p>This page lets you change the name and description of an existing Role.  You can also add
     or remove group Members from it using that "select multiple" field right thurr.</p>
     <form action='/' method="POST">
+        {{ form.hidden_tag() }}
         {{ form.name }}
         {{ form.description }}
         {{ form.members }}

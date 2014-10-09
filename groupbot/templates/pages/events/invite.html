@@ -8,6 +8,7 @@ change the invited Members, but every time you change the Roles all the invitati
 with that.  That means people who suddenly have an Invite will receive one, and those who suddenly don't
 will no longer have one.</p>
 <form action='/' method='POST'>
+    {{ form.hidden_tag() }}
     {{ form.invited_roles }}
     {{ form.invited_members }}
     <input type='submit' value='Update Invitations'>

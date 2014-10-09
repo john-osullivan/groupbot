@@ -7,7 +7,9 @@
         {% if content['is_host'] == True %}
         <p class="lead">Okay, time to take attendance.  Just tell the magic attendance books, they'll remember.</p>
         <form action='/' method='POST'>
+            {{ form.hidden_tag() }}
             Members in Attendance: {{ form.attended }}
+
             <input type='submit' value='Save Attendance'>
         </form>
         {% else %}
@@ -21,6 +23,7 @@
         {% if content['is_host'] == True %}
             <p class='lead'>Want to update the magic attendance books or take a look at them?  Here they are.</p>
             <form action='/' method='POST'>
+                {{ form.hidden_tag() }}
                 Members in Attendance: {{ form.attended }}
                 <input type='submit' value='Save Attendance'>
             </form>

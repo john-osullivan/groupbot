@@ -4,6 +4,7 @@
 <div class='row'>
 <p class='lead'>Oh, this is exciting -- time to make a new Event!</p>
 <form action='/' method='POST'>
+    {{ form.hidden_tag() }}
     {{ form.name }}
     {{ form.host_members }}
     {{ form.host_roles }}

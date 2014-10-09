@@ -4,6 +4,7 @@
 <div class='row'>
 <p class='lead'>Oh, need to edit an Event?  No biggie -- let's do it.</p>
     <form action='/' method='POST'>
+        {{ form.hidden_tag() }}
         {{ form.name }}
         {{ form.hosts }}
         {{ form.start_time }}

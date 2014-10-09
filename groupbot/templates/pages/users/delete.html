@@ -5,6 +5,7 @@
 <p>No, seriously -- we'll be all torn up about it, maybe even write a sad poem or two...</p>
 <p>If it has to happen, though, we understand.</p>
 <form action="/" method="POST">
+    {{ form.hidden_tag() }}
     {{ form.delete }}
     <input type="submit" value="I've made my choice.">
 </form>

@@ -8,6 +8,7 @@
     we'll shoot them an invitation!  They'll be able to get started immediately -- their email is enough to get
     set up.</p>
     <form action="/" method="POST">
+        {{ form.hidden_tag() }}
         {{ form.code_names }}
         {{ form.email_addresses }}
         <input type="submit" value="Invite them!">

@@ -3,6 +3,7 @@
 {% block infocontent %}
 <p class='lead'>Time for an identity update?  Okay, let's make this happen.</p>
 <form action='/' method='POST'>
+    {{ form.hidden_tag() }}
     {{ form.code_name }}
     {{ form.email }}
     {{ form.name }}

@@ -4,6 +4,7 @@
 <div class='row'>
     <p class='lead'>Hey there, glad to see you making a Group!  Let's get started.</p>
     <form action='/' method='post'>
+        {{ form.hidden_tag() }}
         {{ form.human_name }}
         {{ form.code_name }}
         {{ form.byline }}

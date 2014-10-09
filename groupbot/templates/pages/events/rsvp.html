@@ -4,6 +4,7 @@
 <div class='row'>
 <p class='lead'>It's always nice to RSVP!</p>
 <form action='/' method='POST'>
+    {{ form.hidden_tag() }}
     {{ form.event }}
     {{ form.attending }}
     <input type='submit' value='RSVP'>

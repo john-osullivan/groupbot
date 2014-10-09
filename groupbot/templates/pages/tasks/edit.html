@@ -4,6 +4,7 @@
 <div class='row'>
     <p class='lead'>Whoa, wait a second.  This isn't right!  Let's fix it.</p>
     <form method='POST' action='/'>
+        {{ form.hidden_tag() }}
         {{ form.name }}
         {{ form.description }}
         {{ form.doing_member }}

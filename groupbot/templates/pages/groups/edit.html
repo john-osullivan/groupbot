@@ -3,6 +3,7 @@
 {% block infocontent %}
 <p class='lead'>Oh, want to quickly change something?  Go for it!</p>
 <form action='/' method='post'>
+    {{ form.hidden_tag() }}
     {{ form.human_name }}
     {{ form.code_name }}
     {{ form.byline }}

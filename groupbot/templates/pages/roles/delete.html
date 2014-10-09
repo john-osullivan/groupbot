@@ -5,6 +5,7 @@
 <p class='lead'>Oh jeez -- are you <strong>sure</strong> you want to delete this Role?</p>
 <p>It'll be gone forever, you know.  There no "Ctrl+Z"-ing this one!</p>
 <form action="/" method="POST">
+    {{ form.hidden_tag() }}
     {{ form.delete }}
     <input type="submit" value="Yup, I've made my choice.">
 </form>

@@ -6,6 +6,7 @@
     <p>Just making sure -- you're *positive* you want to delete {{ content['event_name'] }}, right?
         There is no undelete!</p>
     <form action="/" method="POST">
+        {{ form.hidden_tag() }}
         {{ form.delete }}
         <input type="submit" value="Yup, I've made my choice.">
     </form>

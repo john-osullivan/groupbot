@@ -17,6 +17,7 @@
     </ul>
     <p>With all that said, let's get started!</p>
     <form action='/' method='POST'>
+        {{ form.hidden_tag() }}
         {{ form.name }}
         {{ form.description }}
         {{ form.members }}

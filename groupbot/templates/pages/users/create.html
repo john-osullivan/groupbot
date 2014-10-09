@@ -11,6 +11,7 @@
 </div>
 <div class="col-md-6">
     <form action="" method="POST">
+        {{ form.hidden_tag() }}
         {{ form.first_name(class_ = 'form-control first-input', placeholder = form.first_name.label.text, required=true, autofocus=true) }}
         {{ form.last_name(class_ = 'form-control', placeholder = form.last_name.label.text, required=true, autofocus=true) }}
         {{ form.codename(class_ = 'form-control', placeholder = form.codename.label.text, required=true) }}

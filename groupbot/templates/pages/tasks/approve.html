@@ -11,6 +11,7 @@ Members, but for now the whole Task can be either unapproved or approved.  This 
 <p>Deadline: {{ content['deadline'] }}</p>
 <form action="/" method="POST">
     Are you absolutely positive this Task is ready to be approved?  If so, sign your real name.
+    {{ form.hidden_tag() }}
     {{ form.signature }}
     <input type="submit" value="Yup, I'm sure of it.">
 </form>

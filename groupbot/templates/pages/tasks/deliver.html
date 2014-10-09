@@ -15,6 +15,7 @@
     <p>Deadline: {{ content['deadline'] }}</p>
     <form action="/" method="POST">
         Do you <strong>swear</strong> you delivered the task?
+        {{ form.hidden_tag() }}
         {{ form.signature }}
         <input type="submit" value="I pinky promise!">
     </form>

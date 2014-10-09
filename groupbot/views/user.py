@@ -13,6 +13,8 @@ import groupbot.forms as forms
 @app.route('/user/create', methods=['GET', 'POST'])
 def user_create():
     form = forms.UserCreateForm()
+    print("was form submitted? :",form.is_submitted())
+    print("did form validate on submit? :",form.validate_on_submit())
     if form.validate_on_submit():
         try:
             gbot.controllers.user.create_user(request)
@@ -21,6 +23,7 @@ def user_create():
         except Exception as e:
             flash("Dang, that didn't work because: " + str(e))
             return redirect(url_for(user_create()))
+
     return render_template('pages/users/create.html', form=form)
 
 @app.route('/user/<user_codename>/detail')

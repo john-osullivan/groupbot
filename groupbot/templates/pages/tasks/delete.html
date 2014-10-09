@@ -4,6 +4,7 @@
     <p>Remember, though, if you cancel {{ content['task_name'] }}, there's no going back!  There's no
     Ctrl+Z built into this bad boy.</p>
     <form action="/" method="POST">
+        {{ form.hidden_tag() }}
         {{ form.delete }}
         <input type='submit' value="I've made my choice.">
     </form>

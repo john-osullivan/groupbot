@@ -16,6 +16,7 @@
     <div class="col-md-4">
         <form action='/' method='POST'>
             To make sure you're mean it, could you please sign this form?
+            {{ form.hidden_tag() }}
             {{ form.signature }}
             {{ form.delete }}
             <input type="submit" value="Yup, I'm sure.">
