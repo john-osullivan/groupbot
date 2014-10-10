@@ -12,7 +12,7 @@ import groupbot.forms as forms
 
 @app.route('/user/create', methods=['GET', 'POST'])
 def user_create():
-    form = forms.UserCreateForm()
+    form = forms.UserCreateForm(request.form)
     print("was form submitted? :",form.is_submitted())
     print("did form validate on submit? :",form.validate_on_submit())
     if form.validate_on_submit():
@@ -23,6 +23,8 @@ def user_create():
         except Exception as e:
             flash("Dang, that didn't work because: " + str(e))
             return redirect(url_for(user_create()))
+    else:
+        print form
 
     return render_template('pages/users/create.html', form=form)
 
@@ -46,14 +48,14 @@ def user_edit(user_codename):
 
         # Populate the form with the user's values and then serve it.
         user = User.query.filter_by(codename=user_codename).first()
-        form = forms.UserEditForm()
-        form.code_name = user.code_name
-        form.email = user.email
-        form.name.first_name = user.first_name
-        form.name.last_name = user.last_name
-        form.phone = user.phone
-        form.photo = user.photo
-        form.bio = user.bio
+        form = forms.UserEditForm(request.form)
+        form.code_name.data = user.code_name
+        form.email.data = user.email
+        form.name.first_name.data = user.first_name
+        form.name.last_name.data = user.last_name
+        form.phone.data = user.phone
+        form.photo.data = user.photo
+        form.bio.data = user.bio
 
         # If the forms been submitted, perform the edit and redirect with a successful flash.
         if form.validate_on_submit():
@@ -82,7 +84,7 @@ def user_delete(user_codename):
     if user_codename == current_user.codename:
 
         # Populate the page in case they look at it.
-        form = forms.DeleteForm()
+        form = forms.DeleteForm(request.form)
         content = {'codename':current_user.codename}
 
         if form.validate_on_submit():

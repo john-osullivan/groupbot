@@ -21,11 +21,12 @@ def member_add(group_codename):
     # First, get the page up and ready to go, build the form and infonav.
     this_group = Group.query.filter_by(codename = group_codename).first()
     infonav = gbot.views.build_infonav('group', current_group=this_group)
-    form = forms.MemberInviteForm()
+    form = forms.MemberInviteForm(request.form)
 
     # If the form's been submitted, check and see if the
+    raise NotImplementedError
 
-    return render_template('templates/pages/members/add.html', form=form, infonav=infonav)
+    # return render_template('templates/pages/members/add.html', form=form, infonav=infonav)
 
 @app.route('/group/<group_codename>/members')
 def member_list(group_codename):
@@ -128,7 +129,7 @@ def member_edit(group_codename, member_codename):
     if this_member.user_id == current_user.user_id:
 
         # Assuming it is, populate the Edit form.
-        form = forms.MemberEditForm()
+        form = forms.MemberEditForm(request.form)
         form.codename = this_member.codename
         form.bio = this_member.bio
         form.photo = this_member.photo
@@ -168,7 +169,7 @@ def member_delete(group_codename, member_codename):
 
         # Assuming they're valid, populate the page and make the form.
         content = {'member_id':int(this_member.member_id)}
-        form = forms.SignedDeleteForm()
+        form = forms.SignedDeleteForm(request.form)
 
         if form.validate_on_submit():
 

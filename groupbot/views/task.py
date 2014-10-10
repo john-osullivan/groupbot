@@ -152,7 +152,7 @@ def task_edit(group_codename, task_id):
     if this_task.is_approving(current_member):
 
         # Now that we know they're good, build the form up and populate it with the existing data.
-        form = gbot.forms.TaskForm()
+        form = gbot.forms.TaskForm(request.form)
         form.name = this_task.name
         form.description = this_task.description
         form.deliverable = this_task.deliverable
@@ -217,7 +217,7 @@ def task_delete(group_codename, task_id):
     if this_task.is_approving(current_member):
 
         # Ah, okay, these guys are good.  In that case, build their form and content object.
-        form = gbot.forms.DeleteForm()
+        form = gbot.forms.DeleteForm(request.form)
         content = {'task_name':this_task.name}
 
         # If nothing's been submitted, just show 'em the page!
@@ -265,7 +265,7 @@ def task_deliver(group_codename, task_id):
     if this_task.is_delivering(current_member):
 
         # Okay, not crazy.  Build up the delivery form, along with any page content we'll need.
-        form = gbot.forms.TaskDeliverForm()
+        form = gbot.forms.TaskDeliverForm(request.form)
         content = {'task_name':this_task.name,
                    'deliverable':this_task.deliverable,
                    'deadline':this_task.deadline}
@@ -308,7 +308,7 @@ def task_approve(group_codename, task_id):
     if this_task.is_approving(current_member):
 
         # Okay, they're supposed to be here.  First, build up the form and our content object.
-        form = gbot.forms.TaskApproveForm()
+        form = gbot.forms.TaskApproveForm(request.form)
         content = {'task_name':this_task.name,
                    'deliverable':this_task.deliverable,
                    'deadline':this_task.deadline

@@ -29,7 +29,7 @@ def role_create(group_codename):
     if current_member != None:
 
         # Now that we know they are, build that form.
-        form = gbot.forms.RoleForm()
+        form = gbot.forms.RoleForm(request.form)
 
         # If that form's been submitted...
         if form.validate_on_submit():
@@ -125,7 +125,7 @@ def role_edit(group_codename, role_id):
     if this_member != None:
 
         # If they are, build the form.  Since this is an edit, we need to fill in form values.
-        form = gbot.forms.RoleForm()
+        form = gbot.forms.RoleForm(request.form)
         this_role = Role.query.get(role_id)
         form.name = this_role.name
         form.description = this_role.description
@@ -173,7 +173,7 @@ def role_delete(group_codename, role_id):
     if this_member != None:
 
         # Okay, they're good to make the operation -- build the form.
-        form = gbot.forms.DeleteForm()
+        form = gbot.forms.DeleteForm(request.form)
 
         # If they've submitted the form...
         if form.validate_on_submit():

@@ -2,7 +2,7 @@ __author__ = 'John'
 import groupbot.helper
 from flask.ext.login import current_user, login_user
 
-from flask import request, redirect, url_for, render_template
+from flask import request, redirect, url_for, render_template, flash
 from groupbot import app, forms
 import groupbot.models as m
 import user, group, role, task, event, member
@@ -49,7 +49,6 @@ def index():
     print "Hit the index function"
     if current_user.is_anonymous():
         # This person isn't logged in, show them the landing page
-        list_routes()
         return render_template('pages/landing.html')
     else:
         # Hey, this is just a good user trying to get at the site!  Show 'em
@@ -65,9 +64,17 @@ def about():
 def login():
     form = forms.LoginForm(request.form)
     if form.validate_on_submit():
-        user = m.User.query.filter_by(code_name=form.code_name).first()
-        login_user(user)
-        return redirect(url_for(groupbot.views.group.group_list))
+        print form.codename
+        user = m.User.query.filter_by(codename=form.codename._value()).first()
+        if user is not None:
+            login_user(user)
+        else:
+            flash("We couldn't find an account with that name, sorry!")
+            return redirect(url_for('login'))
+        return redirect(url_for('group_list'))
+    else:
+        print "form.data: ",form.data
+        print "form.validate(): ",form.validate()
     return render_template('forms/login.html', form = form)
 
 @app.route('/forgot')

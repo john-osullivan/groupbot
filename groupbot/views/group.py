@@ -12,7 +12,7 @@ import groupbot.controllers as controllers
 
 @app.route('/group/create', methods=['GET', 'POST'])
 def group_create():
-    form = forms.GroupForm()
+    form = forms.GroupForm(request.form)
     if form.validate_on_submit():
         successful_create = controllers.group.create(request)
         if successful_create == True:
@@ -106,7 +106,7 @@ def group_detail(group_code_name):
 @app.route('/group/<group_codename>/edit', methods=['GET', 'POST'])
 def group_edit(group_codename):
     current_group = Group.query.filter_by(group_code_name=group_codename).firs()
-    form = forms.GroupForm()
+    form = forms.GroupForm(request.form)
     form.human_name = current_group.human_name
     form.code_name = current_group.code_name
     form.byline = current_group.byline
@@ -123,7 +123,7 @@ def group_edit(group_codename):
 @app.route('/group/<group_code_name>/delete', methods=['GET', 'POST'])
 def group_delete(group_code_name):
     content = {'group_code_name':group_code_name}
-    form = forms.DeleteForm()
+    form = forms.DeleteForm(request.form)
     if form.validate_on_submit():
         if form.delete == True:
             successful_delete = controllers.group.delete_group(group_code_name)

@@ -71,7 +71,7 @@ def event_create(group_codename):
     if current_member is not None:
 
         # Now that we know we're dealing with a Group Member, build up the form and pass it into the view.
-        form = gbot.forms.EventForm()
+        form = gbot.forms.EventForm(request.form)
 
         # If nobody's submitted yet, just show 'em the page with the nav and form.
         if not form.validate_on_submit():
@@ -163,7 +163,7 @@ def event_edit(group_codename, event_id):
     if this_event.is_host(current_member):
 
         # Now that we know they are, build the form to show 'em, populating it with all the current Event info.
-        form = gbot.forms.EventForm()
+        form = gbot.forms.EventForm(request.form)
 
         # First, all the easy one-liners.  Not hosts, really.
         form.name.default = this_event.name
@@ -219,7 +219,7 @@ def event_delete(group_codename, event_id):
 
     # Now, make sure that the current_member is a host and can actually delete the Event.
     if this_event.is_host(current_member):
-        form = gbot.forms.DeleteForm()
+        form = gbot.forms.DeleteForm(request.form)
         content = {'event_name':this_event.name}
 
         # If they submit the form...
@@ -264,7 +264,7 @@ def event_invite(group_codename, event_id):
     if this_event.can_invite(current_member):
 
         # If they can, create and populate the form.  Set the possible choices and already invited Members.
-        form = gbot.forms.EventInviteForm()
+        form = gbot.forms.EventInviteForm(request.form)
 
         # Populated all the options for the Roles and all the actually chosen ones.
         form.invited_roles.choices = [(each_role.role_id, each_role.name) for each_role in this_group.roles]
@@ -276,6 +276,20 @@ def event_invite(group_codename, event_id):
                                         for each_member in this_group.members]
         form.invited_members.default = [each_member.codename for each_member in this_event.invited_members]
         form.invited_members.process()
+
+        if form.validate_on_submit():
+
+            # Try to run the invite controller function, flash a success, and return to list.
+            try:
+                controllers.event.event_invite(request, event_id)
+                flash("Nice, you just invited people to " + this_event.name + "!", "success")
+                return redirect(url_for('event_list', group_codename=group_codename))
+
+            # Unless, god forbid, something goes wrong.  Then say so and return to RSVP.
+            except Exception as e:
+                flash("Dang, that invitation didn't work.  Here's the angry computer print-out: " + str(e))
+                return redirect(url_for('event_invite', group_codename=group_codename, event_id=event_id))
+
     return render_template('pages/events/invite.html', infonav=infonav, form=form)
 
 @app.route('/group/<group_codename>/events/<event_id>/rsvp', methods=['GET', 'POST'])
@@ -296,7 +310,7 @@ def event_rsvp(group_codename, event_id):
     if this_event.is_invited(current_member):
 
         # Assuming they are, build the form and populate it with the current value.
-        form = gbot.forms.EventRSVPForm()
+        form = gbot.forms.EventRSVPForm(request.form)
 
         # Check the RSVP fields...
         if current_member in this_event.rsvp_yes:
@@ -369,7 +383,7 @@ def event_attendance(group_codename, event_id):
     if this_event.is_host(current_member):
 
         # Build the form and check if it just got submitted.
-        form = gbot.forms.EventAttendanceForm()
+        form = gbot.forms.EventAttendanceForm(request.form)
         if form.validate_on_submit:
             # If it DID, then call the controller function to update the attendance and send the Member
             # back to look at it with a redirect.
