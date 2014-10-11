@@ -1,9 +1,8 @@
 __author__ = 'John'
 import groupbot.helper
-from flask.ext.login import current_user, login_user
-
+from flask.ext.login import current_user, login_user, logout_user, login_required
 from flask import request, redirect, url_for, render_template, flash
-from groupbot import app, forms
+from groupbot import app, forms, helper
 import groupbot.models as m
 import user, group, role, task, event, member
 
@@ -65,7 +64,7 @@ def login():
     form = forms.LoginForm(request.form)
     if form.validate_on_submit():
         print form.codename
-        user = m.User.query.filter_by(codename=form.codename._value()).first()
+        user = m.User.query.filter_by(codename=form.codename.data).first()
         if user is not None:
             login_user(user)
         else:
@@ -76,6 +75,12 @@ def login():
         print "form.data: ",form.data
         print "form.validate(): ",form.validate()
     return render_template('forms/login.html', form = form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/forgot')
 def forgot():
@@ -102,14 +107,14 @@ def build_infonav(level, current_group=None, member=None):
 
     # If we're at the user level, we just need the sidebar to list each of the user's groups
     if level == 'user':
-        infonav['parent'] = {'name': current_user.code_name,
-                             'view': groupbot.views.group.group_list}
-        user_groups = app.helper.get_groups_from_user(current_user)
+        infonav['parent'] = {'name': current_user.codename,
+                             'view': 'group_list'}
+        user_groups = helper.get_groups_from_user(current_user)
         infonav['pages'] = []
         for each_group in user_groups:
             infonav['pages'].append({
                 'name':each_group.code_name,
-                'view':groupbot.views.group.group_detail
+                'view':'group_list'
             })
 
     # At the group level, however, we want to list all the vital information from each group.
@@ -123,38 +128,38 @@ def build_infonav(level, current_group=None, member=None):
         else:
             # Assuming it's defined, get the parent listing set up
             infonav['parent'] = {'name': current_group.code_name,
-                                 'view': groupbot.views.group.group_detail,
+                                 'view': 'group_detail',
                                  'args': {'group_id': current_group.group_id}}
 
             # Now the fun part.  First, add the links for Members and Roles
             infonav['pages'] = []
             infonav['pages'].append({
                 'name': 'Members',
-                'view': member.member_list
+                'view': 'member_list'
             })
             infonav['pages'].append({
                 'name': 'Roles',
-                'view': groupbot.views.role.role_list
+                'view': 'role_list'
             })
 
             # Now, make the objects required to populate Tasks and its children
             task_view = {'name':'Tasks',
-                         'view':groupbot.views.task.task_list}
+                         'view':'task_list'}
             upcoming_tasks = m.Task.query.filter_by(group_id = current_group.id).order_by(m.Task.deadline).limit(5)
             task_view['children'] = []
             for each_task in upcoming_tasks:
                 task_view['children'].append({'name':each_task.name,
-                                              'view':groupbot.views.task.task_detail,
+                                              'view':'task_detail',
                                               'args':{'task_id':each_task.task_id}})
             infonav['pages'].append(task_view)
 
             # Same story, but now with the Group's Events
             event_view = {'name':'Events',
-                          'view':groupbot.views.event.event_list}
+                          'view':'event_list'}
             upcoming_events = m.Event.query.filter_by(group_id = current_group.id).order_by(m.Event.start_time).limit(5)
             for each_event in upcoming_events:
                 event_view['children'].append({'name':each_event.name,
-                                               'view':groupbot.views.event.event_detail,
+                                               'view':'event_detail',
                                                'args':{'event_id':each_event.event_id}})
             infonav['pages'].append(event_view)
 
@@ -205,6 +210,9 @@ def get_context(user_codename=None, group_codename=None, member_codename=None, r
         returning_records.append(infonav)
         returning_records.append(this_group)
 
+    else:
+        raise Exception("Neither user_codename or group_codename given to get_context!")
+
     # Sanity check -- after checking for a User or Group, the list should be TWO parts long.
     if len(returning_records) != 2:
         raise Exception("We should've made the infonav by now in get_context() but we haven't!")
@@ -226,24 +234,6 @@ def get_context(user_codename=None, group_codename=None, member_codename=None, r
         returning_records.append(m.Task.query.get(task_id))
 
     return tuple(returning_records)
-
-# def build_infopage(infopage):
-#     '''
-#     This function goes through the effort of building up the convoluted, general-ass
-#     object that constitutes each and every one of our pages.  Specifically, it:
-#     1) Grabs the info specific to the active page
-#     2) Grabs the info for each infoblock using its content_func attribute
-#
-#     :param infopage:
-#     :return:
-#     '''
-#     infonav = build_infonav(infopage)
-#     info = {}
-#     info['name'] = infopage.name
-#     info['description'] = infopage.description
-#     thing = class_table[]
-#
-#     return render_template('pages/infopage.html', infonav=infonav, infopage=info)
 
 def get_group_and_member(group_codename, member_codename):
     this_group = m.Group.query.filter_by(codename = group_codename)

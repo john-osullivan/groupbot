@@ -1,14 +1,20 @@
 __author__ = 'John'
+import os, sys
+
+import os, sys
+
+sys.path.append(os.path.join('..',os.getcwd()))
 
 from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
-import groupbot as gbot
 from groupbot import app
 from flask.ext.login import login_required, current_user
-from groupbot.models import db_session, User, Group, Member, \
-                                member_roles, Role, member_tasks, Task, \
-                                Event
+from groupbot.models import User
 import groupbot.forms as forms
+import groupbot
+from groupbot.views.group import group_list
+from groupbot.controllers import user as user_controller
+
 
 @app.route('/user/create', methods=['GET', 'POST'])
 def user_create():
@@ -17,21 +23,24 @@ def user_create():
     print("did form validate on submit? :",form.validate_on_submit())
     if form.validate_on_submit():
         try:
-            gbot.controllers.user.create_user(request)
-            flash("You just created an account called {0}!  Glad to have you, thanks for joining.".format(form.codename))
-            return redirect(url_for(gbot.views.login()))
+            user_controller.create_user(request)
+            flash("You just created an account called {0}!  Glad to have you, thanks for joining.".format(form.codename.data), 'success')
+            return redirect(url_for('login'))
         except Exception as e:
-            flash("Dang, that didn't work because: " + str(e))
-            return redirect(url_for(user_create()))
-    else:
-        print form
+            flash("Dang, that didn't work because: " + str(e), 'warning')
+            return redirect(url_for('user_create'))
+    # else:
+    #     print "------------------------------"
+    #     print "form didn't validate, here was its data:"
+    #     print "form.data: ",form.data
+    #     print "------------------------------"
 
     return render_template('pages/users/create.html', form=form)
 
 @app.route('/user/<user_codename>/detail')
 def user_detail(user_codename):
     user = User.query.filter_by(codename=user_codename).first()
-    infonav = gbot.views.build_infonav('user')
+    infonav = groupbot.views.build_infonav('user')
     content = {
         'realname':current_user.first_name + " " + user.last_name,
         'email':user.email,
@@ -60,14 +69,14 @@ def user_edit(user_codename):
         # If the forms been submitted, perform the edit and redirect with a successful flash.
         if form.validate_on_submit():
             try:
-                gbot.controllers.user.edit_user(current_user.user_id, request)
+                user_controller.edit_user(current_user.user_id, request)
                 flash("You successfully edited your user page!", "success")
-                return redirect(url_for(gbot.views.group.group_list()))
+                return redirect(url_for('group_list'))
 
             # Unless something goes wrong!  Then let them know what just done did happen.
             except Exception as e:
                 flash("Whoa, that didn't work!  Check it out: " + str(e))
-                return redirect(url_for(user_edit(user_codename)))
+                return redirect(url_for('user_edit', user_codename=user_codename))
 
         # Assuming they haven't submitted the form yet, show 'em the form.
         return render_template('pages/users/edit.html', form=form)
@@ -75,7 +84,7 @@ def user_edit(user_codename):
     # Otherwise, deny 'em access.
     else:
         flash("You can't edit that page, it's not yours!")
-        return redirect(url_for(gbot.views.group.group_list))
+        return redirect(url_for('group_list'))
 
 @app.route('/user/<user_codename>/delete', methods=['GET', 'POST'])
 def user_delete(user_codename):
@@ -92,13 +101,13 @@ def user_delete(user_codename):
             # Then, if they go through with it, delete the account.
             if form.delete:
                 flash("We're sad to see you go, {0} :(".format(current_user.code_name))
-                gbot.controllers.user.delete_user(current_user.user_id)
-                return redirect(url_for(gbot.views.home()))
+                user_controller.delete_user(current_user.user_id)
+                return redirect(url_for('index'))
 
             # Make sure to say thank you if they don't, though!
             else:
                 flash("Glad you chose to stick around, " + str(current_user.codename))
-                return redirect(url_for(gbot.views.group.group_list()))
+                return redirect(url_for('group_list'))
 
 
         # Of course, if they haven't actually submitted it yet, just show 'em the darn page!
@@ -107,4 +116,4 @@ def user_delete(user_codename):
     # If you're trying to see the delete page for someone else's profile, get outta here
     else:
         flash("You can't delete this account, it ain't even yours to begin with!", "error")
-        return redirect(url_for(gbot.views.group.group_list()))
+        return redirect(url_for('group_list'))

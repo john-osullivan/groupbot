@@ -3,8 +3,7 @@ __author__ = 'John'
 from flask import Flask, request, session, g, redirect, url_for,\
      abort, render_template, flash, make_response
 from flask.ext.sqlalchemy import SQLAlchemy,Pagination
-from groupbot import app
-from models import db_session, User
+from groupbot.models import db_session, User
 
 #----------------------------------------------------------------------------#
 # Atomic Events for USERS.
@@ -23,16 +22,19 @@ def create_user(request):
     Creates a User row in the database with all of the provided information
     associated with it.
     '''
-    display_name = request.form['name'] if request.form['name'] else display_name = None
-    phone = request.form['phone'] if request.form['phone'] else phone = None
-    bio = request.form['bio'] if request.form['bio'] else bio = None
-    bio = request.form['photo'] if request.form['photo'] else photo = None
-    newUser = User(username = request.form['codename'], password = request.form['password'],\
-                                name=display_name, email=request.form['email'], phone=phone,\
-                                bio=bio, photo=photo)
+
+    # Checks the optional fields with a ternary operator, uses the mandatory fields directly.
+    print "request.form: ",request.form
+    print "request.form['phone']: ",request.form['phone']
+    phone = request.form['phone'] if request.form['phone'] != '' else None
+    bio = request.form.bio.data if request.form['bio'] != '' else None
+    photo = request.form.photo.data if request.form['photo'] != '' else None
+    newUser = User(codename=request.form['codename'], password=request.form['password'],
+                   first_name=request.form['first_name'], last_name=request.form['last_name'],
+                   email=request.form['email'], phone=phone, bio=bio, photo=photo)
     db_session.add(newUser)
     db_session.commit()
-    return True
+    return newUser
 
 def delete_user(user_id):
     '''
@@ -43,7 +45,6 @@ def delete_user(user_id):
     Removes the user's row from the database, purging all of their memberships.
     '''
     user = User.query.get(int(user_id))
-    codename = str(user.code_name)
     db_session.delete(user)
     db_session.commit()
     return True

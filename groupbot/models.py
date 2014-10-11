@@ -4,10 +4,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from sqlalchemy.engine import reflection
 from sqlalchemy.schema import DropConstraint, DropTable
-from groupbot import db
+from groupbot import app, db
 import os
 from config import SQLALCHEMY_DATABASE_URI
+from flask.ext.login import LoginManager, current_user
 
+login_manager = LoginManager()
+login_manager.init_app(app)
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 inspector = reflection.Inspector.from_engine(engine)
 db_session = scoped_session(sessionmaker(autocommit=False,
@@ -142,8 +145,7 @@ class User(Base):
         self.codename = codename
         self.password = password
         self.email = email
-        if (phone is not None) and phone != "":
-            self.phone = int(phone)
+        self.phone = phone
         self.bio = bio
         self.photo = photo
 
@@ -162,6 +164,13 @@ class User(Base):
     def get_id(self):
         return unicode(self.user_id)
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+@app.context_processor
+def add_user():
+    return {current_user : current_user}
 
 class Group(Base):
     __tablename__ = 'groups'

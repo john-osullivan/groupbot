@@ -63,7 +63,11 @@
           </ul>
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('user_create') }}">Join</a></li>
+            {% if current_user.is_anonymous() %}
             <li><a href="{{ url_for('login') }}">Login</a></li>
+              {% else %}
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+              {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

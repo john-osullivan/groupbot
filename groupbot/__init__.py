@@ -2,6 +2,10 @@
 # Imports.
 #----------------------------------------------------------------------------#
 
+import os, sys
+
+sys.path.append(os.getcwd())
+
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
@@ -10,6 +14,8 @@ from flask.ext.heroku import Heroku
 from flask.ext.script import Manager
 import logging
 from logging import Formatter, FileHandler
+
+__all__ = ['controllers', 'views', 'models', 'forms']
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -22,8 +28,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-login_manager = LoginManager()
-login_manager.init_app(app)
 heroku = Heroku(app)
 
 import views, models, controllers
@@ -58,3 +62,7 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
 '''
+
+#----------------------------------------------------------------------------#
+# Create the user loader to let the LoginManager work correctly.
+#----------------------------------------------------------------------------#

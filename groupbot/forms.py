@@ -27,7 +27,7 @@ class UserCreateForm(Form):
     email  = StringField('Email', validators = [DataRequired(), Length(min=6, max=40)])
     phone = StringField('Phone Number')
     photo = StringField('Profile Photo URL')
-    bio = StringField('Bio', validators = [Length(min=1, max=160)])
+    bio = StringField('Bio', validators = [Length(min=0, max=160)])
   
 class PasswordChangeForm(Form):
     old_password = PasswordField('Old Password', validators = [Length(min=6, max=40)])
