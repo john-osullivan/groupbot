@@ -35,7 +35,7 @@ class PasswordChangeForm(Form):
     confirm =   PasswordField('Confirm NewPassword', validators = [Length(min=6, max=40)])
 
 class UserEditForm(Form):
-    code_name = StringField('Codename', validators=[DataRequired()])
+    codename = StringField('Codename', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
     name = FormField(RealNameForm)
     phone = FormField(TelephoneForm)
@@ -54,7 +54,7 @@ class ForgotForm(Form):
 
 class GroupForm(Form):
     human_name = StringField('Group Display Name', validators=[DataRequired(), Length(min=6, max=80)])
-    code_name = StringField('Group "Code Name"', validators=[DataRequired(), Length(min=6, max=80)])
+    codename = StringField('Group "Code Name"', validators=[DataRequired(), Length(min=6, max=80)])
     byline = StringField('Group By-Line', validators=[Length(min=6, max=160)])
     description = TextAreaField('Group Description', validators=[Length(min=40, max=2048)])
 
@@ -81,7 +81,6 @@ class MultipleMemberForm(FormPiece):
 
 class MemberInviteForm(Form):
     user_codename = StringField('User Codename')
-    user_email = StringField('User (or new user!) Email')
 
 class MultipleRoleForm(FormPiece):
     roles = SelectMultipleField('Role', coerce=int, validators=[DataRequired()])

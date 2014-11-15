@@ -1,10 +1,6 @@
 __author__ = 'John'
 
-from flask import Flask, request, session, g, redirect, url_for,\
-     abort, render_template, flash, make_response
-from flask.ext.sqlalchemy import SQLAlchemy,Pagination
-from groupbot import app
-from models import db_session, User, Group, Member,Role
+from groupbot.models import db_session, User, Group, Member,Role
 
 #----------------------------------------------------------------------------#
 # Atomic Events for ROLES.
@@ -23,9 +19,7 @@ def create_role(group_id, request):
     '''
     role_name = request.form['name']
     description = request.form['description'] if request.form['description'] else None
-    member = int(request.form['member']) if request.form['member'] else None
-    new_role = Role(group_id = group_id, name = role_name, \
-                                description = description, member_id = member)
+    new_role = Role(group_id = group_id, name = role_name,  description = description)
     db_session.add(new_role)
     db_session.commit()
     return new_role

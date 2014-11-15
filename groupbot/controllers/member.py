@@ -22,8 +22,7 @@ def add_member(group_codename, request):
     empty by default.
     '''
     group = Group.query.filter_by(codename=group_codename)
-    user_codename = request.form['user_codename'] if request.form['user_codename'] else None
-    user_email = request.form['user_email'] if request.form['user_email'] else None
+    user_codename = request.form['user_codename']
     user = User.query.filter_by(codename = user_codename, email = user_email).first()
     new_member = Member(group_id=group.group_id, user_id=user.user_id, codename=user_codename)
     db_session.add(new_member)

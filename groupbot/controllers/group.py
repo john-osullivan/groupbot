@@ -1,10 +1,7 @@
 __author__ = 'John'
 
-from flask import Flask, request, session, g, redirect, url_for,\
-     abort, render_template, flash, make_response
-from flask.ext.sqlalchemy import SQLAlchemy,Pagination
-from groupbot import app
-from models import db_session, Group
+from models import db_session, Group, Member, User
+from groupbot.views import current_user
 
 #----------------------------------------------------------------------------#
 # Atomic Events for GROUPS.
@@ -22,10 +19,13 @@ def create_group(request):
     '''
     byline = request.form['byline'] if request.form['byline'] else None
     description = request.form['description'] if request.form['description'] else None
-    new_group = Group(human_name = request.form['display_name'], \
-                                    code_name = request.form['code_name'], \
-                                    byline = byline, description = description)
+    new_group = Group(human_name = request.form['display_name'],codename = request.form['code_name'],
+                      byline = byline,description = description)
     db_session.add(new_group)
+    db_session.commit()
+    creator = User.query.get(current_user.id)
+    first_member = Member(new_group.group_id, creator.user_id, creator.codename)
+    db_session.add(first_member)
     db_session.commit()
     return True
 

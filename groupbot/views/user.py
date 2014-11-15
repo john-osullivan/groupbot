@@ -16,7 +16,7 @@ from groupbot.views.group import group_list
 from groupbot.controllers import user as user_controller
 
 
-@app.route('/user/create', methods=['GET', 'POST'])
+@app.route('/users/', methods=['GET', 'POST'])
 def user_create():
     form = forms.UserCreateForm(request.form)
     print("was form submitted? :",form.is_submitted())
@@ -29,15 +29,10 @@ def user_create():
         except Exception as e:
             flash("Dang, that didn't work because: " + str(e), 'warning')
             return redirect(url_for('user_create'))
-    # else:
-    #     print "------------------------------"
-    #     print "form didn't validate, here was its data:"
-    #     print "form.data: ",form.data
-    #     print "------------------------------"
 
     return render_template('pages/users/create.html', form=form)
 
-@app.route('/user/<user_codename>/detail')
+@app.route('/users/<user_codename>/detail')
 def user_detail(user_codename):
     user = User.query.filter_by(codename=user_codename).first()
     infonav = groupbot.views.build_infonav('user')
@@ -49,7 +44,7 @@ def user_detail(user_codename):
     }
     return render_template('pages/users/detail.html', content=content, infonav=infonav)
 
-@app.route('/user/<user_codename>/edit', methods=['GET', 'POST'])
+@app.route('/users/<user_codename>/edit', methods=['GET', 'POST'])
 def user_edit(user_codename):
 
     # First, make sure the user is editing their own profile.
@@ -58,7 +53,7 @@ def user_edit(user_codename):
         # Populate the form with the user's values and then serve it.
         user = User.query.filter_by(codename=user_codename).first()
         form = forms.UserEditForm(request.form)
-        form.code_name.data = user.code_name
+        form.codename.data = user.code_name
         form.email.data = user.email
         form.name.first_name.data = user.first_name
         form.name.last_name.data = user.last_name
@@ -86,7 +81,7 @@ def user_edit(user_codename):
         flash("You can't edit that page, it's not yours!")
         return redirect(url_for('group_list'))
 
-@app.route('/user/<user_codename>/delete', methods=['GET', 'POST'])
+@app.route('/users/<user_codename>/delete', methods=['GET', 'POST'])
 def user_delete(user_codename):
 
     # First, make sure the User is trying to delete their own profile.  No fucking other people over.

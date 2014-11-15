@@ -9,7 +9,7 @@ from groupbot.models import Member, Group, Role, User
 import groupbot.forms as forms
 import groupbot.controllers as controllers
 
-@app.route('/group/<group_codename>/members/add', methods=['GET', 'POST'])
+@app.route('/groups/<group_codename>/members/add', methods=['GET', 'POST'])
 def member_add(group_codename):
     '''
     This is the view where people can invite other users into the Group.  After all, the Group's
@@ -23,12 +23,19 @@ def member_add(group_codename):
     infonav = gbot.views.build_infonav('group', current_group=this_group)
     form = forms.MemberInviteForm(request.form)
 
-    # If the form's been submitted, check and see if the
-    raise NotImplementedError
+    # If the form's been submitted, pass it into the controller function!
+    if form.validate_on_submit():
+        end_status = gbot.controllers.member.add_member(group_codename, request)
+        if end_status:
+            flash('Alright, you just added {0} to {1}!'.format(form.user_codename, group_codename), "success")
+            return redirect(url_for(gbot.views.group.group_detail, group_codename=group_codename))
+        else:
+            flash("Aw dang, that didn't work for some reason -- sorry!  Wanna try again?")
+            return redirect(url_for(member_add, group_codename=group_codename))
 
-    # return render_template('templates/pages/members/add.html', form=form, infonav=infonav)
+    return render_template('templates/pages/members/add.html', form=form, infonav=infonav)
 
-@app.route('/group/<group_codename>/members')
+@app.route('/groups/<group_codename>/members')
 def member_list(group_codename):
     '''
     This thing gives you a view of all the Members in the Group.  Their names, photos, and bios
@@ -58,7 +65,7 @@ def member_list(group_codename):
     # With all that said and done, return this bad boy and stop worrying about it.
     return render_template('templates/pages/members/list.html', content=content, infonav=infonav)
 
-@app.route('/group/<group_codename>/members/<member_codename>')
+@app.route('/groups/<group_codename>/members/<member_codename>')
 def member_detail(group_codename, member_codename):
     '''
     This view gives the proverbial skinny on a Member.  What's their name, bio, photo?
@@ -112,7 +119,7 @@ def member_detail(group_codename, member_codename):
     # With all that said and done, we're good to return and show the page.
     return render_template('templates/pages/members/detail.html', content=content, infonav=infonav)
 
-@app.route('/group/<group_codename>/members/<member_codename>/edit', methods=['GET', 'POST'])
+@app.route('/groups/<group_codename>/members/<member_codename>/edit', methods=['GET', 'POST'])
 def member_edit(group_codename, member_codename):
     '''
     This page lets you modify the information specific to a Member.  Namely, the codename
@@ -139,13 +146,15 @@ def member_edit(group_codename, member_codename):
             try:
                 new_codename = str(request.form['codename'])
                 controllers.member.edit_member(this_member.member_id, request)
-                flash("Score!  You just successfully edited your Membership, " + new_codename)
-                return redirect(url_for(gbot.views.member.member_detail(group_codename, new_codename)))
+                flash("Score!  You just successfully edited your Membership, " + new_codename+".")
+                return redirect(url_for(gbot.views.member.member_detail,group_codename=group_codename,
+                                        member_codename=new_codename))
 
             # Let them know what went wrong if it wasn't
             except Exception as e:
                 flash("Dang, that edit didn't work...  Check it out: " + str(e))
-                return redirect(url_for(gbot.views.member.member_edit(group_codename, member_codename)))
+                return redirect(url_for(gbot.views.member.member_edit,group_codename=group_codename,
+                                        member_codename=member_codename))
 
         # If they haven't submitted, though, just show 'em the dang page!
         return render_template('templates/pages/members/edit.html', form=form)
@@ -156,7 +165,7 @@ def member_edit(group_codename, member_codename):
         return redirect(url_for(gbot.views.group.group_list()))
 
 
-@app.route('/group/<group_codename>/members/<member_codename>/delete', methods=['GET', 'POST'])
+@app.route('/groups/<group_codename>/members/<member_codename>/delete', methods=['GET', 'POST'])
 def member_delete(group_codename, member_codename):
     this_group = Group.query.filter_by(codename = group_codename).first()
     this_member = Member.query.filter_by(group_id = this_group.group_id, codename=member_codename).first()
@@ -176,8 +185,8 @@ def member_delete(group_codename, member_codename):
             # If their submission and signature check out, delete the Member.
             if form.signature_field.signature == current_user.codename:
                 try:
-                    flash("Okay, you just removed {0} from {1}.  Sorry to see them go!".format(this_member.codename, this_group.codename))
                     controllers.member.remove_member(this_member.member_id)
+                    flash("Okay, {0} isn't a part of {1} anymore.  Bye! :(".format(this_member.codename, this_group.codename))
                     return redirect(url_for(gbot.views.group.group_list()))
                 except Exception as e:
                     flash("Huh, that didn't work for some reason.  The magic computer says: " + str(e))

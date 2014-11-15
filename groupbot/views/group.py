@@ -10,17 +10,17 @@ import groupbot.helper as helper
 import groupbot.forms as forms
 import groupbot.controllers as controllers
 
-@app.route('/group/create', methods=['GET', 'POST'])
+@app.route('/groups/create', methods=['GET', 'POST'])
 def group_create():
     form = forms.GroupForm(request.form)
     if form.validate_on_submit():
         successful_create = controllers.group.create(request)
         if successful_create == True:
-            flash("You successfully created a group called {}!".format(form.code_name), 'success')
-            return redirect(url_for(group_detail, group_code_name=form.code_name))
+            flash("You successfully created a group called {}!".format(form.codename), 'success')
+            return redirect(url_for(group_detail, group_code_name=form.codename))
         else:
             flash("Something went wrong when you tried to create the Group!  Sorry :(")
-    return render_template('templates/pages/groups/create.html', form=form)
+    return render_template('pages/groups/create.html', form=form)
 
 @app.route('/dashboard')
 def group_list():
@@ -44,7 +44,7 @@ def group_list():
     return render_template('pages/groups/list.html', content=content, infonav=infonav)
 
 
-@app.route('/group/<group_code_name>')
+@app.route('/groups/<group_code_name>')
 def group_detail(group_code_name):
     '''
     In-depth view of the recent activity of the group, including everything
@@ -55,7 +55,7 @@ def group_detail(group_code_name):
     '''
 
     # First, grab us a Group, fill in its info, make the content object, and build the infonav
-    group = Group.query.filter_by(code_name = group_code_name)
+    group = Group.query.filter_by(codename = group_code_name)
     content = {}
     content['group_name'] = group.human_name
     content['group_byline'] = group.byline
@@ -103,12 +103,12 @@ def group_detail(group_code_name):
     # With all that said and done, return that motherfucker.
     return render_template('pages/groups/detail.html', content=content, infonav=infonav)
 
-@app.route('/group/<group_codename>/edit', methods=['GET', 'POST'])
+@app.route('/groups/<group_codename>/edit', methods=['GET', 'POST'])
 def group_edit(group_codename):
     current_group = Group.query.filter_by(group_code_name=group_codename).firs()
     form = forms.GroupForm(request.form)
     form.human_name = current_group.human_name
-    form.code_name = current_group.code_name
+    form.codename = current_group.code_name
     form.byline = current_group.byline
     form.description = current_group.description
 
@@ -120,7 +120,7 @@ def group_edit(group_codename):
     else:
         return render_template('pages/groups/edit.html', form=form)
 
-@app.route('/group/<group_code_name>/delete', methods=['GET', 'POST'])
+@app.route('/groups/<group_code_name>/delete', methods=['GET', 'POST'])
 def group_delete(group_code_name):
     content = {'group_code_name':group_code_name}
     form = forms.DeleteForm(request.form)

@@ -1,8 +1,24 @@
 {% extends 'pages/infopage.html' %}
 
 {% block infocontent %}
+<div class="row">
+    <h1>All Groups</h1>
+    <div class="col-md-12">
+        <p class="lead">Hey there! This is the main view where you can see a quick summary
+            of all your groups.  If you can't see anything, try making or joining a group!</p>
+    </div>
+    <div class="col-md-12">
+        <a type="button" class="btn btn-primary btn-lg" href="{{ url_for('group_create') }}">
+            Make a Group
+        </a>
+        <a type="button" disabled="disabled" class="btn btn-primary btn-lg" href="{{ url_for('group_create') }}">
+            Find a Group
+        </a>
+    </div>
+</div>
+
+
 {% for group in content['groups'] %}
-<p class="lead">This is the </p>
 <div class='row'>
     <h6>{{ group['human_name'] }} <small>{{ group['code_name'] }}</small></h6>
     <p class='lead'>{{ group['byline'] }}</p>
