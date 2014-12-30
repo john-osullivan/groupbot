@@ -1,21 +1,20 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
+from sqlalchemy import ForeignKey,DateTime
 from sqlalchemy.engine import reflection
 from sqlalchemy.schema import DropConstraint, DropTable
 from groupbot import app, db
 import os
-from config import SQLALCHEMY_DATABASE_URI
+
 from flask.ext.login import LoginManager, current_user
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-engine = create_engine(SQLALCHEMY_DATABASE_URI)
-inspector = reflection.Inspector.from_engine(engine)
+inspector = reflection.Inspector.from_engine(db.engine)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
-                                         bind=engine))
+                                         bind=db.engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
 
@@ -41,7 +40,7 @@ def is_table(table_string):
 def drop_shit():
     metadata = Base.metadata
     conn = db.engine.connect()
-    metadata.reflect(bind=engine)
+    metadata.reflect(bind=db.engine)
     # db.drop_all(bind=[engine])
     print "About to try and drop all foreign keys"
     for table in metadata.tables.values():
@@ -211,8 +210,6 @@ class Group(Base):
     events = db.relationship('Event', backref='group')
    
     # Relations to establish one-to-many parent-child db.relationships.
-    # NOTE: Not currently being used, as all group connection is being
-    # handled by partnerships.
     parent_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'))
     children = db.relationship('Group', backref='parent', remote_side=[group_id])
 
@@ -248,8 +245,8 @@ class Member(Base):
     group_id = db.Column(db.Integer, db.ForeignKey('groups.group_id'), default=None, index=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), default=None, index=True, nullable=False)
     codename = db.Column(db.String(80), nullable=False)
-    photo = db.Column(db.String(128))
-    bio = db.Column(db.String(256))
+    photo = db.Column(db.LargeBinary)
+    bio = db.Column(db.String(160))
 
     def __init__(self, group_id, user_id, codename, bio=None, photo=None):
         self.group_id = group_id
@@ -284,8 +281,8 @@ multiple roles.
 '''
 member_roles = db.Table(
     'member_roles', Base.metadata,
-    db.Column('member_id', Integer, ForeignKey('members.member_id')),
-    db.Column('role_id', Integer, ForeignKey('roles.role_id'))
+    db.Column('member_id', db.Integer, ForeignKey('members.member_id')),
+    db.Column('role_id', db.Integer, ForeignKey('roles.role_id'))
     )
 
 
@@ -340,33 +337,33 @@ one for the task_id.
 '''
 member_tasks = db.Table(
     'member_tasks', Base.metadata,
-    db.Column('giving_member_id', Integer, ForeignKey('members.member_id')),
-    db.Column('given_member_id', Integer, ForeignKey('members.member_id')),
-    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+    db.Column('giving_member_id', db.Integer, ForeignKey('members.member_id')),
+    db.Column('given_member_id', db.Integer, ForeignKey('members.member_id')),
+    db.Column('task_id', db.Integer, ForeignKey('tasks.task_id'))
     )
 
 member_delivering_tasks = db.Table(
     'member_delivering_tasks', Base.metadata,
-    db.Column('delivering_member_id', Integer, ForeignKey('members.member_id')),
-    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+    db.Column('delivering_member_id', db.Integer, ForeignKey('members.member_id')),
+    db.Column('task_id', db.Integer, ForeignKey('tasks.task_id'))
 )
 
 member_approving_tasks = db.Table(
     'member_approving_tasks', Base.metadata,
-    db.Column('approving_member_id', Integer, ForeignKey('members.member_id')),
-    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+    db.Column('approving_member_id', db.Integer, ForeignKey('members.member_id')),
+    db.Column('task_id', db.Integer, ForeignKey('tasks.task_id'))
 )
 
 role_delivering_tasks = db.Table(
     'role_delivering_tasks', Base.metadata,
-    db.Column('delivering_role_id', Integer, ForeignKey('roles.role_id')),
-    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+    db.Column('delivering_role_id', db.Integer, ForeignKey('roles.role_id')),
+    db.Column('task_id', db.Integer, ForeignKey('tasks.task_id'))
 )
 
 role_approving_tasks = db.Table(
     'role_approving_tasks', Base.metadata,
-    db.Column('approving_role_id', Integer, ForeignKey('roles.role_id')),
-    db.Column('task_id', Integer, ForeignKey('tasks.task_id'))
+    db.Column('approving_role_id', db.Integer, ForeignKey('roles.role_id')),
+    db.Column('task_id', db.Integer, ForeignKey('tasks.task_id'))
 )
 
 class Task(Base):
@@ -690,6 +687,7 @@ class Event(Base):
 #     def __init__(self):
 
 #     def __repr__(self):
+
 # # class Committee(Base):
 # #     __tablename__ = 'committees'
 # #     '''
@@ -721,4 +719,4 @@ NAMES_TO_CLASSES = {
 }
 
 # Create tables.
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=db.engine)

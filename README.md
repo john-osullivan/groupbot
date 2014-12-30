@@ -1,13 +1,16 @@
 # Welcome
-This is GroupBot, an online group organization platform being developed by John O'Sullivan and Harry Bleyan.  In a sentence, it lets people join into *Groups* as *Members*.  These *Members* have *Roles*.  These *Roles* let them create and manage *Events*, give and receive *Tasks*, and contribute to the Role's *InfoPage*.  Groups can also *Bond* to other Groups, letting them share InfoPages and choose *Representatives* for each other's Groups.
+This is GroupBot, an online community organization platform.  It's designed to make organizing a group
+of people to achieve a common goal easier to do.  For now, it does that by letting users:
+* Join into *Groups* as *Members* (note the distinction from *Users*).  
+* Take on *Roles*, which organize *Members* by their function in the group, as well as compile all the information 
+related to performing said Role in one place.
+* Give and receive *Tasks* which are first assigned by an assigner, then delivered by the assigned, and finally approved by the assigner.
+* Invite other Members & Roles to *Events*, as well as take attendance for that event. 
 
-Additionally, the platform is going to be expanded to support Discussions and Meetings.  In general, it will be expanded to support many more things -- the idea is in FLUX.  
+Some key next steps will be to incorporate *Committees* as internal subgroups, *Representatives* to connect different 
+groups, and forum-style *Discussions* which will mimic mailing lists.   
 
-This README is going to discuss:
-- Backend Data Model
-- Controller/View Functions
-- Front-End Design Documentation
-- Future Features/Dream Ideas
+This README documents the underlying data model supporting the application.
 
 ## Backend Data Model
 The system currently recognizes eight SQLAlchemy models which correspond to database tables:
@@ -17,153 +20,113 @@ The system currently recognizes eight SQLAlchemy models which correspond to data
 - Members
 - Roles
 - Tasks
-- Infopages
-- Infoblocks
 - Events
 - (Pending) Representatives
-- (Pending) Committees/InGroups
-- (Pending) Meetings
+- (Pending) Committees
 - (Pending) Discussions
 
 ### Users
-Users separated from the specific activity of each group.  All association is handled through members, allowing users to fluidly be a part of multiple groups.  It has the colums:
-- Name (String)
-- Email (Validated String)
-- Phone Number (Optional)
-- Bio (String)
-- Members (Many to Many)
-- Photo (Binary)
+Users separated from the specific activity of each group.  All association is handled through members, allowing users to fluidly be a part of multiple groups.  It has the columns:
+- first_name (String)
+- last_name (String)
+- codename (String) - Unique identifier, essentially a username.
+- email (Validated String)
+- phone (Optional String)
+- bio (String, 160 characters)
+- photo (LargeBinary)
 - memberships (relation to Members)
 
 ### Groups
-Groups are collections of Members.  They also point to Roles and Tasks.  Eventually, a group there will be surrounding features like by-laws, voting, motions for updates, and a discussion system.  For now, however, it is expressed as a collection of people.  Since a Group has an Infopage, every Group's parent points to the "Dashboard" view.  Groups have the columns:
-- Display Name (String) : A non-unique name to refer to the group by, to make 
-standard use easier.
-- Code Name (String) : A unique name for the group similar to a Twitter handle
-or Facebook URL.
-- Members (One to Many)
-- By-Line (String)
-- Description (Long String)
-- Roles (One to Many
-- Tasks (One to Many)
-
-It also inherits things from relationship backrefs, like:
-  - 'bonds'
-
-### Bonds
-Bonds are designed to allow for cooperation between different groups.  They let Groups designate shared InfoPages, and they let them establish Representatives into each other.  For now, that's it.
-- groups : relationship to Groups, meant to be only two groups.
-- Representatives : relationship to Members.
+Groups are collections of Members.  They also have relationships to Roles, Tasks, and Events.  Groups have the columns:
+- human_name (String) : A non-unique name for the group, easily changeable.
+- codename (String) : A unique name for the group, similar to a Twitter handle or Facebook URL.
+- byline (String, 160 characters) : A blurb about the Group, akin to a User's bio
+- description (Long String) : A longer and more thorough description of what the Group is and how it works.  Currently
+capped at 2048 characters, likely to change.
+- members (One to Many relation to Member)
+- roles (One to Many relation to Role)
+- tasks (One to Many relation to Task)
+- events (One to Many relation to Event)
 
 ### Members
 A Member contains all the information a user would want to interact with in the group.  Specifically, Members perform Roles, give/receive Tasks, host/attend Events, and edit InfoPages.  It has the columns:
-- Preferred Name (Optional String)
-- Role (Many to Many)
-- Doing Tasks (Many to Many)
-- Giving Tasks (Many to Many)
-- Points (Integer)
-   It also inherits a great deal of properties from relationship backrefs, like:
-- 'user'
-- 'group'
+- codename (String, 80 characters) : Members have their own unique codenames, so a User can decide how they want to be 
+referred to within a Group.
+- bio (String, 160 characters) : Member-specific bio, for information just related to this Group.
+- photo (LargeBinary) : A photo just to be used within this Group on the Member profile.
+- roles (Many to Many relationship to Roles) : 
+- delivering_tasks (Many to Many relationship to Task) : Tasks which this Member must deliver (Tasks assigned *to* them).
+- approving_tasks (Many to Many relationship to Task) : Tasks which this Member must approve (Tasks assigned *by* them).
+- hosting_events (Many to Many relationship to Event) : Events this Member is hosting.
+- invited_events (Many to Many relationship to Event) : Events this Member is invited to.
+- rsvp_yes_events (Many to Many relationship to Event) : Events this Member RSVPd *yes* to.
+- rsvp_no_events (Many to Many relationship to Event) : Events this Member RSVPd *no* to.
+- attended_events (Many to Many relationship to Event) : Events this Member attended.
 
 ### Roles
-A Role is part of a group, can be held by multiple Members, has a description, can both give and receive Tasks, and can have Permissions assigned to it (once they're a thing).  It also comes with a title, because of course.  The columns are:
-- Name (Required String)
-- Group (Foreign Key)
-- Description (Long String)
-- Doing Tasks (Many to Many)
-- Giving Tasks (Many to Many)
-   Inherited from relationship backrefs:
-   - groups -> Group
-   - members -> Member
-
+A Role is part of a group, can be held by multiple Members, has a description, can both give and receive Tasks, 
+and can host or be invited to an Event.  The columns are:
+- name (Required String, 80 characters) : Name for Role, not unique.
+- description (String, 2048 characters) : Description of Role, meant to contain all the key information about it.
+- delivering_tasks (Many to Many relationship to Task) : Tasks which some Member who has this Role must deliver (Tasks assigned *to* them).
+- approving_tasks (Many to Many relationship to Task) : Tasks which some Member who has this Role must approve (Tasks assigned *by* them).
+- hosting_events (Many to Many relationship to Event) : Events this Role is hosting.
+- invited_events (Many to Many relationship to Event) : Events this Role is invited to.
 
 ### Tasks
-A Task is the basic unit of getting things done.  They are hierarchical, meaning any task can have sub-tasks.  A Task need to be both delivered by the doer and approved by the giver before it's considered complete.  It have a field for a due date, which will later be used to send text or email reminders.  For basic information purposes, it also has name/description/comments, each stored as Strings.  The columns are:
-- Name (Short String)
-- Description (Medium String)
-- Due Date (DateTime)
-- Delivered (Boolean)
-- Approved (Boolean)
-- Giver_ID (One-to-One Relationship to Member)
-- Doer_ID (One-to-One Relationship to Member)
-- Comments (Short String)
-- Parent_ID (ForeignKey Integer)
-- Child (One-to-Many Relationship)
+A Task is the basic unit of getting things done.  They are hierarchical, meaning any task can have sub-tasks.  
+A Task is assigned by one Member or Role to another Member or Role.  Those assigned to complete a Task deliver it, then
+the assigner approves it.  It has a deadline, which will later be used for text or email reminders.  For describing the
+Task itself, it has a name, description, and comments -- each are Strings.  There is a Deliverable field which is 
+currently a String (meant to be the Member's signature saying they completed it), but will be changed to be a LargeBinary
+to allow for arbitrary file upload.  The columns are:
+- name (String, 80 characters) : What's the Task called?
+- description (String, 512 characters) : What does the Task require?
+- comments (String, 256 characters) : Any additional comments that might vary from one otherwise similar Task to another.
+- deadline (DateTime) : When is the Task due by?
+- deliverable (String, 256 characters) : This is whatever the Task needed the deliverer to produce.  For now, it's a
+String because I don't know how to make file upload work right.  Eventually, however, it will take file upload so people
+ can upload arbitrary files (images, pdfs, etc) to fulfill a Task.
+- delivered (Boolean) : Has the Task been delivered yet?  If multiple people can deliver it, it's marked as delivered
+once the first person delivers it.
+- delivering_members (Many-to-Many relationship to Member) : All the Members who are supposed to deliver the Task. 
+- delivering_roles (Many-to-Many relationship to Role) : All the Roles whose Members are supposed to deliver the Task. 
+- approved (Boolean) : Was the Task approved by the approver yet?
+- approving_members (Many-to-Many relationship to Member) : All the Members who can approve the Task after delivery.
+- approving_roles (Many to Many relationship to Role) : All the Roles whose Members can approve the Task after delivery.
+- parent_ID (ForeignKey to Task) : This Task's parent.
+- children (One-to-Many Relationship to Task) : All of this Task's child Tasks.
 
-   Inherited from relationship backrefs:
-   - groups -> Group
-
-### Infopages
-An Infopage is the way to view any user-facing object in the database.  It is a recursively defined datatype -- every Infopage has a one-to-one parent relationship (which can also be null) and a one-to-many children relationship, both back into the Infopage table.  This allows for directory-style navigation of a Group's contents.  The Infopage itself, however, is constructed by rendering a number of *Infoblocks*.  Each Infopage contains two one-to-many references to the Infoblock table.  The first one is to the required Infoblocks -- generated by us to display and modify the properties stored in the database.  The second one is to member-created Infoblocks, added for contextual information about the object being viewed.  The columns are:
-- name (required 80 character string)
-- source_table (required 80 character string)
-- source_id (required integer)
-- Description (150 character long String)
-- .main_infoblocks (One-to-many w/ Infoblock) - Reserved for the standard Infoblocks created for each Thing
-- .user_infoblocks (One-to-many w/ Infoblock) - Reserved for the user-generated Infoblocks created for each Thing
-- Children (if any)
-
-### Infoblocks
-An Infoblock represents one unit box on an Infopage.  These boxes have one of three fixed widths (30%, 60% 90%), and their height is however damn tall they need to be.  They are listed in an order on a page, leading to a natural tiling.  They have a name, like everyThing else.  Their identity as a main Infoblock or user Infoblock is stored as the 'content_type' string.  Last but not least, they have content.  This content is sanitized HTML for now, it could be expanded into more subdivisions as required.
-- .name (optional String(80))
-- .width (Integer) - Supposed to be the numerator of a fraction describing the width of the box on the screen.  The denominator would currently be three, but it could theoretically go as high as 12.  None of that is enforced in the database, however.
-- .order (Integer) - Supposed to be an index in a *zero-indexed* list of Infoblocks.  Also not enforced at all within the database.
-- .content_type (Required String(40)) - This says either 'main' or 'user', allowing us to check from the Infoblock itself what type it is.  Not yet enforced in any way, but in the future it could have a validation to make sure the String is valid with the Infopage relationship.
-- .content (Required String(42420)) - This is the actual (allegedly but not yet really sanitized) HTML which gets rendered in the box.
 
 ### Events
-Events are a class for getting people to come to a particular place at a particular time. Events have a date, RSVP lists, location, description, name, duration and attended/missed people.
-- name (String) - big name of the Event
-- group_id -> Group which is hosting/owning the event.
-- host - collection of additional people who can be added to host the event
-- description (String) - Short description of the Event
-- location (String) - Location of the event, if any
-- start_time (DateTime) - The starting time of the event
-- end_time (DateTime) - The ending of the event
-- invited - collection of Members who were invited to the Event
-- rsvp_yes - collection of members who RSVPd 'Yes'.
-- rsvp_no - collection of members who RSVPd 'No'.
-- attended_yes - collection of members who DID attend the event, as verified by the /attend function on events.  This is useful for roll call, quorum, etc.
-- attended_no - collection of members who DIDN'T attend the event.
-
-  Inherited from relationship backrefs:
+Events are in the strictest sense, a way to invite Members & Roles to go to some place at some time and then take 
+attendance of who showed up. Events have a start/end time, RSVP lists, location, description, name, and attendance list.
+- name (String, 80 characters) : Name of the Event.
+- description (String, 2000 characters) : A description of the Event, would include any and all details.
+- location (String, 200 characters) : Location of the event, if any.  May use Geo datatype later, just a String for now.
+- start_time (DateTime) : The starting time of the event.
+- end_time (DateTime) : The ending of the event.
+- hosting_roles (Many to Many relationship to Role) : All Roles with host privileges (can edit & invite) to the Event.
+- hosting_members (Many to Many relationship to Member) : All Members with host privileges to the Event.
+- invited_roles (Many to Many relationship to Role) : All Roles whose Members are invited to attend the Event.
+- invited_members (Many to Many relationship to Member) : All Members who are invited to attend the Event.
+- rsvp_yes (Many to Many relationship to Member) : All invited Members who RSVP'd yes.  Note that a members stays in 
+the invited pool even once they have RSVP'd.
+- rsvp_no (Many to Many relationship to Member) : All invited Members who RSVP'd no.
+- attended (Many to Many relationship to Member) : All invited Members who were marked as in attendance.  Note that we 
+don't need a not_attended relationship because those Members can be inferred from this one.
 
 
 ## UNIMPLEMENTED CLASSES
 
 ### Representatives
-As of right now, a Representative is a dummy class whose only attributes are the Member ID and Bond ID.  It also has some properites descended from relationship backrefs, like:
-- bond
+
+### Committees
 
 ### Discussions
 
 ### Meetings
 
-### Thing
-
-
-## Controller/View Functions
-I need to figure out what front-end pages are required to make this thing work.  For the basest functionality, you need to be able to make an account, create a group, join/leave a group.  Create roles, assign them to members, take them away, change who it's assigned to.  Create responsibilities in a template fashion, give roles the ability to give them out, have them be doable and reward members with points.  Speaking of points, I need to make a points logger -- it just needs to sit on the database class and record every transaction based on the group.  Actually, based on everything.  We should be able to pick apart that points log however we want, to allow for many different views from different privacy levels.
-
-If I have all of that in there, though, I think I could make a sample group.  The concept of responsibilities as a template is important.  It makes a responsibility a standard type of thing you have to get done.
-
-## Front-End Design Documentation
-I haven't implemented it yet because I'm terrible!  Once I have each piece working such that shit can display, unit tests.  Unit tests for everyone.
-
-### User Dashboard
-The user's dashboard holds a summary of the activity from all of their memberships.  It collects the Roles and Tasks they have in each group, separating those they have to complete and those they need other people to complete.  It is essentially a gloss of all their commitments, only listing the titles.  Those titles link to the task's detail page.
-
-### Group InfoPage
-A group's page lists its name, by-line, and description.  Additionally, it should have a roster (list of all members), list of officers, and a listing of any group-wide responsibilities.  Any responsibility that is required of every member should be listed on this page with its percent completion by the brotherhood.  This would include things like attendance to meeting, clean-ups, and nightly duties.
-
-### Member InfoPage
-The member page includes all roles held, current responsibilities, points count and history.  Additionally, it can store a history of prior roles held and how they did in them (because why not?).  It also has different section for the responsibilities required of the member and the responsibilities checked by the member.
-
-### Role InfoPage
-The role's page holds its title, description, the responsibilities required of and distributed by, and a list of prior members who held that role.  It will later be expanded to include reports on how it went and how to do it, similar to a bible for each role.
-
-### Task InfoPage
 
 
 ## Future Features

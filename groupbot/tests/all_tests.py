@@ -1,22 +1,29 @@
 __author__ = 'John'
 
 import os
+import sys
 import unittest
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
 
-from groupbot import app
-from groupbot.models import Base, db_session, User, Group, Member, Role, Task, Event
+sys.path.append('../..')
+from groupbot import app, db
+from config import TEST_DATABASE_URI
+from groupbot.models import db_session, User, Group, Member, Role, Task, Event, Base
+
+
 
 class TestCase(unittest.TestCase):
+
     def use_test_database(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join('')
+        app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DATABASE_URI
         self.app = app.test_client()
-        Base.metadata.create_all()
+        db.metadata.create_all(db.engine)
 
     def empty_test_data(self):
-        db_session.remove()
-        Base.metadata.drop_all()
+        db.metadata.drop_all(db.engine)
 
     def setUp(self):
         self.use_test_database()
@@ -25,11 +32,12 @@ class TestCase(unittest.TestCase):
         self.empty_test_data()
 
     def make_admin(self):
-        admin = User(codename='admin',password='letmein', first_name="THE",
-                     last_name="ADMIN", email="j.osullivan42@gmail.com",
-                     phone='0123456789', bio='This is the administrator account.')
-        db_session.add(admin)
-        db_session.commit()
+        if User.query.filter_by(codename='admin').first() is not None:
+            admin = User(codename='admin',password='letmein', first_name="THE",
+                         last_name="ADMIN", email="j.osullivan42@gmail.com",
+                         phone='0123456789', bio='This is the administrator account.')
+            db_session.add(admin)
+            db_session.commit()
 
     def make_test_group(self):
         self.login()
@@ -182,4 +190,20 @@ class MemberTestCase(TestCase):
         assert len(Group.query.filter_by(group_codename='test_group').members) == 0
 
 if __name__ == '__main__':
-    unittest.main()
+
+    app.config['TESTING'] = True
+    app.config['WTF_CSRF_ENABLED'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = TEST_DATABASE_URI
+    Base.query = db.session.query_property()
+    # unittest.main()
+    print 'db.metadata.drop_all(db.engine):'
+    # db.metadata.drop_all(db.engine)
+    print 'db.metadata.create_all(db.engine):'
+    db.metadata.create_all(bind = 'testing')
+    print 'Base.metadata.create_all(db.engine):'
+    Base.metadata.create_all(db.engine)
+    print 'db.session: '
+    print db.session
+    print '[user.codename for user in db.session.query(User).all()]:'
+    print [user for user in db.session.query(User).all()]
+    print db.engine
